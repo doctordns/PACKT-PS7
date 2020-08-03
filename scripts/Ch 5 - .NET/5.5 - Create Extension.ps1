@@ -19,14 +19,14 @@ Add-Type -TypeDefinition $NewType
 
 
 # 4. Extend the code with parameters
-$NewType2 = @'
+$NewType2 = @"
  using System;
  class Hello2  {
      public static void World(string name = "Thomas") {
         Console.WriteLine("Hello " + name);
      }
 } 
-'@
+"@
 
 # 5. Add the type into the current runspace
 Add-Type -TypeDefinition $NewType2 -Verbose
