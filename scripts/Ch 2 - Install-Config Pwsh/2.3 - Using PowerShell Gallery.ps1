@@ -1,6 +1,6 @@
 # 2.3 - Using the PowerShell Gallery
 # 
-# Run on DC1  after installing PowerShell 7 and VS Code
+# Run on DC1 after installing PowerShell 7
 
 # 1. Get Details of all PS Gallery Modules
 $PGSM = Find-Module -Name *
