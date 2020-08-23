@@ -11,12 +11,26 @@ Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
 Install-Module -Name PowerShellGet -Force -AllowClobber 
 
-# 3. Create local folder C:\Foo
+# 3. Ensure the C:\Foo Folder exists
 $LFHT = @{
   ItemType    = 'Directory'
   ErrorAction = 'SilentlyContinue' # should it already exist
 }
 New-Item -Path C:\Foo @LFHT | Out-Null
+
+
+# using DSC
+$Properties = @{
+  DestinationPath = 'C:\Foo2'
+  Ensure          = $True
+  Type            = 'Directory'
+}
+Invoke-DscResource -Name File  -Method Set -ModuleName PSDesiredStateConfiguration -Property $Properties -Verbose
+
+
+
+
+
 
 # 4. Download PowerShell 7 installation script
 Set-Location C:\Foo
