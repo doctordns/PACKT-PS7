@@ -81,6 +81,6 @@ $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
 $ProfileFile = $Profile.CurrentUserCurrentHost
 New-Item $ProfileFile -Force -WarningAction SilentlyContinue |
    Out-Null
-(Invoke-WebRequest -Uri $uri -UseBasicParsing).Content | 
+`| 
   Out-File -FilePath  $ProfileFile
 
