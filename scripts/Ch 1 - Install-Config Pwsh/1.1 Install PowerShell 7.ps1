@@ -1,6 +1,6 @@
-# Chapter 1 - Topic 1 - Install PowerShell 7
+# 1.1 Install PowerSHell 77
 
-# Run on DC
+# Run on SRV1
 # Run using an elevated Windows PowerShell 5.1 host
 
 # 1. Enable scripts to be run
@@ -17,20 +17,6 @@ $LFHT = @{
   ErrorAction = 'SilentlyContinue' # should it already exist
 }
 New-Item -Path C:\Foo @LFHT | Out-Null
-
-
-# using DSC
-$Properties = @{
-  DestinationPath = 'C:\Foo2'
-  Ensure          = $True
-  Type            = 'Directory'
-}
-Invoke-DscResource -Name File  -Method Set -ModuleName PSDesiredStateConfiguration -Property $Properties -Verbose
-
-
-
-
-
 
 # 4. Download PowerShell 7 installation script
 Set-Location C:\Foo
@@ -66,8 +52,7 @@ $env:PSModulePath -split ';' |
 $PROFILE | 
   Format-List -Property *host* -Force
 # from Windows PowerShell Console
-powershell -command '$PROFILE | 
-  Format-List -Property *host*' -Force 
+powershell -command '$PROFILE | Format-List -Property *ho* -Force'
 
 
 # Run remainder in Powershell 7 console. 
