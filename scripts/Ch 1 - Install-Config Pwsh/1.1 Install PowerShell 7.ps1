@@ -36,40 +36,9 @@ $EXTHT = @{
 }
 C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
-# 7. Examine the installation folder
-Get-Childitem -Path $env:ProgramFiles\PowerShell\7 -Recurse |
-  Measure-Object -Property Length -Sum
-
-# 8. View Module folders
-#  View module folders for autoload
-$I = 0
-$env:PSModulePath -split ';' |
-  Foreach-Object {
-    "[{0:N0}]   {1}" -f $I++, $_}
-
-# 9. View Profile File locations
-# Inside ISE
-$PROFILE | 
-  Format-List -Property *host* -Force
-# from Windows PowerShell Console
-powershell -command '$PROFILE | Format-List -Property *ho* -Force'
-
-
-# Run remainder in Powershell 7 console. 
-
-
-
-# 10. Run PowerShell 7 console and then...
-$PSVersionTable
-
-# 11. View Modules folders
-$ModFolders = $Env:PSModulePath -split ';'
-$I = 0
-$ModFolders | 
-  ForEach-Object {"[{0:N0}]   {1}" -f $I++, $_}
-
-# 12. View Profile Locations
-$PROFILE | Format-List -Property *Host* -Force
+# 7. For the Adventerous - install the preview and daily builds as well
+C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PWSHPreview
+C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PWSHDailBuild
 
 # 13. Create Current user/Current host profile
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +

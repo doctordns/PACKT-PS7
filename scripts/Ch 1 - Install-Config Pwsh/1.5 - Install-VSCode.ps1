@@ -1,16 +1,17 @@
-﻿# 2.2 Install-VSCode
+﻿# 1.5 Install-VSCode
 # 
-# Run on DC1 after installing PowerShell 7
-# Run in PowerShell 7 console
+# Run on SRV1 after installing PowerShell 7
+# Run in PowerShell 7 console 
 
-# 1. Download the VS Code Installation Script
+# 1. Download the VS Code installation script from PS Gallery
 $VSCPATH = 'C:\Foo'
 Save-Script -Name Install-VSCode -Path $VSCPATH
 Set-Location -Path $VSCPATH
 
 # 2. Now run it and add in some popular VSCode Extensions
-$Extensions =  "Streetsidesoftware.code-spell-checker",
-               "yzhang.markdown-all-in-one"
+$Extensions =  'Streetsidesoftware.code-spell-checker',
+               'yzhang.markdown-all-in-one',
+               'hediet.vscode-drawio'
 $InstallHT = @{
   BuildEdition         = 'Stable-System'
   AdditionalExtensions = $Extensions
@@ -20,33 +21,16 @@ $InstallHT = @{
 
 #  At this point, VS Code should be displayed.
 #  The remainder of this script in VS Code 
-#  MAKE SURE YOU RUN VSCode as Admin
+#  Stop VS Code and run VSCode as Admin
 
-# 3. Create a Sample Profile File
-$SAMPLE = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
-          'Goodies/Microsoft.VSCode_profile.ps1'
+# 3. Create a Sample Profile File for VS Code
+$SAMPLE = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
+          'scripts/goodies/Microsoft.VSCode_profile.ps1'
 (Invoke-WebRequest -Uri $Sample).Content |
   Out-File $Profile
 
 
-# 4. Download Cascadia Code font from GitHub
-# Get File Locations
-$CascadiaFont    = 'Cascadia.ttf'    # font file name
-$CascadiaRelURL  = 'https://github.com/microsoft/cascadia-code/releases'
-$CascadiaRelease = Invoke-WebRequest -Uri $CascadiaRelURL # Get all of them
-$CascadiaPath    = "https://github.com" + ($CascadiaRelease.Links.href | 
-                      Where-Object { $_ -match "($CascadiaFont)" } | 
-                        Select-Object -First 1)
-$CascadiaFile   = "C:\Foo\$CascadiaFont"
-# Download Cascadia Code font file
-Invoke-WebRequest -Uri $CascadiaPath -OutFile $CascadiaFile
-
-# 5. Install Cascadia Code font
-$FontShellApp = New-Object -Com Shell.Application
-$FontShellNamespace = $FontShellApp.Namespace(0x14)
-$FontShellNamespace.CopyHere($CascadiaFile, 0x10)
-
-# 6. Update Local User Settings for VS Code
+# 4. Update Local User Settings for VS Code
 #    This step in particular needs to be run in PowerShell 7!
 $JSON = @'
 {
@@ -71,7 +55,7 @@ $JHT |
   ConvertTo-Json  |
     Out-File -FilePath $Settings
 
-# 7. Create a short cut to VSCode
+# 5. Create a short cut to VSCode
 $SourceFileLocation  = "$env:ProgramFiles\Microsoft VS Code\Code.exe"
 $ShortcutLocation    = "C:\foo\vscode.lnk"
 # Create a  new wscript.shell object
@@ -81,7 +65,7 @@ $Shortcut.TargetPath = $SourceFileLocation
 #Save the Shortcut to the TargetPath
 $Shortcut.Save()
 
-# 8. Create a short cut to PowerShell 7
+# 6. Create a short cut to PowerShell 7
 $SourceFileLocation  = "$env:ProgramFiles\PowerShell\7\pwsh.exe"
 $ShortcutLocation    = 'C:\Foo\pwsh.lnk'
 # Create a  new wscript.shell object
@@ -91,7 +75,7 @@ $Shortcut.TargetPath = $SourceFileLocation
 #Save the Shortcut to the TargetPath
 $Shortcut.Save()
 
-# 9. Build Updated Layout XML
+# 7. Build Updated Layout XML
 $XML = @'
 <?xml version="1.0" encoding="utf-8"?>
 <LayoutModificationTemplate
@@ -113,6 +97,31 @@ $XML = @'
 '@
 $XML | Out-File -FilePath C:\Foo\Layout.Xml
 
-# 10. Import the  start layout XML file
+# 8. Import the  start layout XML file
 #     You get an error if this is not run in an elevated session
 Import-StartLayout -LayoutPath C:\Foo\Layout.Xml -MountPath C:\
+
+# 9. Create VSCode Profile
+$CUCHProfile   = $profile.CurrentUserCurrentHost
+$ProfileFolder = Split-Path -Path $CUCHProfile 
+$ProfileFile   = 'Microsoft.VSCode_profile.ps1'
+$VSProfile     = Join-Path -Path $ProfileFolder -ChildPath $ProfileFile
+$URI = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
+       "scripts/goodies/$ProfileFile"
+New-Item $VSProfile -Force -WarningAction SilentlyContinue |
+   Out-Null
+(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
+  Out-File -FilePath  $VSProfile
+
+# 10. Examine Current user profile
+Get-ChildItem -Path $ProfileFolder\*profile*.ps1  
+
+# 9. Now - logoff
+logoff.exe
+
+# 10. Relogin and observe the task bar
+
+# 11. Run PowerShell console and observe the profile file running
+
+# 12. Run VS Code from shortcut and observe the profile file running.
+
