@@ -1,0 +1,135 @@
+# 1.2 Using the PowerShell 7 Console
+#
+# Run on SRV1 after you install PowerShell
+# Run in elevated console
+
+# 1. Run PowerShell 7 From the Command Line
+
+no output
+
+PS C:\Foo> # 2. View the PowerShell Version
+PS C:\Foo> $PSVersionTable
+
+Name                       Value
+----                       -----
+PSVersion                  7.0.3
+PSEdition                  Core
+GitCommitId                7.0.3
+OS                         Microsoft Windows 10.0.20206
+Platform                   Win32NT
+PSCompatibleVersions       {1.0, 2.0, 3.0, 4.0, 5.0, 5.1.10032.0, 6.0.0, 6.1.0, 6.2.0…
+PSRemotingProtocolVersion  2.3
+SerializationVersion       1.1.0.1
+WSManStackVersion          3.0
+
+
+
+
+
+PS C:\Foo> # 3. View the $Host variable
+PS C:\Foo> $Host
+
+Name             : ConsoleHost
+Version          : 7.0.3
+InstanceId       : 8d48fb9a-185a-4973-afaf-14540a69c558
+UI               : System.Management.Automation.Internal.Host.InternalHostUserInterface
+CurrentCulture   : en-GB
+CurrentUICulture : en-US
+PrivateData      : Microsoft.PowerShell.ConsoleHost+ConsoleColorProxy
+DebuggerEnabled  : True
+IsRunspacePushed : False
+Runspace         : System.Management.Automation.Runspaces.LocalRunspace
+
+
+
+
+PS C:\Foo> # 4. Look at the PowerShell process
+PS C:\Foo> Get-Process -Id $Pid |
+             Format-Custom MainModule -Depth 1
+
+class Process
+{
+  MainModule =
+    class ProcessModule
+    {
+      ModuleName = pwsh.exe
+      FileName = C:\Program Files\PowerShell\7\pwsh.exe
+      BaseAddress = 140695516348416
+      ModuleMemorySize = 319488
+      EntryPointAddress = 140695516432000
+      FileVersionInfo = File:             C:\Program Files\PowerShell\7\pwsh.exe
+      InternalName:     pwsh.dll
+      OriginalFilename: pwsh.dll
+      FileVersion:      7.0.3.0
+      FileDescription:  pwsh
+      Product:          PowerShell
+      ProductVersion:   7.0.3 SHA: b08a8ad3da59a0cddf3351feea57d650eb6c41db
+      Debug:            False
+      Patched:          False
+      PreRelease:       False
+      PrivateBuild:     False
+      SpecialBuild:     False
+      Language:         Language Neutral
+
+      Site =
+      Container =
+      Size = 312
+      Company = Microsoft Corporation
+      FileVersion = 7.0.3.0
+      ProductVersion = 7.0.3 SHA: b08a8ad3da59a0cddf3351feea57d650eb6c41db
+      Description = pwsh
+      Product = PowerShell
+    }                                                                                                                   }                                                                                                                                                                                                                                                                                                                                                                       PS C:\Foo> # 4. Look at resource usage statistics                                                                       >> Get-Process -Id $Pid |
+
+
+
+PS C:\Foo> # 5. Look at resource usage statistics
+PS C:\Foo> Get-Process -Id $Pid |
+             Format-List CPU,*Memory*
+
+CPU                        : 55.234375
+NonpagedSystemMemorySize64 : 86400
+NonpagedSystemMemorySize   : 86400
+PagedMemorySize64          : 235704320
+PagedMemorySize            : 235704320
+PagedSystemMemorySize64    : 384400
+PagedSystemMemorySize      : 384400
+PeakPagedMemorySize64      : 236199936
+PeakPagedMemorySize        : 236199936
+PeakVirtualMemorySize64    : 2204038782976
+PeakVirtualMemorySize      : 720560128
+PrivateMemorySize64        : 235704320
+PrivateMemorySize          : 235704320
+VirtualMemorySize64        : 2204015001600
+VirtualMemorySize          : 696778752
+
+
+
+PS C:\Foo> # 6. Update PowerShell Help
+PS C:\Foo> $Before = Get-Help -Name about_*
+PS C:\Foo> Update-Help -Force |
+             Out-Null
+Update-Help: Failed to update Help for the module(s) 'ConfigDefender' with UI culture(s) {en-US} : One 
+  or more errors occurred. (Response status code does not indicate success: 404 (Not Found).).
+English-US help content is available and can be installed using: Update-Help -UICulture en-US.
+
+PS C:\Foo> $After = Get-Help -Name about_*
+PS C:\Foo> $Delta = $After.Count - $Before.Count
+PS C:\Foo> "{0} Conceptual Help Files Added" -f $Delta
+125 Conceptual Help Files Added
+
+
+
+
+PS C:\Foo> # 7. How many commands are available?
+PS C:\Foo> Get-Command |
+             Group-Object -Property CommandType
+
+Count Name      Group
+----- ----      -----
+   58 Alias     {Add-AppPackage, Add-AppPackageVolume, Add-AppProvisionedPackage, Add-ProvisionedAppPa…
+ 1144 Function  {A:, Add-BCDataCacheExtension, Add-DnsClientDohServerAddress, Add-DnsClientNrptRule, A…
+  584 Cmdlet    {Add-AppxPackage, Add-AppxProvisionedPackage, Add-AppxVolume, Add-BitsFile, Add-Certif…
+
+
+

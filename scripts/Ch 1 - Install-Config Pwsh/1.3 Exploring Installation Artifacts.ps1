@@ -43,6 +43,6 @@ Foreach ($Path in $ModPath){
 }
 
 "{0} commands in {1} modules" -f $TotalCommands, $TotalModules
-Get-module * | measure
+Get-module * | Measure-Object
 
 

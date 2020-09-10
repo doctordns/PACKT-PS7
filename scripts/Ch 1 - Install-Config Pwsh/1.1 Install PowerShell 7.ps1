@@ -1,12 +1,12 @@
-# 1.1 Install PowerSHell 77
+# 1.1 Install PowerShell 7
 
 # Run on SRV1
 # Run using an elevated Windows PowerShell 5.1 host
 
-# 1. Enable scripts to be run
+# 1. Set Execution Policy for Windows PowerShell
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-# 2. Install latest versions of Nuget and PowerShellGet
+# 2. Install the latest versions of Nuget and PowerShellGet
 Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
 Install-Module -Name PowerShellGet -Force -AllowClobber 
@@ -20,7 +20,7 @@ New-Item -Path C:\Foo @LFHT | Out-Null
 
 # 4. Download PowerShell 7 installation script
 Set-Location C:\Foo
-$URI = "https://aka.ms/install-powershell.ps1"
+$URI = 'https://aka.ms/install-powershell.ps1'
 Invoke-RestMethod -Uri $URI | 
   Out-File -FilePath C:\Foo\Install-PowerShell.ps1
 
@@ -36,11 +36,13 @@ $EXTHT = @{
 }
 C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
-# 7. For the Adventerous - install the preview and daily builds as well
-C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PWSHPreview
-C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PWSHDailBuild
+# 7. For the Adventurous - install the preview and daily builds as well
+C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PWSHPreview |
+  Out-Null
+C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PWSHDailBuild |
+  Out-Null
 
-# 13. Create Current user/Current host profile
+# 8. Create Windows PowerShell default Profiles
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
        'Goodies/Microsoft.PowerShell_Profile.ps1'
 $ProfileFile = $Profile.CurrentUserCurrentHost
@@ -48,4 +50,10 @@ New-Item $ProfileFile -Force -WarningAction SilentlyContinue |
    Out-Null
 (Invoke-WebRequest -Uri $uri -UseBasicParsing).Content | 
   Out-File -FilePath  $ProfileFile
+$ProfilePath = Split-Path -Path $ProfileFile
+$ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_profile.ps1'
+(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
+  Out-File -FilePath  $ConsoleProfile
 
+# 9. Check versions of PowerShell 7 loaded
+Get-ChildItem -Path C:\pwsh.exe -ErrorAction SilentlyContinue

@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "..\\..\\..\\ReskitBuildScripts"
+		}
+	],
+	"settings": {
+		"powershell.codeFormatting.addWhitespaceAroundPipe": true
+	}
+}
