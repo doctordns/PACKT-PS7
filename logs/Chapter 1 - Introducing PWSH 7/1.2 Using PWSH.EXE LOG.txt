@@ -44,7 +44,7 @@ Runspace         : System.Management.Automation.Runspaces.LocalRunspace
 
 
 PS C:\Foo> # 4. Look at the PowerShell process
-PS C:\Foo> Get-Process -Id $Pid |
+PS C:\Foo> Get-Process -Id $PID |
              Format-Custom MainModule -Depth 1
 
 class Process
@@ -57,7 +57,7 @@ class Process
       BaseAddress = 140695516348416
       ModuleMemorySize = 319488
       EntryPointAddress = 140695516432000
-      FileVersionInfo = File:             C:\Program Files\PowerShell\7\pwsh.exe
+      FileVersionInfo = File: C:\Program Files\PowerShell\7\pwsh.exe
       InternalName:     pwsh.dll
       OriginalFilename: pwsh.dll
       FileVersion:      7.0.3.0
@@ -79,12 +79,15 @@ class Process
       ProductVersion = 7.0.3 SHA: b08a8ad3da59a0cddf3351feea57d650eb6c41db
       Description = pwsh
       Product = PowerShell
-    }                                                                                                                   }                                                                                                                                                                                                                                                                                                                                                                       PS C:\Foo> # 4. Look at resource usage statistics                                                                       >> Get-Process -Id $Pid |
+    }
+}
+
+
 
 
 
 PS C:\Foo> # 5. Look at resource usage statistics
-PS C:\Foo> Get-Process -Id $Pid |
+PS C:\Foo> Get-Process -Id $PID |
              Format-List CPU,*Memory*
 
 CPU                        : 55.234375

@@ -15,11 +15,11 @@ $PSVersionTable
 $Host
 
 # 4. Look at the PowerShell process
-Get-Process -Id $Pid | 
+Get-Process -Id $PID| 
   Format-Custom MainModule -Depth 1
 
 # 5. Look at resource usage statistics
-Get-Process -Id $Pid | 
+Get-Process -Id $PID | 
   Format-List CPU,*Memory* 
 
 # 6. Update PowerShell Help
