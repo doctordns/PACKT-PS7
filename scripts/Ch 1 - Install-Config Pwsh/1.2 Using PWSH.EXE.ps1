@@ -5,8 +5,7 @@
 
 # 1. Run PowerShell 7 From the Command Line
 
-no output
-
+Start/PWSH/Return
 
 # 2. View the PowerShell Version
 $PSVersionTable

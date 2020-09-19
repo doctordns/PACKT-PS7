@@ -17,31 +17,34 @@ Get-ChildItem -Path $env:ProgramFiles\PowerShell\7\powershell*.json |
 Get-ExecutionPolicy  
 
 # 5. View Module folders
-#  View module folders for autoload
 $I = 0
 $ModPath = $env:PSModulePath -split ';'
 $ModPath |
   Foreach-Object {
-    "[{0:N0}]   {1}" -f $I++, $_}
+    "[{0:N0}]   {1}" -f $I++, $_
+  }
 
 # 6. View the Modules
 $TotalCommands = 0
 $TotalModules  = 0
 Foreach ($Path in $ModPath){
-  Try { $Modules = Get-ChildItem -Path $Path -Directory -ErroraCtion Stop 
+  Try { $Modules = Get-ChildItem -Path $Path -Directory -ErrorAction Stop 
         "Checking Module Path:  [$Path]"
   }
   Catch [System.Management.Automation.ItemNotFoundException] {
     "Module path [$path] DOES NOT EXIST ON $(hostname)"
   }
   Foreach ($Module in $Modules) {
-    $Cmds = Get-Command -Module $($Module.Name)
-    $TotalCommands += $Cmds.count
+    # "Module [$($module.name)] - Commands: [$($Cmds.Count)]"
+    $TotalCommands += $Cmds.Count
     $TotalModules ++
   }
-  
+  ""
 }
+
+# 7. View totals of command and modules
+Get-Module * | Measure-Object
 "{0} commands in {1} modules" -f $TotalCommands, $TotalModules
-Get-module * | Measure-Object
+
 
 

@@ -1,6 +1,8 @@
 # 1.4 - Build Profile files
 
-# 1. Discover the profile file names:
+# Run on SRV1 after installing PowerShell 7
+
+# 1. Discover the profile file names
 $ProfileFiles = $profile |  Get-Member -MemberType NoteProperty
 $ProfileFiles | Format-Table -Property Name, Definition
 
@@ -18,10 +20,9 @@ Foreach ($ProfileFile in $ProfileFiles){
   ""
 }  
 
-# 3. Create Current User Current Host
+# 3. Discover Current User Current Host Profile
 $CUCHProfile = $profile.CurrentUserCurrentHost
-'Current user, current host profile path: '
-"   [$CUCHPROFILE]"
+"Current user, current host profile path: [$CUCHPROFILE]"
 
 # 4. Create Current user/Current host profile
 $URI = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +

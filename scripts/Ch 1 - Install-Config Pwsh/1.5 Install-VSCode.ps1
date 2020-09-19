@@ -8,7 +8,7 @@ $VSCPATH = 'C:\Foo'
 Save-Script -Name Install-VSCode -Path $VSCPATH
 Set-Location -Path $VSCPATH
 
-# 2. Now run it and add in some popular VSCode Extensions
+# 2. Run the instllation script and add in some popular extensions
 $Extensions =  'Streetsidesoftware.code-spell-checker',
                'yzhang.markdown-all-in-one',
                'hediet.vscode-drawio'
@@ -17,24 +17,25 @@ $InstallHT = @{
   AdditionalExtensions = $Extensions
   LaunchWhenDone       = $true
 }             
-.\Install-VSCode.ps1 @InstallHT 
+.\Install-VSCode.ps1 @InstallHT | Out-Null
 
-#  At this point, VS Code should be displayed.
-#  The remainder of this script in VS Code 
-#  Stop VS Code and run VSCode as Admin
+# 3. Exit from VS Code
 
-# 3. Create a Sample Profile File for VS Code
-$SAMPLE = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
-          'scripts/goodies/Microsoft.VSCode_profile.ps1'
+# 4. Restart VS Code as an Administrator
+
+# 5. Open a VS Code Terminal and run PowerShell 7.
+
+# 6. Using VS Code, create a Sample Profile File for VS Code
+$SAMPLE = 
+  'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
+  'scripts/goodies/Microsoft.VSCode_profile.ps1'
 (Invoke-WebRequest -Uri $Sample).Content |
   Out-File $Profile
 
-
-# 4. Update Local User Settings for VS Code
-#    This step in particular needs to be run in PowerShell 7!
+# 7. Update Local User Settings for VS Code
 $JSON = @'
 {
-  "workbench.colorTheme": "PowerShell ISE",
+  "workbench.colorTheme": "Visual Studio Light",
   "powershell.codeFormatting.useCorrectCasing": true,
   "files.autoSave": "onWindowChange",
   "files.defaultLanguage": "powershell",
@@ -55,7 +56,7 @@ $JHT |
   ConvertTo-Json  |
     Out-File -FilePath $Settings
 
-# 5. Create a short cut to VSCode
+# 8. Create a short cut to VSCode
 $SourceFileLocation  = "$env:ProgramFiles\Microsoft VS Code\Code.exe"
 $ShortcutLocation    = "C:\foo\vscode.lnk"
 # Create a  new wscript.shell object
@@ -65,7 +66,7 @@ $Shortcut.TargetPath = $SourceFileLocation
 #Save the Shortcut to the TargetPath
 $Shortcut.Save()
 
-# 6. Create a short cut to PowerShell 7
+# 9. Create a short cut to PowerShell 7
 $SourceFileLocation  = "$env:ProgramFiles\PowerShell\7\pwsh.exe"
 $ShortcutLocation    = 'C:\Foo\pwsh.lnk'
 # Create a  new wscript.shell object
@@ -75,7 +76,7 @@ $Shortcut.TargetPath = $SourceFileLocation
 #Save the Shortcut to the TargetPath
 $Shortcut.Save()
 
-# 7. Build Updated Layout XML
+# 10. Build Updated Layout XML
 $XML = @'
 <?xml version="1.0" encoding="utf-8"?>
 <LayoutModificationTemplate
@@ -97,11 +98,11 @@ $XML = @'
 '@
 $XML | Out-File -FilePath C:\Foo\Layout.Xml
 
-# 8. Import the  start layout XML file
+# 11. Import the  start layout XML file
 #     You get an error if this is not run in an elevated session
 Import-StartLayout -LayoutPath C:\Foo\Layout.Xml -MountPath C:\
 
-# 9. Create VSCode Profile
+# 12. Create VSCode Profile for PowerShell 7
 $CUCHProfile   = $profile.CurrentUserCurrentHost
 $ProfileFolder = Split-Path -Path $CUCHProfile 
 $ProfileFile   = 'Microsoft.VSCode_profile.ps1'
@@ -113,15 +114,20 @@ New-Item $VSProfile -Force -WarningAction SilentlyContinue |
 (Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
   Out-File -FilePath  $VSProfile
 
-# 10. Examine Current user profile
-Get-ChildItem -Path $ProfileFolder\*profile*.ps1  
+# 13. Finally, Create a profile file for PWSH 7 COnsoles  
+$ProfileFile2   = 'Microsoft.PowerShell_Profile.ps1'  
+$ConsoleProfile = Join-Path -Path $ProfileFolder -ChildPath $ProfileFile2
+New-Item $ConsoleProfile -Force -WarningAction SilentlyContinue |
+   Out-Null
+$URI2 = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
+        "scripts/goodies/$ProfileFile2"    
+(Invoke-WebRequest -Uri $URI2 -UseBasicParsing).Content | 
 
-# 9. Now - logoff
+# 14. Now - logoff
 logoff.exe
 
-# 10. Relogin and observe the task bar
+# 15. Relogin and observe the task bar
 
-# 11. Run PowerShell console and observe the profile file running
+# 16. Run PowerShell console and observe the profile file running
 
-# 12. Run VS Code from shortcut and observe the profile file running.
-
+# 17. Run VS Code from shortcut and observe the profile file running.
