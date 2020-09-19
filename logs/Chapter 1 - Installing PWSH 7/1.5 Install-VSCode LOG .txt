@@ -1,0 +1,56 @@
+# 1.5 Install-VSCode   LOG
+
+# 
+# Run on SRV1 after installing PowerShell 7
+# Run in PowerShell 7 console 
+
+
+
+
+# 1. Download the VS Code installation script from PS Gallery
+
+no output
+
+
+PS C:\Foo> # 2. Now run it and add in some popular VSCode Extensions
+PS C:\Foo> $Extensions =  'Streetsidesoftware.code-spell-checker',
+>>                'yzhang.markdown-all-in-one',
+>>                'hediet.vscode-drawio'
+PS C:\Foo> $InstallHT = @{
+>>   BuildEdition         = 'Stable-System'
+>>   AdditionalExtensions = $Extensions
+>>   LaunchWhenDone       = $true
+>> }
+PS C:\Foo> .\Install-VSCode.ps1 @InstallHT
+
+
+Installing extension ms-vscode.PowerShell...
+Installing extensions...
+Installing extension 'ms-vscode.powershell' v2020.6.0...
+(node:4916) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+Extension 'ms-vscode.powershell' v2020.6.0 was successfully installed.
+
+Installing extension Streetsidesoftware.code-spell-checker...
+Installing extensions...
+Installing extension 'streetsidesoftware.code-spell-checker' v1.9.0...
+(node:3016) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+Extension 'streetsidesoftware.code-spell-checker' v1.9.0 was successfully installed.
+
+Installing extension yzhang.markdown-all-in-one...
+Installing extensions...
+Installing extension 'yzhang.markdown-all-in-one' v3.3.0...
+(node:4672) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+Extension 'yzhang.markdown-all-in-one' v3.3.0 was successfully installed.
+
+Installing extension hediet.vscode-drawio...
+Installing extensions...
+Installing extension 'hediet.vscode-drawio' v0.7.2...
+(node:4964) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+Extension 'hediet.vscode-drawio' v0.7.2 was successfully installed.
+
+Installation complete, starting Visual Studio Code (64-bit)...
+
+
+
+
+

@@ -1,0 +1,64 @@
+# 1.4 - Build Profile files
+
+# Run on SRV1 after installing PowerShell 7
+
+PS C:\Users\Administrator> # 1. Discover the profile file names
+>> $ProfileFiles = $profile |  Get-Member -MemberType NoteProperty
+>> $ProfileFiles | Format-Table -Property Name, Definition
+>>
+
+Name                   Definition
+----                   ----------
+AllUsersAllHosts       string AllUsersAllHosts=C:\Program Files\PowerShell\7\profile.ps1
+AllUsersCurrentHost    string AllUsersCurrentHost=C:\Program Files\PowerShell\7\Microsoft.PowerShell_profile.ps1
+CurrentUserAllHosts    string CurrentUserAllHosts=C:\Users\Administrator\Documents\PowerShell\profile.ps1
+CurrentUserCurrentHost string CurrentUserCurrentHost=C:\Users\Administrator\Documents\PowerShell\Microsoft.PowerShell_…
+
+
+
+PS C:\Users\Administrator> # 2. Check for Existence of each PowerShell Profile Files
+PS C:\Users\Administrator> Foreach ($ProfileFile in $ProfileFiles){
+>>   "Testing $($ProfileFile.Name)"
+>>   $ProfilePath = $ProfileFile.Definition.split('=')[1]
+>>   If (Test-Path $ProfilePath){
+>>     "$($ProfileFile.Name) DOES EXIST"
+>>     "At $ProfilePath"
+>>   }
+>>   Else {
+>>     "$($ProfileFile.Name) DOES NOT EXIST"
+>>   }
+>>   ""
+>> }
+Testing AllUsersAllHosts
+AllUsersAllHosts DOES NOT EXIST
+
+Testing AllUsersCurrentHost
+AllUsersCurrentHost DOES NOT EXIST
+
+Testing CurrentUserAllHosts
+CurrentUserAllHosts DOES NOT EXIST
+
+Testing CurrentUserCurrentHost
+CurrentUserCurrentHost DOES NOT EXIST
+
+
+
+PS C:\Users\Administrator> # 3. Discover Current User Current Host Profile
+PS C:\Users\Administrator> $CUCHProfile = $profile.CurrentUserCurrentHost
+PS C:\Users\Administrator> "Current user, current host profile path: [$CUCHPROFILE]"
+Current user, current host profile path: [C:\Users\Administrator\Documents\PowerShell\Microsoft.PowerShell_profile.ps1]
+
+
+ # 4. Create Current user/Current host profile
+
+ no output
+ 
+
+ # 5. Existing from PowerShell 7 console  
+
+
+no output
+
+# 6. retner and views profile
+
+see console output

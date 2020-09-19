@@ -1,0 +1,95 @@
+# 1.1 Install PowerShell 7   LOG
+
+
+
+# 1. Enable scripts to be run
+
+
+NO OUTPUT
+
+
+# 2. Install the latest versions of Nuget and PowerShellGet
+
+NO output...
+
+
+# 3.  Ensure the C:\Foo Folder exists
+
+No OUTPUT
+
+
+
+
+
+# 4. Download PowerShell 7 installation script
+
+
+No output
+
+
+PS C:\Foo]> # 5. View Installation Script Help
+PS C:\Foo]> Get-Help -Name C:\Foo\Install-PowerShell.ps1
+Install-PowerShell.ps1 [-Destination <string>] [-Daily] [-DoNotOverwrite] [-AddToPath] [-Preview] [<CommonParameters>]
+Install-PowerShell.ps1 [-UseMSI] [-Quiet] [-AddExplorerContextMenu] [-EnablePSRemoting] [-Preview] [<CommonParameters>]     
+
+
+
+
+PS C:\Foo> # 6. Install PowerShell 7
+PS C:\Foo> $EXTHT = @{
+             UseMSI                 = $true
+             Quiet                  = $true 
+             AddExplorerContextMenu = $true
+             EnablePSRemoting       = $true
+           }
+PS C:\Foo> C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
+VERBOSE: About to download package from 'https://github.com/PowerShell/PowerShell/
+releases/download/v7.0.3/PowerShell-7.0.3-win-x64.msi'
+
+
+PS C:\Foo> # 7. For the Adventurous - install the preview and daily builds as well
+PS C:\Foo> C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PWSHPreview |
+             Out-Null
+VERBOSE: Destination: C:\PWSHPreview
+VERBOSE: About to download package from 'https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-preview.6/PowerShell-7.1.0-preview.6-win-x64.zip'
+PowerShell has been installed at C:\PWSHPreview
+
+PS C:\Foo> C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PWSHDailBuild |
+             Out-Null
+VERBOSE: Destination: C:\PWSHDailBuild
+VERBOSE: About to download package from 'https://pscoretestdata.blob.core.windows.net/v7-1-0-daily-20200909/PowerShell-7.1.0-daily.20200909-win-x64.zip'
+PowerShell has been installed at C:\PWSHDailBuild
+
+
+
+
+# 8. Create Windows PowerShell default Profiles
+
+
+no output
+
+
+
+
+PS C:\Foo> # 9. Check versions of PowerShell 7 loaded
+PS C:\Foo> Get-ChildItem -Path C:\pwsh.exe -ErrorAction SilentlyContinue
+
+    Directory: C:\Program Files\PowerShell\7
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        15/07/2020     20:13         312192 pwsh.exe
+
+    Directory: C:\PWSHDailBuild
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        09/09/2020     01:07         270848 pwsh.exe
+
+    Directory: C:\PWSHPreview
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        14/08/2020     00:46         275336 pwsh.exe
+
+
