@@ -4,18 +4,18 @@
 
 # Pipeline chain operators && and ||
 
-# 1. Do it traditionly
+# 1. Checking results traditionally
 Write-Output 'Something that succeeds'
 if ($?) {Write-Output 'It worked'}
 
-# 2. With Pipeline chain using &&
+# 2. Check results With Pipeline operator &&
 Write-Output 'Something that succeeds' && Write-Output 'It worked'
 
-#. 3 With Pipeline chain using ||
+# 3. Using Pipeline chain operator  ||
 Write-Output 'Something that succeeds' || 
   Write-Output 'You do not see this message'
 
-# 4. Define a function
+# 4. Define a simple function
 function Install-CacadiaPLFont{
   Write-Host 'Installing Cascadia PL font...'
 }
@@ -27,41 +27,72 @@ Get-ChildItem -Path C:\FOO\CASCADIAPL.TTF | OUT-NULL ||
    Install-CacadiaPLFont
 $ErrorActionPreference = $OldErrorAction
 
-# 5. Null Coalescing operator
+# Null Coalescing
+
+# 6. Create a function to test null handling
 Function Test-NCO {
- if ($args ='42') {
-   Return 'The Meaning of life, the Universe, and Everything'
- }
+  if ($args -eq '42') {
+    Return 'Test-NCO returned a result'
+  }
 }
-$Result1 = Test-NCO
+
+# 7.	Test null results traditionally
+$Result1 = Test-NCO    # no parameter
 if ($null -eq $Result1) {
-    'Find a better quote'
+    'Function returned no value'
 } else {
     $Result1
 }
-#   
-$Result2 = Test-NCO 42
-if ($null -eq $Result2) {
-    'Find a better quote'
+$Result2 = Test-NCO 42  # using a parameter
+if ($null -eq $Result2) { 
+    'Function returned no value'
 } else {
     $Result2
 }
-# using Null Coalescing operator ??
+
+# 8. Test using Null Coalescing operator ??
 $Result3 =  Test-NCO
-$Result3 ?? 'Function did not return a value'
-#
+$Result3 ?? 'Function returned no value'
 $Result4 =  Test-NCO 42
 $Result4 ?? 'This is not output, but result is'
 
-# 6. Null Conditional Assignment Operator
+# 9. Demonstrate Null Conditional Assignment Operator
 $Result5 = Test-NCO
 $Result5 ?? 'Result is is null'
 $Result5 ??= Test-NCO 42
 $Result5
 
+# Null Conditional Operators
 
-
-# 7. Null Conditional Operators
+# 10. Test running an method on a null object Traditionally
 $BitService.Stop()
 
-${BitsService}?.Stop()
+# 11. Show Null conditional operator for a method
+${BitService}?.Stop()
+
+# 12. Test Null property name access
+$x = $null
+${x}?.propname
+$x = @{Propname=42}
+${x}?.propname
+
+# 13. Test array member access if a null object
+$y = $null
+${y}?[0]
+$y = 1,2,3
+${y}?[0]
+
+# 14. Use Background processing operator &
+Get-CimClass -ClassName Win32_Bios &
+
+# 15. Get the results of the job
+$JobId = (Get-Job | Select -last 1).Id
+Wait-Job -id $JobId
+$Results = Receive-Job -Id $JobId
+$Results | 
+  Get-Member | 
+    Select-Object -First 1
+
+# 16. View the output
+$Results
+

@@ -2,3 +2,200 @@
 
 # Run on SRV1 after installing PowerShell 7 and VS COde
 
+
+PS C:\Foo> # 1. Checking results traditionally
+PS C:\Foo> Write-Output 'Something that succeeds'
+Something that succeeds
+PS C:\Foo> if ($?) {Write-Output 'It worked'}
+It worked
+
+
+
+
+PS C:\Foo> # 2. Check results With Pipeline operator &&
+PS C:\Foo> Write-Output 'Something that succeeds' && Write-Output 'It worked'
+Something that succeeds
+It worked
+
+
+
+
+PS C:\Foo> # 3. Using Pipeline chain operator  ||
+PS C:\Foo> Write-Output 'Something that succeeds' || 
+             Write-Output 'You do not see this message'
+Something that succeeds
+
+
+
+
+
+
+
+
+# 4. Define a simple function
+
+
+
+no Output
+
+
+
+
+PS C:\Foo> # 5. Demonstrate || operator
+PS C:\Foo> $OldErrorAction        = $ErrorActionPreference
+PS C:\Foo> $ErrorActionPreference = 'SilentlyContinue'
+PS C:\Foo> Get-ChildItem -Path C:\FOO\CASCADIAPL.TTF | OUT-NULL || 
+             Install-CacadiaPLFont
+Installing Cascadia PL font...
+
+
+
+
+
+# 6. Create a function to test null handling
+
+
+no Output
+
+
+
+
+
+
+
+PS C:\Foo> # 7. Test null results traditionally
+PS C:\Foo> $Result1 = Test-NCO    # no parameter
+PS C:\Foo> if ($null -eq $Result1) {
+             'Function returned no value'
+           } else {
+             $Result1
+           }
+Function returned no value
+
+PS C:\Foo> $Result2 = Test-NCO 42  # using a parameter
+            if ($null -eq $Result2) {
+              'Function returned no value'
+            } else {
+               $Result2
+            }   
+Test-NCO returned a result
+
+
+
+
+
+PS C:\Foo> # 8. Test using Null Coalescing operator ??
+PS C:\Foo> $Result3 =  Test-NCO
+PS C:\Foo> $Result3 ?? 'Function returned no value'
+Function returned no value
+PS C:\Foo> $Result4 =  Test-NCO 42
+PS C:\Foo> $Result4 ?? 'This is not output, but result is'
+Test-NCO returned a result
+
+
+
+
+
+
+PS C:\Foo> # 9. Demonstrate Null Conditional Assignment Operator
+PS C:\Foo> $Result5 = Test-NCO
+PS C:\Foo> $Result5 ?? 'Result is is null'
+Result is is null
+
+PS C:\Foo> $Result5 ??= Test-NCO 42
+PS C:\Foo> $Result5
+Test-NCO returned a result
+
+
+
+
+PS C:\Foo> # 10. Test running an method on a null object Traditionally
+PS C:\Foo> $BitService.Stop()
+InvalidOperation: 
+Line |
+   2 |  $BitService.Stop()
+     |  ~~~~~~~~~~~~~~~~~~
+     | You cannot call a method on a null-valued expression.
+     
+
+
+
+
+
+# 11. Show Null conditional operator for a method
+
+
+
+
+NO Output
+
+
+
+
+PS C:\Foo> # 12. Test Null property name access
+PS C:\Foo> $x = $null
+PS C:\Foo> ${x}?.propname
+
+PS C:\Foo> $x = @{Propname=42}
+PS C:\Foo> ${x}?.propname
+42
+
+
+
+PSC:\Foo> # 13. Test array member access if a null object
+PSC:\Foo> $y = $null
+PSC:\Foo> ${y}?[0]
+PSC:\Foo> $y = 1,2,3
+PSC:\Foo> ${y}?[0]
+1
+
+
+PSC:\Foo> # 14. Use Background processing operator &
+PSC:\Foo> Get-CimClass -ClassName Win32_Bios &
+
+Id  Name  PSJobTypeName  State    HasMoreData   Location    Command
+--  ----  -------------  -----    -----------   --------    -------
+1   Job1  BackgroundJob  Running  True          localhost   Microsoft.PowerShell.Man…
+
+
+
+PSC:\Foo>  # 15. Get the results of the job
+PSC:\Foo>  $JobId = (Get-Job | Select -last 1).Id
+PSC:\Foo>  Wait-Job -id $JobId
+
+Id  Name  PSJobTypeName  State     HasMoreData   Location   Command
+--  ----  -------------  -----     -----------   --------   -------
+1   Job1  BackgroundJob  Completed True          localhost  Microsoft.PowerShell.Man…
+
+PSH [C:\Foo]: $Results = Receive-Job -Id $JobId
+PSH [C:\Foo]: $Results | 
+                Get-Member | 
+                  Select-Object -First 1
+             
+   TypeName: Deserialized.Microsoft.Management.Infrastructure.CimClass
+
+Name    MemberType Definition
+----    ---------- ----------
+GetType Method     type GetType()
+
+
+PSC:\Foo> # 16. View the output
+PSC:\Foo>  $Results
+
+   NameSpace:
+CimClassName   CimClassMethods  CimClassProperties
+------------   ---------------  ------------------
+Win32_BIOS     {}               {Caption, Description, InstallDate, Name…
+
+
+
+
+
+
+
+
+
+
+
+
+
