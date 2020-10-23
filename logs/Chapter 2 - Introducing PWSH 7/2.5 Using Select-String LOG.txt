@@ -1,0 +1,65 @@
+# 2.5 - Using Select-String   LOG
+
+# Run on SRV1 after installing PowerShell 7
+
+
+
+# 1. Get a file of text to work with
+
+
+NO Output
+
+
+# 2. Get book contents
+
+
+NO Output
+
+
+
+
+
+
+PS C:\Foo> # 3. Checking the length of The Adventures of Sherlock Holmes
+PS C:\Foo> "The book is {0} lines long" -f $Contents.Length
+The book is 12310 lines long 
+
+
+
+
+PS C:\Foo> # 4. Search for "Watson" in book contents
+PS C:\Foo> $Match1 = $Contents | Select-String -Pattern 'Watson'
+PS C:\Foo> "Watson is found {0} times" -f $Match1.Count
+Watson is found 81 times
+
+
+
+# 5. View first few 
+
+
+
+get screen shot from VS COde
+
+
+
+
+
+# 6. Search for 'Dr. Watson' with a regular expression
+
+
+
+
+get screen shot from VS COde
+
+
+
+
+# 7. Search for Dr. Watson using a simple match
+
+
+
+get screen shot from VS COde
+
+
+
+

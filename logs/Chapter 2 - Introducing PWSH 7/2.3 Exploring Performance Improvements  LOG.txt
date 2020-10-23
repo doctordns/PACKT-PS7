@@ -1,0 +1,90 @@
+# 2.3 - Exploring Performance Improvements LOG
+
+# run on SRV1 after installing pwsh 7
+
+
+PS C:\Foo> # 1. Create a remoting connection to the local host
+PS C:\Foo> Import-Module -Name ServerManager -UseWindowsPowerShell
+WARNING: Module ServerManager is loaded in Windows PowerShell using WinPSCompatSession 
+remoting session; please note thahat all input and output of commands from this module 
+will be deserialized objects. If you want to load this module into PowerShell Core 
+please use 'Import-Module -SkipEditionCheck' syntax.
+
+
+# 2. Get remoting session ID
+
+no output
+
+
+
+
+PS C:\Foo> # 3. Check Version of PowerShell in the remoting session
+PS C:\Foo> Invoke-Command -Session $session  -ScriptBlock {$PSVersionTable}
+
+Name                           Value
+----                           -----
+PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0, 5.0, 5.1.20221.1000}
+BuildVersion                   10.0.20221.1000
+PSEdition                      Desktop
+PSRemotingProtocolVersion      2.3
+SerializationVersion           1.1.0.1
+CLRVersion                     4.0.30319.42000
+WSManStackVersion              3.0
+PSVersion                      5.1.20221.1000
+
+
+
+
+# 4. Define a long running script block using ForEach-Object
+
+no output
+
+
+
+
+PS C:\Foo> # 5. Run the script block locally
+PS C:\Foo> [gc]::Collect()
+PS C:\Foo> $TimeInP7 = Invoke-Command -ScriptBlock $SB1 
+PS C:\Foo> "Time in PowerShell 7.1        : {0:n4} seconds" -f $TimeInP7
+Foreach-Object in PowerShell 7.1: [75.3361] seconds
+
+
+
+
+
+
+PS C:\Foo> # 6. Run it in PowerShell 5.1
+PS C:\Foo> [gc]::Collect()
+PS C:\Foo> $TimeInWP  = Invoke-Command -ScriptBlock $SB1 -Session $Session
+PS C:\Foo> "Time in Windows PowerShell 5.1 : {0:n3} seconds" -f $TimeInWP
+ForEach-Object in Windows PowerShell 5.1: [103.9153] seconds
+
+
+
+
+
+
+
+PS C:\Foo> # 7. Define another long running script block using ForEach
+
+NO output
+
+
+
+PS C:\Foo> # 8. Run it locally in PowerShell 7
+PS C:\Foo> [gc]::Collect()
+PS C:\Foo> $TimeInP72 = Invoke-Command -ScriptBlock $SB2 
+PS C:\Foo> "Foreach in PowerShell 7.1: [{0:n4}] seconds" -f $TimeInP72
+Foreach in PowerShell 7.1: [8.1041] seconds
+
+
+
+
+PS C:\Foo> # 9. Run it in Windows PowerShell 5.1 
+PS C:\Foo> [gc]::Collect()
+PS C:\Foo> $TimeInWP2  = Invoke-Command -ScriptBlock $SB2 -Session $Session
+PS C:\Foo> "Foreach in Windows PowerShell 5.1: [{0:n4}] seconds" -f $TimeInWP2
+Foreach in Windows PowerShell 5.1: [13.6315] seconds
+
+
+

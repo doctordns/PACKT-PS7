@@ -1,0 +1,68 @@
+# 3.4 Exploring the Module Load Deny List  LOG
+
+# Fun on SRV1 after loading PowerShell 7 and VS Code.
+
+
+PS C:\Foo> # 1. Geting the PowerShell configuration file
+PS C:\Foo> $CFFile = "$PSHOME/powershell.config.json"
+PS C:\Foo> Get-Item -Path $CFFile
+
+    Directory: C:\PSPreview
+
+Mode         LastWriteTime  Length Name
+----         -------------  ------ ----
+-a---  25/09/2020    16:38     406 powershell.config.json
+
+
+
+
+
+
+PS C:\Foo> # 2. Viewing contents
+PS C:\Foo> Get-Content -Path $CFFile
+{
+    "WindowsPowerShellCompatibilityModuleDenyList":  [
+                                                         "PSScheduledJob",
+                                                         "BestPractices",
+                                                         "UpdateServices"
+                                                     ],
+    "Microsoft.PowerShell:ExecutionPolicy":  "RemoteSigned"
+}
+
+
+
+PS C:\Foo> # 3. Attempting to load a module in deny list
+PS C:\Foo> Import-Module -Name BestPractices
+Import-Module: Module 'BestPractices' is blocked from loading using Windows PowerShell 
+compatibility feature by a 'WindowsPowerShellCompatibilityModuleDenyList' setting in 
+PowerShell configuration file.
+
+
+
+
+# 4. Loading the module overriding edition check
+
+
+NO OUTPUT
+
+
+
+PS C:\Foo> # 5. Viewing the module definition
+PS C:\Foo> Get-Module -Name BestPractices
+
+ModuleType Version  PreRelease Name           ExportedCommands
+---------- -------  ---------- ----           ----------------
+Manifest   1.0                 BestPractices  {Get-BpaModel, Get-BpaResult...}
+
+
+
+
+
+PS C:\Foo> # 6. Attempting to use Get-BpaModel
+PS C:\Foo> Get-BpaModel
+Get-BpaModel: Could not load type 'System.Diagnostics.Eventing.EventDescriptor' 
+from assembly 'System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.
+
+
+
+

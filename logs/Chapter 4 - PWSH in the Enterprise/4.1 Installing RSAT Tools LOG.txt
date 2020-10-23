@@ -1,0 +1,184 @@
+
+
+
+
+PS C:\Foo> # 1. Displaying counts of available PowerShell commands
+PS C:\Foo> $CommandsBeforeRSAT = Get-Command -Module *
+PS C:\Foo> $CmdletsBeforeRSAT = $CommandsBeforeRSAT  |
+             Where-Object commandtype -eq 'Cmdlet'
+PS C:\Foo> $CommandCountBeforeRSAT = $CommandsBeforeRSAT.Count
+PS C:\Foo> $CmdletCountBeforeRSAT  = $CmdletsBeforeRSAT.Count
+PS C:\Foo> "On Host: [$(hostname)]"
+PS C:\Foo> "Total Commands available before RSAT installed [$CommandCountBeforeRSAT]"
+PS C:\Foo> "Cmdlets available before RSAT installed        [$CmdletCountBeforeRSAT]"
+On Host: [SRV1]
+Total Commands available before RSAT installed [1805]
+Cmdlets available before RSAT installed        [590]
+
+
+
+
+PS C:\Foo> # 2. Getting command types returned by Get-Command
+PS C:\Foo> $CommandsBeforeRSAT | 
+             Group-Object -Property CommandType
+
+Count Name     Group
+----- ----     -----
+   58 Alias    {Add-AppPackage, Add-AppPackageVolume, Add-AppProvisionedPackage, Add-ProvisionedAppPackag… 
+ 1157 Function {A:, Add-BCDataCacheExtension, Add-DnsClientDohServerAddress, Add-DnsClientNrptRule, Add-D… 
+  590 Cmdlet   {Add-AppxPackage, Add-AppxProvisionedPackage, Add-AppxVolume, Add-BitsFile, Add-Certificat…
+
+
+
+
+
+PS C:\Foo> # 3. Checking the object type details
+PS C:\Foo> $CommandsBeforeRSAT | 
+             Get-Member |
+               Select-Object -ExpandProperty TypeName -Unique
+System.Management.Automation.AliasInfo
+System.Management.Automation.FunctionInfo
+System.Management.Automation.CmdletInfo
+
+
+# 4. Getting the collection of PowerShell modules and a count of 
+
+
+NO OUTPUT
+
+
+
+
+PS C:\Foo> # 5. Displaying a count of modules available before adding the RSAT tools
+PS C:\Foo> $CountOfModulesBeforeRSAT = $ModulesBefore.count
+PS C:\Foo> "$CountOfModulesBeforeRSAT modules available prior to adding RSAT"
+79 modules available
+
+
+
+# 6. Get a count of features actually available on SRV1
+
+
+
+
+no OUTPUT
+
+
+
+PS C:\Foo> # 7. Displaying counts of features installed
+PS C:\Foo> "On Host [$(hostname)]"
+PS C:\Foo> "Total features available      [{0}]"  -f $Features.count
+PS C:\Foo> "Total features installed      [{0}]"  -f $FeaturesI.count
+PS C:\Foo> "Total RSAT features available [{0}]"  -f $RSATF.count
+PS C:\Foo> "Total RSAT features installed [{0}]"  -f $RSATFI.count
+
+On Host [SRV1]
+Total features available      [267]
+Total features installed      [15]
+Total RSAT features available [50]
+Total RSAT features installed [0]
+
+
+
+
+PS C:\Foo> # 8. Adding ALL RSAT tools to SRV1
+PS C:\Foo> Get-WindowsFeature -Name *RSAT* |
+             Install-WindowsFeature
+
+Success Restart Needed Exit Code      Feature Result
+------- -------------- ---------      --------------
+True    Yes            SuccessRestar… {BitLocker Drive Encryption, RAS Connection …
+WARNING: You must restart this server to finish the installation process.
+
+
+
+
+# 9. Rebooting  SRV1 then logging on as the local administrator    
+
+
+No OUTPUT
+
+
+
+
+# 10. Get Details of RSAT tools on SRV1 vs SRV2
+
+
+
+No OUTPUT
+
+
+
+
+PS C:\Foo> # 11. Displaying after effects
+PS C:\Foo> "After Installation of RSAT tools on SRV1"
+PS C:\Foo> "$($IFSRV1A.count) features installed on SRV1"
+PS C:\Foo> "$($RSFSRV1A.count) RSAT features installed on SRV1"
+After Installation of RSAT tools on SRV1
+79 features installed on SRV1
+50 RSAT features installed on SRV1
+
+
+PS C:\Foo> # 12. Displaying RSAT tools on SRV1
+PS C:\Foo> $MODS = "$env:windir\system32\windowspowerShell\v1.0\modules"
+PS C:\Foo> $SMMOD = "$MODS\ServerManager"
+PS C:\Foo> Update-FormatData -PrependPath "$SMMOD\*.format.ps1xml"
+PS C:\Foo> Get-WindowsFeature |
+             Where-Object Name -Match 'RSAT'
+
+Display Name                                            Name                     Install State
+------------                                            ----                     -------------
+[X] Remote Server Administration Tools                  RSAT                         Installed
+    [X] Feature Administration Tools                    RSAT-Feature-Tools           Installed
+        [X] SMTP Server Tools                           RSAT-SMTP                    Installed
+        [X] BitLocker Drive Encryption Administration … RSAT-Feature-Tools-Bit…      Installed
+            [X] BitLocker Drive Encryption Tools        RSAT-Feature-Tools-Bit…      Installed
+            [X] BitLocker Recovery Password Viewer      RSAT-Feature-Tools-Bit…      Installed
+        [X] BITS Server Extensions Tools                RSAT-Bits-Server             Installed
+        [X] DataCenterBridging LLDP Tools               RSAT-DataCenterBridgin…      Installed
+        [X] Failover Clustering Tools                   RSAT-Clustering              Installed
+            [X] Failover Cluster Management Tools       RSAT-Clustering-Mgmt         Installed
+            [X] Failover Cluster Module for Windows Po… RSAT-Clustering-PowerS…      Installed
+            [X] Failover Cluster Automation Server      RSAT-Clustering-Automa…      Installed
+            [X] Failover Cluster Command Interface      RSAT-Clustering-CmdInt…      Installed
+        [X] Network Load Balancing Tools                RSAT-NLB                     Installed
+        [X] Shielded VM Tools                           RSAT-Shielded-VM-Tools       Installed
+        [X] SNMP Tools                                  RSAT-SNMP                    Installed
+        [X] Storage Migration Service Tools             RSAT-SMS                     Installed
+        [X] Storage Replica Module for Windows PowerSh… RSAT-Storage-Replica         Installed
+        [X] System Insights Module for Windows PowerSh… RSAT-System-Insights         Installed
+        [X] WINS Server Tools                           RSAT-WINS                    Installed
+    [X] Role Administration Tools                       RSAT-Role-Tools              Installed
+        [X] AD DS and AD LDS Tools                      RSAT-AD-Tools                Installed
+            [X] Active Directory module for Windows Po… RSAT-AD-PowerShell           Installed
+            [X] AD DS Tools                             RSAT-ADDS                    Installed
+                [X] Active Directory Administrative Ce… RSAT-AD-AdminCenter          Installed
+                [X] AD DS Snap-Ins and Command-Line To… RSAT-ADDS-Tools              Installed
+            [X] AD LDS Snap-Ins and Command-Line Tools  RSAT-ADLDS                   Installed
+        [X] Hyper-V Management Tools                    RSAT-Hyper-V-Tools           Installed
+        [X] Remote Desktop Services Tools               RSAT-RDS-Tools               Installed
+            [X] Remote Desktop Gateway Tools            RSAT-RDS-Gateway             Installed
+            [X] Remote Desktop Licensing Diagnoser Too… RSAT-RDS-Licensing-Dia…      Installed
+        [X] Windows Server Update Services Tools        UpdateServices-RSAT          Installed
+        [X] Active Directory Certificate Services Tools RSAT-ADCS                    Installed
+            [X] Certification Authority Management Too… RSAT-ADCS-Mgmt               Installed
+            [X] Online Responder Tools                  RSAT-Online-Responder        Installed
+        [X] Active Directory Rights Management Service… RSAT-ADRMS                   Installed
+        [X] DHCP Server Tools                           RSAT-DHCP                    Installed
+        [X] DNS Server Tools                            RSAT-DNS-Server              Installed
+        [X] Fax Server Tools                            RSAT-Fax                     Installed
+        [X] File Services Tools                         RSAT-File-Services           Installed
+            [X] DFS Management Tools                    RSAT-DFS-Mgmt-Con            Installed
+            [X] File Server Resource Manager Tools      RSAT-FSRM-Mgmt               Installed
+            [X] Services for Network File System Manag… RSAT-NFS-Admin               Installed
+        [X] Network Controller Management Tools         RSAT-NetworkController       Installed
+        [X] Network Policy and Access Services Tools    RSAT-NPAS                    Installed
+        [X] Print and Document Services Tools           RSAT-Print-Services          Installed
+        [X] Remote Access Management Tools              RSAT-RemoteAccess            Installed
+            [X] Remote Access GUI and Command-Line Too… RSAT-RemoteAccess-Mgmt       Installed
+            [X] Remote Access module for Windows Power… RSAT-RemoteAccess-Powe…      Installed
+        [X] Volume Activation Tools                     RSAT-VA-Tools                Installed
+
+
+
+        

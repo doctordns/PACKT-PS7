@@ -1,0 +1,136 @@
+# 2.4 - Using Test-Connection   LOG
+#
+# run on SRV1 after installing PowerShell 7
+
+
+
+PS C:\Foo> # 1. Use -Target Parameter Name
+PS C:\Foo> Test-Connection -TargetName www.packt.com -Count 1
+
+   Destination: www.packt.com
+
+Ping Source   Address                  Latency BufferSize Status
+                                          (ms)        (B)
+---- ------   -------                  ------- ---------- ------
+   1 SRV1     2606:4700:10::6816:43b4        6         32 Success
+
+
+PS C:\Foo> # 2. Explicitly use an IPv4 Address
+PS C:\Foo> Test-Connection -TargetName www.packt.com -Count 1 -IPv4
+
+   Destination: www.packt.com
+
+Ping Source  Address        Latency  BufferSize  Status
+                               (ms)         (B)
+---- ------  -------        -------  ----------  ------
+   1 SRV1    104.22.67.180        6          32  Success 
+`
+
+
+PS C:\Foo> # 3. Resolving destination address
+PS C:\Foo> $IPs = (Resolve-DnsName -Name Dns.Google -Type A).IPAddress
+PS C:\Foo> $IPs | 
+             Test-Connection -Count 1 -ResolveDestination
+
+   Destination: dns.google
+
+Ping Source           Address                   Latency BufferSize Status
+                                                   (ms)        (B)
+---- ------           -------                   ------- ---------- ------
+   1 SRV1             8.8.4.4                         7         32 Success
+   1 SRV1             8.8.8.8                         6         32 Success
+
+
+
+
+
+
+PS C:\Foo> # 4. Resolve destination and trace route
+PS C:\Foo> Test-Connection -TargetName 8.8.8.8 -ResolveDestination -Traceroute |
+             Where-Object Ping -eq 1
+
+
+   Target: Dns.Google
+
+Hop Hostname                  Ping Latency Status           Source       TargetAddress
+                                      (ms)
+--- --------                  ---- ------- ------           ------       -------------
+  1 fritz.box                    1       0 Success          SRV1         8.8.8.8
+  2 vt2.cor1.lond2.ptn.zen.n…    1       6 Success          SRV1         8.8.8.8
+  3 ae-7.p1.ixn-lon.zen.net.…    1       * TimedOut         SRV1         8.8.8.8
+  4 ae-2.p1.thn-lon.zen.net.…    1       * TimedOut         SRV1         8.8.8.8
+  5 51-148-73-153.dsl.zen.co…    1       7 Success          SRV1         8.8.8.8
+  6 72.14.223.28                 1       7 Success          SRV1         8.8.8.8
+  7 209.85.248.229               1       6 Success          SRV1         8.8.8.8
+  8 216.239.57.119               1       6 Success          SRV1         8.8.8.8
+  9 Dns.Google                   1       6 Success          SRV1         8.8.8.8
+
+
+PS C:\Foo> # 5. Use Infinite Ping (stop with Ctrl-C)  
+PS C:\Foo> Test-Connection -TargetName www.reskit.net -Repeat
+
+   Destination: www.reskit.net
+
+Ping Source  Address         Latency BufferSize Status
+                                (ms)        (B)
+---- ------  -------         ------- ---------- ------
+   1 SRV1    40.108.180.25        10         32 Success
+   2 SRV1    40.108.180.25        10         32 Success
+   3 SRV1    40.108.180.25        10         32 Success
+   4 SRV1    40.108.180.25         9         32 Success
+   5 SRV1    40.108.180.25        10         32 Success
+   6 SRV1    40.108.180.25        10         32 Success
+   7 SRV1    40.108.180.25         9         32 Success
+   8 SRV1    40.108.180.25        10         32 Success
+   9 SRV1    40.108.180.25         9         32 Success
+  10 SRV1    40.108.180.25        10         32 Success
+  11 SRV1    40.108.180.25        10         32 Success
+
+  
+
+
+  
+
+PS C:\Foo> # 6. Show speed of Test-Connection in PowerShell 7
+PS C:\Foo> Measure-Command -Expression {
+             Test-Connection -TargetName  8.8.8.8 -count 1}
+
+Days              : 0
+Hours             : 0
+Minutes           : 0
+Seconds           : 0
+Milliseconds      : 12
+Ticks             : 125724
+TotalDays         : 1.45513888888889E-07
+TotalHours        : 3.49233333333333E-06
+TotalMinutes      : 0.00020954
+TotalSeconds      : 0.0125724
+TotalMilliseconds : 12.5724
+
+
+
+
+
+PS C:\Foo> # 7. Test in Windows PowerShell
+PS C:\Foo> Import-Module -Name ServerManager -WarningAction SilentlyContinue
+PS C:\Foo> $Session = Get-PSSession -Name WinPSCompatSession
+PS C:\Foo> Invoke-Command -Session $Session -Scriptblock {
+             Measure-Command -Expression {
+               Test-Connection -TargetName 8.8.8.8 -Count 1}
+           }
+
+Days              : 0
+Hours             : 0
+Minutes           : 0
+Seconds           : 0
+Milliseconds      : 20
+Ticks             : 203660
+TotalDays         : 2.35717592592593E-07
+TotalHours        : 5.65722222222222E-06
+TotalMinutes      : 0.000339433333333333
+TotalSeconds      : 0.020366
+TotalMilliseconds : 20.366
+PSComputerName    : localhost
+
+
+

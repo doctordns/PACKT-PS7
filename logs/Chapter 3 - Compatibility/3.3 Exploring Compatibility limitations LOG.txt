@@ -1,0 +1,78 @@
+# 3.3 Exploring Compatibility Limitations
+
+# Run on SRV1 after instlling PWSH 7/VS Code
+
+
+# 1. Some modules appear to be missing
+
+no output
+
+
+
+
+PS C:\Foo> # 2. Trying to load a module without edition check
+PS C:\Foo> Import-Module -Name ServerManager -SkipEditionCheck
+Import-Module: Could not load type 'System.Diagnostics.Eventing.EventDescriptor' from 
+assembly 'System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PS C:\Foo> # 3. Discovering a Windows PowerShell command
+PS C:\Foo> Get-Command -Name Get-WindowsFeature
+
+CommandType   Name                Version   Source
+-----------   ----                -------   ------
+Function      Get-WindowsFeature  1.0       ServerManager
+
+
+
+
+PS C:\Foo> # 4. Examining Remote Session
+PS C:\Foo> $Session = Get-PSSession
+PS C:\Foo> $Session | Format-Table -AutoSize
+
+Id Name               Transport ComputerName ComputerType  State  ConfigurationName Availability
+-- ----               --------- ------------ ------------  -----  ----------------- ------------
+20 WinPSCompatSession Process   localhost    RemoteMachine Opened                      Available
+
+
+
+
+
+
+
+PS C:\Foo> # 5. Invoking Get-WindowsFeature in the remote session
+PS C:\Foo> $SBRC = {Get-Command -Name Get-WindowsFeature}
+PS C:\Foo> Invoke-Command -Session $Session -ScriptBlock $SBRC
+
+CommandType   Name                Version   Source         PSComputerName
+-----------   ----                -------   ------         --------------
+Cmdlet        Get-WindowsFeature  2.0.0.0   ServerManager  localhost
+
+
+
+
+
+PS C:\Foo> # 6. Envoking Get-WindowsFeature locally
+PS C:\Foo> Invoke-Command $SBRC
+
+CommandType  Name                 Version  Source
+-----------  ----                 -------  ------
+Function     Get-WindowsFeature   1.0      ServerManager
+
+
+
+
