@@ -22,7 +22,7 @@ Add-Type -TypeDefinition $NewType
 $NewType2 = @"
  using System;
  class Hello2  {
-     public static void World(string name = "Thomas") {
+     public static void World(string name) {
         Console.WriteLine("Hello " + name);
      }
 } 
