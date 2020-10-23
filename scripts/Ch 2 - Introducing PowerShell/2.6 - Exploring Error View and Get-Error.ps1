@@ -1,30 +1,35 @@
-# 1.6 - Exploring Error view and Get-Error
+# 2.6 - Exploring Error view and Get-Error
 #
-# Run in DC1
+# Run in SRV1 after loading 
 
 # 1. Create a simple script
 $SCRIPT = @'
   # divide by zero
-  1/0  
+  42/0  
 '@
-$SCRIPT | Out-File -Path C:\Foo\DivByZero.ps1
+$SCRIPTFILENAME = 'C:\Foo\ZeroDivError.ps1'
+$SCRIPT | Out-File -Path $SCRIPTFILENAME
 
-# 2. Run it
-C:\foo\DivByZero.ps1
+# 2. Run the script and see the default error view
+& $SCRIPTFILENAME
 
-# 3. View Error VIew
+# 3. Run the same line from the console
+42/0  
+
+# 4. View $ErrorView variable
 $ErrorView 
 
-# 4. View Potential values of Error View
-[System.Enum]::GetNames('System.Management.Automation.ErrorView')
+# 5. View Potential values of Error View
+$Type = $ErrorView.GetType().FullName
+[System.Enum]::GetNames($Type)
 
-# 5. Set Value to Normal View and re-create the error
+# 6. Set Value to Normal View and re-create the error
 $ErrorView = 'NormalView'
-C:\Foo\DivByZero.ps1
+& $SCRIPTFILENAME
 
-# 6. Set value to Category View and re-create the error
+# 7. Set value to Category View and re-create the error
 $ErrorView = 'CategoryView'
-C:\Foo\DivByZero.ps1
+& $SCRIPTFILENAME
 
-# 7. Set back to ConciseView (default)
+# 8. Set back to ConciseView (default)
 $ErrorView = 'ConciseView'

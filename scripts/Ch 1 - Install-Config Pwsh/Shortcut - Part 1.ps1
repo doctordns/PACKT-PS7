@@ -1,21 +1,19 @@
 ﻿# mondo script to setup a VM - Part 1
 #
-# run IN the VM inside an elevated powershell ISE Console
-
-
+# Run im the VM inside an elevated PowerShell 5.1 ISE Console
 
 # 1. Set Execution Policy for Windows PowerShell
-Write-Host "Setting Execution Policy"
+Write-Host 'Setting Execution Policy'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 # 2. Install the latest versions of Nuget and PowerShellGet
-Write-Host "Updating PowerShellGet and Nuget"
+Write-Host 'Updating PowerShellGet and Nuget'
 Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
 Install-Module -Name PowerShellGet -Force -AllowClobber 
 
 # 3. Ensure the C:\Foo Folder exists
-Write-Host "Creating C:\Foo"
+Write-Host 'Creating C:\Foo'
 $LFHT = @{
   ItemType    = 'Directory'
   ErrorAction = 'SilentlyContinue' # should it already exist
@@ -30,7 +28,7 @@ Invoke-RestMethod -Uri $URI |
   Out-File -FilePath C:\Foo\Install-PowerShell.ps1
 
 # 5. Install PowerShell 7
-Write-Host "Instal Pwsh 7.1"
+Write-Host "Installing Pwsh 7.1"
 $EXTHT = @{
   UseMSI                 = $true
   Quiet                  = $true 
@@ -40,21 +38,21 @@ $EXTHT = @{
 C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
 # 6. For the Adventurous - install the preview and daily builds as well
-Write-Host "Install Pwsh 7.1 preview"
+Write-Host "Installling Pwsh 7.1 preview"
 C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PSPreview |
   Out-Null
-Write-Host "Install Pwsh 7.1 Daily Build"
+Write-Host "Installing Pwsh 7.1 Daily Build"
 C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PSDailyBuild |
   Out-Null
 
 # 7. Create Windows PowerShell default Profiles
-Write-Host "Create Default profiles"
+Write-Host "Creating Default profiles"
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
        'Goodies/Microsoft.PowerShell_Profile.ps1'
 $ProfileFile = $Profile.CurrentUserCurrentHost
 New-Item $ProfileFile -Force -WarningAction SilentlyContinue |
    Out-Null
-(Invoke-WebRequest -Uri $uri -UseBasicParsing).Content | 
+(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
   Out-File -FilePath  $ProfileFile
 $ProfilePath = Split-Path -Path $ProfileFile
 $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_profile.ps1'
@@ -68,6 +66,7 @@ Save-Script -Name Install-VSCode -Path $VSCPATH
 Set-Location -Path $VSCPATH
 
 # 9. Run the installation script and add in some popular extensions
+#   NB: sometimes this flakes out and does NOT actually install VS Code -= just rerun this stwp
 Write-Host "Installing VS Code"
 $Extensions =  'Streetsidesoftware.code-spell-checker',
                'yzhang.markdown-all-in-one',
