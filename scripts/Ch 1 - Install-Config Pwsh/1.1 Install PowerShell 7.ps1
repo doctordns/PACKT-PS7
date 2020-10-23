@@ -39,7 +39,7 @@ C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 # 7. For the Adventurous - install the preview and daily builds as well
 C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PSPreview |
   Out-Null
-C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PSDailBuild |
+C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PSDailyBuild |
   Out-Null
 
 # 8. Create Windows PowerShell default Profiles
