@@ -1,0 +1,112 @@
+# Recipe 4.4 - Creating an internal PowerShell repository
+
+# Run on SRV1
+
+
+
+# 1. Creating repository folder
+
+no ouptut
+
+
+
+
+PS C:\Foo> # 2. Sharing the folder
+PS C:\Foo> $SMBHT = @{
+             Name        = 'RKRepo' 
+             Path        = $LPATH 
+             Description = 'Reskit Repository'
+             FullAccess  = 'Everyone'
+           }
+PS C:\Foo> New-SmbShare @SMBHT
+
+Name   ScopeName Path      Description
+----   --------- ----      -----------
+RKRepo *         C:\RKRepo Reskit Repository
+
+
+
+# 3. Creating the repository as trusted (on SRV1)
+
+
+no ouptut
+
+
+
+PS C:\Foo> # 4. Viewing configured repositories
+PS C:\Foo> Get-PSRepository
+
+Name       InstallationPolicy  SourceLocation
+----       ------------------  --------------
+PSGallery  Untrusted           https://www.powershellgallery.com/api/v2
+RKRepo     Trusted             \\SRV1\RKRepo
+
+
+
+
+# 5. Creating a Hello World module folder
+
+
+not ouptut
+
+
+
+# 6. Creating a very simple module
+
+
+
+not ouptut
+
+
+
+PS C:\Foo> # 7. Testing the module locally
+PS C:\Foo> Import-Module -Name $HWDIR\HW.PSM1 -Verbose
+PS C:\Foo> GHW
+VERBOSE: Loading module from path 'C:\HWTEST\HW.PSM1'.
+VERBOSE: Exporting function 'Get-HelloWorld'.
+VERBOSE: Exporting alias 'GHW'.
+VERBOSE: Importing function 'Get-HelloWorld'.
+VERBOSE: Importing alias 'GHW'.
+
+Hello World
+
+
+
+
+# 8. Creating a manifest for the new module
+
+
+
+no ouptut
+
+
+
+# 9. Publish the module
+
+
+
+no ouptut
+
+
+
+PS C:\> # 10. Viewing the results of publishing
+PS C:\> Find-Module -Repository RKRepo
+
+Version  Name   Repository  Description
+-------  ----   ----------  -----------
+1.0.1    HW     RKRepo      Hello World module
+
+
+
+
+
+PS C:\> # 11. Checking the repository's home folder
+PS C:\> Get-ChildItem -Path $LPATH
+
+    Directory: C:\RKRepo
+
+Mode          LastWriteTime     Length Name
+----          -------------     ------ ----
+-a---   27/10/2020    14:58       3461 HW.1.0.1.nupkg
+
+

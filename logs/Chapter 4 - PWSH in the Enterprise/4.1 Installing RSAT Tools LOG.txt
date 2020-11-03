@@ -1,3 +1,8 @@
+# Recipe 4.1 - Installing RSAT Tools on Windows Server
+#
+# Uses SRV1
+
+# Run From CL1
 
 
 

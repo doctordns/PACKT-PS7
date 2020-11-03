@@ -1,0 +1,244 @@
+# Recipe 4.3 - Exploring PowerShellGet
+# This recipe looks at what you can get with the tools in the PowerShellGet module
+# Run on SRV1
+# Run as administrator
+
+
+
+PS C:\Foo> # 1. Reviewing the commands available in the PowerShellGet module
+PS C:\Foo> Get-Command -Module PowerShellGet
+
+CommandType  Name                             Version  Source
+-----------  ----                             -------  ------
+Function     Find-Command                     2.2.5    PowerShellGet
+Function     Find-DscResource                 2.2.5    PowerShellGet
+Function     Find-Module                      2.2.5    PowerShellGet
+Function     Find-RoleCapability              2.2.5    PowerShellGet
+Function     Find-Script                      2.2.5    PowerShellGet
+Function     Get-CredsFromCredentialProvider  2.2.5    PowerShellGet
+Function     Get-InstalledModule              2.2.5    PowerShellGet
+Function     Get-InstalledScript              2.2.5    PowerShellGet
+Function     Get-PSRepository                 2.2.5    PowerShellGet
+Function     Install-Module                   2.2.5    PowerShellGet
+Function     Install-Script                   2.2.5    PowerShellGet
+Function     New-ScriptFileInfo               2.2.5    PowerShellGet
+Function     Publish-Module                   2.2.5    PowerShellGet
+Function     Publish-Script                   2.2.5    PowerShellGet
+Function     Register-PSRepository            2.2.5    PowerShellGet
+Function     Save-Module                      2.2.5    PowerShellGet
+Function     Save-Script                      2.2.5    PowerShellGet
+Function     Set-PSRepository                 2.2.5    PowerShellGet
+Function     Test-ScriptFileInfo              2.2.5    PowerShellGet
+Function     Uninstall-Module                 2.2.5    PowerShellGet
+Function     Uninstall-Script                 2.2.5    PowerShellGet
+Function     Unregister-PSRepository          2.2.5    PowerShellGet
+Function     Update-Module                    2.2.5    PowerShellGet
+Function     Update-ModuleManifest            2.2.5    PowerShellGet
+Function     Update-Script                    2.2.5    PowerShellGet
+Function     Update-ScriptFileInfo            2.2.5    PowerShellGet
+
+
+
+
+PS C:\Foo> # 2.	Discovering Find-* cmdlets in PowerShellGet module
+PS C:\Foo> Get-Command -Module PowerShellGet -Verb Find
+
+CommandType  Name                  Version   Source
+-----------  ----                  -------   ------
+Function     Find-Command          2.2.5     PowerShellGet
+Function     Find-DscResource      2.2.5     PowerShellGet
+Function     Find-Module           2.2.5     PowerShellGet
+Function     Find-RoleCapability   2.2.5     PowerShellGet
+Function     Find-Script           2.2.5     PowerShellGet
+
+
+# 3. Getting all commands, modules, DSC resources and scripts
+
+
+NO OUTPUT
+
+
+PS C:\Foo> # 4. Reporting on results
+PS C:\Foo> "On Host [$(hostname)]"
+PS C:\Foo> "Commands found:          [{0:N0}]"  -f $COM.count
+PS C:\Foo> "Modules found:           [{0:N0}]"  -f $MOD.count
+PS C:\Foo> "DSC Resources found:     [{0:N0}]"  -f $DSC.count
+PS C:\Foo> "Scripts found:           [{0:N0}]"  -f $SCR.count
+
+On Host [SRV1]
+Commands found:          [103,650]
+Modules found:           [6,204]
+DSC Resources found:     [1,771]
+Scripts found:           [1,241]
+
+PS C:\Foo> # 5. Discovering NTFS Related modules
+PS C:\Foo> $MOD |
+             Where-Object Name -match NTFS
+
+Version   Name                     Repository    Description
+-------   ----                     ----------    -----------
+4.2.6     NTFSSecurity             PSGallery     Windows PowerShell Module for managing file
+                                                 and folder security on NTFS volumes
+1.4.1     cNtfsAccessControl       PSGallery     The cNtfsAccessControl module contains DSC 
+                                                 resources for NTFS access control management.     
+1.0       NTFSPermissionMigration  PSGallery     This module is used as a wrapper to the popular
+                                                 icacls utility to save permissions to a file
+
+
+
+
+
+# 6. Installing the NTFSSecurity module
+
+
+no OUTPUT
+
+
+
+
+
+PS C:\Foo> # 7. Reviewing module commands
+PS C:\Foo> Get-Command -Module NTFSSecurity
+
+CommandType  Name                           Version   Source
+-----------  ----                           -------   ------
+Cmdlet       Add-NTFSAccess                 4.2.6     NTFSSecurity
+Cmdlet       Add-NTFSAudit                  4.2.6     NTFSSecurity
+Cmdlet       Clear-NTFSAccess               4.2.6     NTFSSecurity
+Cmdlet       Clear-NTFSAudit                4.2.6     NTFSSecurity
+Cmdlet       Copy-Item2                     4.2.6     NTFSSecurity
+Cmdlet       Disable-NTFSAccessInheritance  4.2.6     NTFSSecurity
+Cmdlet       Disable-NTFSAuditInheritance   4.2.6     NTFSSecurity
+Cmdlet       Disable-Privileges             4.2.6     NTFSSecurity
+Cmdlet       Enable-NTFSAccessInheritance   4.2.6     NTFSSecurity
+Cmdlet       Enable-NTFSAuditInheritance    4.2.6     NTFSSecurity
+Cmdlet       Enable-Privileges              4.2.6     NTFSSecurity
+Cmdlet       Get-ChildItem2                 4.2.6     NTFSSecurity
+Cmdlet       Get-DiskSpace                  4.2.6     NTFSSecurity
+Cmdlet       Get-FileHash2                  4.2.6     NTFSSecurity
+Cmdlet       Get-Item2                      4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSAccess                 4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSAudit                  4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSEffectiveAccess        4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSHardLink               4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSInheritance            4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSOrphanedAccess         4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSOrphanedAudit          4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSOwner                  4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSSecurityDescriptor     4.2.6     NTFSSecurity
+Cmdlet       Get-NTFSSimpleAccess           4.2.6     NTFSSecurity
+Cmdlet       Get-Privileges                 4.2.6     NTFSSecurity
+Cmdlet       Move-Item2                     4.2.6     NTFSSecurity
+Cmdlet       New-NTFSHardLink               4.2.6     NTFSSecurity
+Cmdlet       New-NTFSSymbolicLink           4.2.6     NTFSSecurity
+Cmdlet       Remove-Item2                   4.2.6     NTFSSecurity
+Cmdlet       Remove-NTFSAccess              4.2.6     NTFSSecurity
+Cmdlet       Remove-NTFSAudit               4.2.6     NTFSSecurity
+Cmdlet       Set-NTFSInheritance            4.2.6     NTFSSecurity
+Cmdlet       Set-NTFSOwner                  4.2.6     NTFSSecurity
+Cmdlet       Set-NTFSSecurityDescriptor     4.2.6     NTFSSecurity
+Cmdlet       Test-Path2                     4.2.6     NTFSSecurity
+
+
+
+PS C:\Foo> # 8. Testing Get-NTFSAccess cmdlet
+PS C:\Foo> Get-NTFSAccess -Path C:\Foo 
+
+Account                Access Rights               Applies to                   Type  IsInherited InheritedFrom
+-------                -------------               ----------                   ----  ----------- -------------
+NT AUTHORITY\SYSTEM    FullControl                 ThisFolderSubfoldersAndFiles Allow True        C:
+BUILTIN\Administrators FullControl                 ThisFolderSubfoldersAndFiles Allow True        C:
+BUILTIN\Users          ReadAndExecute, Synchronize ThisFolderSubfoldersAndFiles Allow True        C:
+BUILTIN\Users          CreateDirectories           ThisFolderAndSubfolders      Allow True        C:
+BUILTIN\Users          CreateFiles                 ThisFolderAndSubfolders      Allow True        C:
+CREATOR OWNER          GenericAll                  SubfoldersAndFilesOnly       Allow True        C:
+
+
+
+
+
+
+# 9. Create a download folder
+
+
+
+no OUTPUT
+
+
+
+
+# 10. Downloading the CountriesPS module
+
+
+
+
+
+no OUTPUT
+
+
+
+
+PS C:\Foo\> # 11. Checking downloaded module
+PS C:\Foo\> Get-ChildItem -Path $DLFLDR -Recurse |
+             Format-Table -Property Fullname
+
+FullName
+--------
+C:\Foo\DownloadedModules\CountriesPS
+C:\Foo\DownloadedModules\CountriesPS\1.0.0.0
+C:\Foo\DownloadedModules\CountriesPS\1.0.0.0\Public
+C:\Foo\DownloadedModules\CountriesPS\1.0.0.0\CountriesPS.psd1
+C:\Foo\DownloadedModules\CountriesPS\1.0.0.0\CountriesPS.psm1
+C:\Foo\DownloadedModules\CountriesPS\1.0.0.0\Public\Get-Country.ps1
+
+
+
+PS C:\Foo> # 12. Importing the CounriesPS module
+PS C:\Foo> $ModuleFolder = "$DLFLDR\CountriesPS"
+PS C:\Foo> Get-ChildItem -Path $ModuleFolder -Filter *.psm1 -Recurse |
+             Select-Object -ExpandProperty FullName -First 1 |
+               Import-Module -Verbose
+VERBOSE: Importing function 'Get-Country'.
+
+
+
+
+PS C:\Foo\> # 13. Checking commands in the module
+PS C:\Foo\> Get-Command -Module CountriesPS
+
+CommandType  Name          Version   Source
+-----------  ----          -------   ------
+Function     Get-Country   0.0       CountriesPS
+
+
+
+
+
+
+PS C:\Foo> # 14. Using the Get-Country command
+PS C:\Foo> Get-Country -Name 'United Kingdom'
+
+name           : United Kingdom
+topLevelDomain : {.uk}
+alpha2Code     : GB
+alpha3Code     : GBR
+callingCodes   : {44}
+capital        : London
+altSpellings   : {GB, UK, Great Britain}
+region         : Europe
+subregion      : Northern Europe
+population     : 64800000
+latlng         : {54, -2}
+demonym        : British
+area           : 242900
+gini           : 34
+timezones      : {UTC-08:00, UTC-05:00, UTC-04:00, UTC-03:00, UTC-02:00, UTC, UTC+01:00, UTC+02:00, UTC+06:00}
+borders        : {IRL}
+nativeName     : United Kingdom
+numericCode    : 826
+currencies     : {GBP}
+languages      : {en}
+translations   : @{de=Vereinigtes Königreich; es=Reino Unido; fr=Royaume-Uni; ja=イギリス; it=Regno Unito}
+relevance      : 2.5
+
+
