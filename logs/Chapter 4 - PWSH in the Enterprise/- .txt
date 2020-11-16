@@ -1,0 +1,134 @@
+# 4.8 - Working with Shortcuts LOG
+
+# Run on SRV1
+
+
+PS C:\Foo> # 1. Finding the PSShortcut module
+PS C:\Foo> Find-Module -Name '*Sshortcut*'
+
+Version     Name                         Repository   Description
+-------     ----                         ----------   -----------
+2.0.0       DSCR_Shortcut                PSGallery    PowerShell DSC Resource to create shortc…
+2.1.0       Remove-iCloudPhotosShortcut  PSGallery    A powershell module for removing iCloud …
+1.0.6       PSShortcut                   PSGallery    This module eases working with Windows s…
+
+
+
+# 2. Installing PSShortcut module
+
+
+
+NO OUTPUT
+
+
+PS C:\Foo> # 3. Reviewing PSShortcut module
+PS C:\Foo> Get-Module -Name PSShortCut -ListAvailable |
+             Format-List
+
+Name              : PSShortcut
+Path              : C:\Users\Administrator\Documents\PowerShell\Modules\PSShortcut\1.0.6\PSShortcut.psd1
+Description       : This module eases working with Windows shortcuts (LNK and URL) files.
+ModuleType        : Script
+Version           : 1.0.6
+PreRelease        :
+NestedModules     : {}
+ExportedFunctions : {Get-Shortcut, Set-Shortcut}
+ExportedCmdlets   : 
+ExportedVariables :
+ExportedAliases   :
+
+
+
+
+
+PS C:\Foo> # 4. Discovering commands in PSShortcut module
+PS C:\Foo> Get-Command -Module PSShortcut
+
+CommandType  Name          Version  Source
+-----------  ----          -------  ------
+Function     Get-Shortcut  1.0.6    PSShortcut
+Function     Set-Shortcut  1.0.6    PSShortcut
+
+
+
+
+
+PS C:\Foo> # 5. Discovering all shortcuts on SRV1
+PS C:\Foo> $SHORTCUTS = Get-Shortcut
+PS C:\Foo> "Shortcuts found on $(hostname): [{0}]" -f $SHORTCUTS.Count
+Shortcuts found on SRV1: [249]
+
+
+
+
+PS C:\Foo> # 6. Discovering PWSH shortcuts
+PS C:\Foo> $SHORTCUTS | Where-Object Name -match '^PWSH'
+
+    Directory: C:\Users\Administrator\AppData\Roaming\Microsoft\
+               Internet Explorer\Quick Launch\User Pinned\TaskBar
+
+Mode         LastWriteTime   Length Name
+----         -------------   ------ ----
+-a---  05/10/2020    16:25     1030 pwsh.lnk
+-a---  05/10/2020    16:25      603 pwshdaily.lnk
+-a---  05/10/2020    16:25      588 pwshpreview.lnk
+
+
+
+PS C:\Foo> # 7. Discovering URL shortcuts
+PS C:\Foo> $URLSC = Get-Shortcut -FilePath *.url
+PS C:\Foo> $URLSC
+
+    Directory: C:\Users\Administrator\Favorites
+
+Mode          LastWriteTime   Length Name
+----          -------------   ------ ----
+-a---   05/10/2020    13:37      208 Bing.url
+
+
+
+
+
+PS C:\Foo> # 8. Viewing content of shortcut
+PS C:\Foo> $URLSC | Get-Content
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,2
+[InternetShortcut]
+IDList=
+URL=http://go.microsoft.com/fwlink/p/?LinkId=255142
+IconIndex=0
+IconFile=%ProgramFiles%\Internet Explorer\Images\bing.ico
+
+
+
+
+
+
+
+# 9. Creating a URL shortcut
+
+
+no OUTPUT
+
+
+
+
+# 10 Using the URL Shortcut
+
+no output - but see Google in Internet
+
+
+
+
+
+# 11. Creating a file shortcut
+
+no output
+
+
+
+
+# 12 Using the shortcut
+
+
+no output = but see notepad

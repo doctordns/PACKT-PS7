@@ -13,7 +13,7 @@ New-SelfSignedCertificate @CHT | Out-Null
 # 2. Displaying the newly created certificate
 $Cert = Get-ChildItem -Path Cert:\CurrentUser\my -CodeSigningCert
 $Cert | 
-  Where-Object {$_.Subjectname.Name -match $CHT.Subject}
+  Where-Object {$_.SubjectName.Name -match $CHT.Subject}
 
 # 3. Creating and viewing a simple script
 $Script = @"

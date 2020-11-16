@@ -1,0 +1,115 @@
+# 5.1 Exploring .NET Classes
+
+# Run on SRV1.
+
+
+
+PS C:\Foo> # 1. Creating a Fileinfo object
+PS C:\Foo> $FILE = Get-ChildItem -Path $PSHOME\pwsh.exe
+PS C:\Foo> $FILE
+
+    Directory: C:\Program Files\PowerShell\7
+
+Mode         LastWriteTime  Length Name
+----         -------------  ------ ----
+-a---  06/11/2020    02:33  280456 pwsh.exe
+
+
+
+
+PS C:\Foo> # 2. Discovering the underlying class
+PS C:\Foo> $TYPE = $FILE.GetType().FullName
+PS C:\Foo> ".Net Class: $TYPE"
+.Net Class: System.IO.FileInfo
+
+
+
+
+PS C:\Foo> # 3. Getting member types of Fileinfo object
+PS C:\Foo> $File |
+             Get-Member |
+               Group-Object -Property MemberType |
+                 Sort-Object -Property Count -Descending
+
+Count Name             Group
+----- ----             -----
+   21 Method           {System.IO.StreamWriter AppendText(), System.IO.FileInfo…
+   15 Property         {System.IO.FileAttributes Attributes {get;set;}, datetim…
+    6 NoteProperty     {string PSChildName=pwsh.exe, PSDriveInfo PSDrive=C, boo…
+    4 CodeProperty     {System.String LinkType{get=GetLinkType;}, System.String…
+    2 ScriptProperty   {System.Object BaseName {get=if ($this.Extension.Length …
+
+
+PS C:\Foo> # 4. Discovering properties of a Windows service
+PS C:\Foo> Get-Service | 
+             Get-Member -MemberType Property
+
+   TypeName: System.Service.ServiceController#StartupType
+
+Name                MemberType Definition
+----                ---------- ----------
+BinaryPathName      Property   System.String {get;set;}
+CanPauseAndContinue Property   bool CanPauseAndContinue {get;}
+CanShutdown         Property   bool CanShutdown {get;}
+CanStop             Property   bool CanStop {get;}
+Container           Property   System.ComponentModel.IContainer Container {get;}
+DelayedAutoStart    Property   System.Boolean {get;set;}
+DependentServices   Property   System.ServiceProcess.ServiceController[] DependentServices {get;}
+Description         Property   System.String {get;set;}
+DisplayName         Property   string DisplayName {get;set;}
+MachineName         Property   string MachineName {get;set;}
+ServiceHandle       Property   System.Runtime.InteropServices.SafeHandle ServiceHandle {get;}
+ServiceName         Property   string ServiceName {get;set;}
+ServicesDependedOn  Property   System.ServiceProcess.ServiceController[] ServicesDependedOn {get;}
+ServiceType         Property   System.ServiceProcess.ServiceType ServiceType {get;}
+Site                Property   System.ComponentModel.ISite Site {get;set;}
+StartType           Property   System.ServiceProcess.ServiceStartMode StartType {get;}
+StartupType         Property   Microsoft.PowerShell.Commands.ServiceStartupType {get;set;}
+Status              Property   System.ServiceProcess.ServiceControllerStatus Status {get;}
+UserName            Property   System.String {get;set;}
+
+
+
+PS C:\Foo> # 5. Discovering the underlying type of an integer
+PS C:\Foo> $I = 42
+PS C:\Foo> $IntType  = $I.GetType()
+PS C:\Foo> $TypeName = $IntType.Name
+PS C:\Foo> $BaseType = $IntType.BaseType.Name
+PS C:\Foo> ".Net Class name     : $TypeName"
+PS C:\Foo> ".NET Class Base Type: $BaseType"
+.Net Class name      : System.Int32
+.NET Class base type : ValueType
+
+
+
+
+PS C:\Foo> # 6. Looking at process objects
+PS C:\Foo> $PWSH = Get-Process -Name pwsh |
+             Select-Object -First 1
+PS C:\Foo> $PWSH |
+             Get-Member | 
+               Group-Object -Property MemberType |
+                 Sort-Object -Property Count -Descending  
+
+  Count Name             Group
+----- ----             -----
+   52 Property         {int BasePriority {get;}, System.ComponentModel.IContainer Container {ge…
+   19 Method           {void BeginErrorReadLine(), void BeginOutputReadLine(), void CancelError…
+    8 ScriptProperty   {System.Object CommandLine {get=…
+    7 AliasProperty    {Handles = Handlecount, Name = ProcessName, NPM = NonpagedSystemMemorySi…
+    4 Event            {System.EventHandler Disposed(System.Object, System.EventArgs), System.D…
+    2 PropertySet      {PSConfiguration {Name, Id, PriorityClass, FileVersion}, PSResources {Na…
+    1 CodeProperty     {System.Object Parent{get=GetParentProcess;}}
+    1 NoteProperty     {string __NounName=Process}      
+
+
+PS C:\Foo> # 7. Looking at static values within a class
+PS C:\Foo> $Max = [Int32]::MaxValue
+PS C:\Foo> $Min = [Int32]::MinValue
+PS C:\Foo> "Minimum value [$Min]"
+PS C:\Foo> "Maximum value [$Max]"
+Minimum value [-2147483648]
+Maximum value [2147483647]
+
+
+

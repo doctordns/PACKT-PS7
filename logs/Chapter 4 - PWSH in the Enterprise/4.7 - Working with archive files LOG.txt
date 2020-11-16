@@ -1,0 +1,120 @@
+# 4.7 - Working with Archive Files
+
+# Run on SRV1
+
+PS C:\Foo> # 1.  Getting achive module
+PS C:\Foo> Get-Module -Name Microsoft.Powershell.Archive -ListAvailable
+
+    Directory: C:\program files\powershell\7\Modules
+
+ModuleType Version  PreRelease Name                          PSEdition ExportedCommands
+---------- -------  ---------- ----                          --------- ----------------
+Manifest   1.2.5               Microsoft.PowerShell.Archive  Desk      {Compress-Archive, Expand-Archive}
+
+
+PS C:\Foo> # 2. Discovering comands in archive module
+PS C:\Foo> Get-Command -Module Microsoft.PowerShell.Archive
+
+CommandType  Name               Version   Source
+-----------  ----               -------   ------
+Function     Compress-Archive   1.2.5     Microsoft.PowerShell.Archive
+Function     Expand-Archive     1.2.5     Microsoft.PowerShell.Archive
+
+
+# 3. Making a new folder 
+
+no output
+
+
+# 4. Creating files in the archive folder
+
+
+no output
+
+
+
+
+
+PS C:\Foo> # 5. Measuring files to archive
+PS C:\Foo> $Files = Get-ChildItem -Path 'C:\Foo\Archive'
+PS C:\Foo> $Count = $Files.Count
+PS C:\Foo> $LenKB = (($Files | Measure-Object -Property length -Sum).Sum)/1mb
+PS C:\Foo> "[{0}] files, occupying {1:n2}mb" -f $Count, $LenKB
+[100] files, occupying 4.77mb
+
+
+
+
+
+
+# 6. Compressing a set of files into an archive
+
+
+
+NO output
+
+
+
+# 7. Compressing a folder containing files
+
+
+
+NO output
+
+
+
+
+PS C:\Foo> # 8. Viewing the archive files
+PS C:\Foo> Get-ChildItem -Path $AFILE1, $AFILE2
+
+    Directory: C:\Foo
+
+Mode           LastWriteTime   Length Name
+----           -------------   ------ ----
+-a---    04/11/2020    10:43    49306 Archive1.zip
+-a---    04/11/2020    10:45    50906 Archive2.zip
+
+
+
+
+# 9. Viewing archive content with Windows Explorer
+
+
+
+no output
+
+
+# 10. Viewing second archive with Windows Explorer
+
+
+
+no output
+
+
+
+
+# 11. Making new output folder
+
+
+
+
+
+
+no output
+
+
+
+# 12. Decompressing the Archive1.zip archive
+
+no output
+
+
+PS C:\Foo> # 13. Measuring decompressed files
+PS C:\Foo> $Files = Get-ChildItem -Path $OUTF
+PS C:\Foo> $Count = $Files.Count
+PS C:\Foo> $LenKB = (($Files | Measure-Object -Property length -Sum).Sum)/1mb
+PS C:\Foo> "[{0}] decompressed files, occupying {1:n2}mb" -f $Count, $LenKB
+[100] decompressed files, occupying 4.77mb
+
+
+

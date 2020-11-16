@@ -1,0 +1,162 @@
+# 5.1 Exploring Assemblies
+
+# Run on SRV1
+
+
+
+PS C:\Foo> # 1. Counting loaded assemblies
+PS C:\Foo> $Assemblies = [appdomain]::CurrentDomain.GetAssemblies()
+PS C:\Foo> "Assemblies loaded: {0:n0}" -f $Assemblies.Count
+Assemblies loaded: 138
+
+
+
+
+PS C:\Foo> # 2. Viewing first 10
+PS C:\Foo> $Assemblies | Select-Object -First 10
+
+GAC    Version        Location
+---    -------        --------
+False  v4.0.30319     C:\Program Files\PowerShell\7\System.Private.CoreLib.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\pwsh.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\System.Runtime.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\Microsoft.PowerShell.ConsoleHost.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\System.Management.Automation.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\System.Threading.Thread.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\System.Runtime.InteropServices.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\System.Threading.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\Microsoft.Win32.Primitives.dll
+False  v4.0.30319     C:\Program Files\PowerShell\7\System.Diagnostics.Process.dll
+
+
+PS C:\Foo> # 3. Checking assemblies in Windows PowerShell
+PS C:\Foo> $SB = {
+             [appdomain]::CurrentDomain.GetAssemblies()
+           }
+PS C:\Foo> $PS51 = New-PSSession -UseWindowsPowerShell
+PS C:\Foo> $Assin51 = Invoke-Command -Session $PS51 -ScriptBlock $SB
+PS C:\Foo> "Assemblies loaded in Windows PowerShell: {0:n0}" -f $Assin51.Count
+Assemblies loaded in Windows PowerShell: 16
+
+
+
+PS C:\Foo> # 4. Viewing Microsoft.PowerShell assemblies
+PS C:\Foo> $Assin51 |
+             Where-Object FullName -Match "Microsoft\.Powershell" |
+               Sort-Object -Property Location
+
+GAC    Version        Location                                                                PSComputerName
+---    -------        --------                                                                --------------
+True   v4.0.30319     C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Microsoft.PowerShell.Consol… localhost
+True   v4.0.30319     C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Microsoft.PowerShell.Securi… localhost
+
+
+
+
+
+
+
+
+PS C:\Foo> # 5. Exploring the Microsoft.PowerShell.Management module
+PS C:\Foo> $MOD = Get-Module -Name Microsoft.PowerShell.Management -ListAvailable
+PS C:\Foo> $MOD  | Format-List
+
+
+Name              : Microsoft.PowerShell.Management
+Path              : C:\program files\powershell\7\Modules\Microsoft.PowerShell.Manag 
+                    ement\Microsoft.PowerShell.Management.psd1
+Description       :
+ModuleType        : Manifest
+Version           : 7.0.0.0
+PreRelease        :
+NestedModules     : {Microsoft.PowerShell.Commands.Management}
+ExportedFunctions :
+ExportedCmdlets   : {Add-Content, Clear-Content, Get-Clipboard, Set-Clipboard,
+                    Clear-ItemProperty, Join-Path, Convert-Path, Copy-ItemProperty,
+                    Get-ChildItem, Get-Content, Get-ItemProperty, Get-ItemPropertyValue,
+                    Move-ItemProperty, Get-Location, Set-Location, Push-Location,
+                    Pop-Location, New-PSDrive, Remove-PSDrive, Get-PSDrive, Get-Item,
+                    New-Item, Set-Item, Remove-Item, Move-Item, Rename-Item, Copy-Item,
+                    Clear-Item, Invoke-Item, Get-PSProvider, New-ItemProperty, Split-Path,
+                    Test-Path, Test-Connection, Get-Process, Stop-Process, Wait-Process,
+                    Debug-Process, Start-Process, Remove-ItemProperty, Rename-ItemProperty,
+                    Resolve-Path, Get-Service, Stop-Service, Start-Service,
+                    Suspend-Service, Resume-Service, Restart-Service, Set-Service,
+                    New-Service, Remove-Service, Set-Content, Set-ItemProperty,
+                    Restart-Computer, Stop-Computer, Rename-Computer, Get-ComputerInfo,
+                    Get-TimeZone, Set-TimeZone, Get-HotFix, Clear-RecycleBin}
+ExportedVariables :
+ExportedAliases   : {gcb, gin, gtz, scb, stz}
+
+
+
+
+
+PS C:\Foo> # 6. Viewing Module manifest
+PS C:\Foo> $MANIFEST = Get-Content -Path $MOD.Path
+PS C:\Foo> $MANIFEST | Select-Object -First 20
+@{
+GUID="EEFCB906-B326-4E99-9F54-8B4BB6EF3C6D"
+Author="PowerShell"
+CompanyName="Microsoft Corporation"
+Copyright="Copyright (c) Microsoft Corporation."
+ModuleVersion="7.0.0.0"
+CompatiblePSEditions = @("Core")
+PowerShellVersion="3.0"
+NestedModules="Microsoft.PowerShell.Commands.Management.dll"
+HelpInfoURI = 'https://aka.ms/powershell71-help'
+FunctionsToExport = @()
+AliasesToExport = @("gcb", "gin", "gtz", "scb", "stz")
+CmdletsToExport=@("Add-Content",
+    "Clear-Content",
+    "Get-Clipboard",
+    "Set-Clipboard",
+    "Clear-ItemProperty",
+    "Join-Path",
+    "Convert-Path",
+    "Copy-ItemProperty",
+
+
+
+
+
+PS C:\Foo> # 7. Discovering the module's assembly
+PS C:\Foo> Import-Module -Name Microsoft.PowerShell.Management
+PS C:\Foo> $MATCH = $MANIFEST | Select-String Modules
+PS C:\Foo> $LINE = $MATCH.Line
+PS C:\Foo> $DLL = ($Line -Split '"')[1]
+PS C:\Foo> Get-Item -Path $PSHOME\$DLL
+
+    Directory: C:\Program Files\PowerShell\7
+
+Mode          LastWriteTime    Length Name
+----          -------------    ------ ----
+-a---   06/11/2020    02:33   1119624 Microsoft.PowerShell.Commands.Management.dll
+
+
+
+
+PS C:\Foo> # 8. Viewing associated loaded assembly
+PS C:\Foo> $Assemblies2 = [appdomain]::CurrentDomain.GetAssemblies()
+PS C:\Foo> $Assemblies2 | Where-Object Location -match $DLL
+
+GAC   Version     Location
+---   -------     --------
+False v4.0.30319  C:\Program Files\PowerShell\7\Microsoft.PowerShell.Commands.Management.dll
+
+
+
+PS C:\Foo> # 9. Getting details of a command
+PS C:\Foo> $COMMANDS  = $ASSEMBLIES2
+               Where-Object Location -match Commands.Management\.dll
+PS C:\Foo> $COMMANDS.GetTypes() | 
+             Where-Object Name -match "Addcontentcommand$"
+
+IsPublic IsSerial Name                BaseType
+-------- -------- ----                --------
+True     False    AddContentCommand   Microsoft.PowerShell.Commands.WriteContentCommandBase
+
+
+
+
+

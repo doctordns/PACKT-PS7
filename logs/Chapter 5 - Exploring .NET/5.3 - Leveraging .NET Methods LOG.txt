@@ -1,0 +1,118 @@
+# 5.3 Leveraging .NET methods   LOG
+
+
+# run on serv1
+
+
+# 1. Starting Notepad
+
+no output - as such although there is notead windows
+
+
+
+PS C:\Foo> # 2. Obtaining methods on the Notepad process
+PS C:\Foo> $Notepad = Get-Process -Name Notepad
+PS C:\Foo> $Notepad | Get-Member -MemberType Method
+
+   TypeName: System.Diagnostics.Process
+
+Name                      MemberType Definition
+----                      ---------- ----------
+BeginErrorReadLine        Method     void BeginErrorReadLine()
+BeginOutputReadLine       Method     void BeginOutputReadLine()
+CancelErrorRead           Method     void CancelErrorRead()
+CancelOutputRead          Method     void CancelOutputRead()
+Close                     Method     void Close()
+CloseMainWindow           Method     bool CloseMainWindow()
+Dispose                   Method     void Dispose(), void IDisposable.Dispose()
+Equals                    Method     bool Equals(System.Object obj)
+GetHashCode               Method     int GetHashCode()
+GetLifetimeService        Method     System.Object GetLifetimeService()
+GetType                   Method     type GetType()
+InitializeLifetimeService Method     System.Object InitializeLifetimeService()
+Kill                      Method     void Kill(), void Kill(bool entireProcessTree)
+Refresh                   Method     void Refresh()
+Start                     Method     bool Start()
+ToString                  Method     string ToString()
+WaitForExit               Method     void WaitForExit(), bool WaitForExit(int milliseconds)
+WaitForExitAsync          Method     System.Threading.Tasks.Task WaitForExitAsync(System.Threading.CancellationToken cancellationToken)
+WaitForInputIdle          Method     bool WaitForInputIdle(), bool WaitForInputIdle(int milliseconds
+
+
+
+
+# 3. Using the Kill() method
+
+
+no output
+
+
+
+
+PS C:\Foo> # 4. Confirming Notepad process is destroyed
+PS C:\Foo> Get-Process -Name Notepad
+Get-Process:
+Line |
+   2 |  Get-Process -Name Notepad
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find a process with the name "Notepad". Verify the process name and call the cmdlet again.# 4. Confirming Notepad process is destroyed
+
+
+
+
+# 5. Creating a new folder and some files
+
+
+
+no output
+
+
+PS C:\Foo> # 6. Viewing files in $Path folder
+PS C:\Foo> $Files = Get-ChildItem -Path $Path
+PS C:\Foo> $Files | Format-Table Name, Attributes
+
+Name            Attributes
+----            ----------
+SecureFile1.txt    Archive
+SecureFile2.txt    Archive
+SecureFile3.txt    Archive
+
+
+
+
+# 7. Encrypting the files
+
+
+no output
+
+
+
+
+PS C:\Foo> # 8. Viewing file attributes
+PS C:\Foo> Get-ChildItem -Path $Path |
+             Format-Table -Property Name, Attributes
+
+Name                    Attributes
+----                    ----------
+SecureFile1.txt Archive, Encrypted
+SecureFile2.txt Archive, Encrypted
+SecureFile3.txt Archive, Encrypted
+
+
+
+
+PS C:\Foo> # 9. Decrypting and viewing the files
+PS C:\Foo> $Files| ForEach-Object {
+             $_.Decrypt()
+           }
+PS C:\Foo> Get-ChildItem -Path $Path |
+             Format-Table -Property Name, Attributes
+
+Name            Attributes
+----            ----------
+SecureFile1.txt    Archive
+SecureFile2.txt    Archive
+SecureFile3.txt    Archive
+
+
+
