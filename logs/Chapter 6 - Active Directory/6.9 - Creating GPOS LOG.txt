@@ -1,0 +1,109 @@
+# Recipe 6.9 - Creating a group policy object
+
+# Run on DC1, after creaating IT Orgizational Unit
+
+
+
+
+# 1. Creating a Group Policy object
+
+
+no output
+
+
+
+# 2. Ensure just computer settings are enabled
+
+
+
+no output
+
+
+
+# 3. Configure the policy with two registry based settings
+
+
+
+no output
+
+
+
+# 4. Create a screen saver GPO 
+
+
+
+
+
+no output
+
+
+
+
+# 5. Set a registry value
+
+
+
+
+
+
+no output
+
+
+
+
+
+# 6. Assign the GPOs to the IT OU
+
+
+
+no output
+
+
+PS C:\Foo> # 7. Display the GPOs in the domain
+PS C:\Foo> Get-GPO -All -Domain Reskit.Org |
+  Sort-Object -Property DisplayName |
+    Format-Table -Property Displayname, Description, GpoStatus
+
+DisplayName                       Description GpoStatus
+-----------                       ----------- ---------
+Default Domain Controllers Policy             AllSettingsEnabled
+Default Domain Policy                         AllSettingsEnabled
+ITPolicy                          IT GPO      AllSettingsEnabled
+Screen Saver Time Out                         AllSettingsEnabled
+
+
+
+# 8. Create and view a GPO Report
+
+
+no output but see edge output
+
+
+# 9. Getting Report in XML format
+
+
+NO output
+
+
+
+PS C:\Foo> # 10. Creating simple GPO report
+PS C:\Foo> $RPath2 = 'C:\Foo\GPOReport2.XML'
+PS C:\Foo> $FMTS = "{0,-33}  {1,-30} {2,-10} {3}"
+PS C:\Foo> $FMTS -f 'Name','Linked To', 'Enabled', 'No Override'
+PS C:\Foo> $FMTS -f '----','---------', '-------', '-----------'
+PS C:\Foo> $XML.report.GPO |
+             Sort-Object -Property Name |
+               ForEach-Object {
+                $Gname = $_.Name
+                $SOM = $_.linksto.SomPath
+                $ENA = $_.linksto.enabled
+                $NOO = $_.linksto.nooverride
+                $FMTS -f $Gname, $SOM, $ENA, $NOO
+              }
+
+Name                               Linked To                      Enabled    No Override
+----                               ---------                      -------    -----------
+Default Domain Controllers Policy  Reskit.Org/Domain Controllers  true       false
+Default Domain Policy              Reskit.Org                     true       false
+ITPolicy                           Reskit.Org/IT                  true       false
+Screen Saver Time Out              Reskit.Org/IT                  true       false

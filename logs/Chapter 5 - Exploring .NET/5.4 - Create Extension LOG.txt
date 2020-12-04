@@ -1,0 +1,95 @@
+# 5.4 - Create a C# PowerShell Extension
+
+# Run on SRV1
+
+
+PS C:\Foo> # 1. Examining overloaded method definition
+PS C:\Foo> ("a string").Trim
+
+OverloadDefinitions
+-------------------
+string Trim()
+string Trim(char trimChar)
+string Trim(Params char[] trimChars)
+
+
+
+
+
+# 2. Creating a C# class definition in here string
+
+
+
+
+No output
+
+
+
+# 3. Adding the type into the current PowerShell session
+
+
+
+
+No output
+
+
+
+
+PS C:\Foo> # 4. Examining method definition
+PS C:\Foo> [Reskit.Hello]::World
+
+OverloadDefinitions
+-------------------
+static void World()
+
+
+
+PS C:\Foo> # 5. Using the class's method
+PS C:\Foo> [Reskit.Hello]::World()
+Hello World!
+
+
+
+# 6. Extending the code with parameters
+
+
+
+no output
+
+
+
+# 7. Adding the type into the current PowerShell session
+
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 8. Viewing method definitions
+PS C:\Foo> [Reskit.Hello2]::World
+
+OverloadDefinitions
+-------------------
+static void World()
+static void World(string name)
+
+
+
+PS C:\Foo> # 9. Calling with no parameters specified
+PS C:\Foo> [Reskit.Hello2]::World()
+Hello World!
+
+
+
+
+PS C:\Foo> # 10. Calling new method with a parameter
+PS C:\Foo> [Reskit.Hello2]::World('Jerry')
+Hello Jerry!
+
+
+
+
+

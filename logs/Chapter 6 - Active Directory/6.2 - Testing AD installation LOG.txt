@@ -1,0 +1,266 @@
+# 6.2 - Testing AD Installation
+
+# Run this recipe on DC1 after promotion
+# Login as Enterprise Admin.
+
+
+
+PS C:\Foo> # 1. Examine AD DSE
+PS C:\Foo> Get-ADRootDSE -Server DC1.Reskit.Org
+
+configurationNamingContext    : CN=Configuration,DC=Reskit,DC=Org
+currentTime                   : 27/11/2020 20:25:41
+defaultNamingContext          : DC=Reskit,DC=Org
+dnsHostName                   : DC1.Reskit.Org
+domainControllerFunctionality : Windows2016
+domainFunctionality           : Windows2016Domain
+dsServiceName                 : CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites, 
+                                CN=Configuration,DC=Reskit,DC=Org
+forestFunctionality           : Windows2016Forest
+highestCommittedUSN           : 16488
+isGlobalCatalogReady          : {TRUE}
+isSynchronized                : {TRUE}
+ldapServiceName               : Reskit.Org:dc1$@RESKIT.ORG
+namingContexts                : {DC=Reskit,DC=Org, CN=Configuration,DC=Reskit,DC=Org,
+                                CN=Schema,CN=Configuration,DC=Reskit,DC=Org,
+                                DC=DomainDnsZones,DC=Reskit,DC=Org, DC=ForestDnsZones,DC=Reskit,DC=Org}
+rootDomainNamingContext       : DC=Reskit,DC=Org
+schemaNamingContext           : CN=Schema,CN=Configuration,DC=Reskit,DC=Org
+serverName                    : CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration, 
+                                DC=Reskit,DC=Org
+subschemaSubentry             : CN=Aggregate,CN=Schema,CN=Configuration,DC=Reskit,DC=Org
+supportedCapabilities         : {1.2.840.113556.1.4.800 (LDAP_CAP_ACTIVE_DIRECTORY_OID),
+                                1.2.840.113556.1.4.1670 (LDAP_CAP_ACTIVE_DIRECTORY_V51_OID),
+                                1.2.840.113556.1.4.1791 (LDAP_CAP_ACTIVE_DIRECTORY_LDAP_INTEG_OID),     
+                                1.2.840.113556.1.4.1935 (LDAP_CAP_ACTIVE_DIRECTORY_V61_OID),
+                                1.2.840.113556.1.4.2080, 1.2.840.113556.1.4.2237}
+supportedControl              : {1.2.840.113556.1.4.319 (LDAP_PAGED_RESULT_OID_STRING),
+                                1.2.840.113556.1.4.801 (LDAP_SERVER_SD_FLAGS_OID), 
+                                1.2.840.113556.1.4.473 (LDAP_SERVER_SORT_OID), 1.2.840.113556.1.4.528   
+                                (LDAP_SERVER_NOTIFICATION_OID), 1.2.840.113556.1.4.417
+                                (LDAP_SERVER_SHOW_DELETED_OID), 1.2.840.113556.1.4.619
+                                (LDAP_SERVER_LAZY_COMMIT_OID), 1.2.840.113556.1.4.841
+                                (LDAP_SERVER_DIRSYNC_OID), 1.2.840.113556.1.4.529 
+                                (LDAP_SERVER_EXTENDED_DN_OID), 1.2.840.113556.1.4.805
+                                (LDAP_SERVER_TREE_DELETE_OID), 1.2.840.113556.1.4.521
+                                (LDAP_SERVER_CROSSDOM_MOVE_TARGET_OID), 1.2.840.113556.1.4.970
+                                (LDAP_SERVER_GET_STATS_OID), 1.2.840.113556.1.4.1338
+                                (LDAP_SERVER_VERIFY_NAME_OID), 1.2.840.113556.1.4.474 
+                                (LDAP_SERVER_RESP_SORT_OID), 1.2.840.113556.1.4.1339
+                                (LDAP_SERVER_DOMAIN_SCOPE_OID), 1.2.840.113556.1.4.1340 
+                                (LDAP_SERVER_SEARCH_OPTIONS_OID), 1.2.840.113556.1.4.1413
+                                (LDAP_SERVER_PERMISSIVE_MODIFY_OID), 2.16.840.1.113730.3.4.9
+                                (LDAP_CONTROL_VLVREQUEST), 2.16.840.1.113730.3.4.10
+                                (LDAP_CONTROL_VLVRESPONSE), 1.2.840.113556.1.4.1504
+                                (LDAP_SERVER_ASQ_OID), 1.2.840.113556.1.4.1852 
+                                (LDAP_SERVER_QUOTA_CONTROL_OID), 1.2.840.113556.1.4.802
+                                (LDAP_SERVER_RANGE_OPTION_OID), 1.2.840.113556.1.4.1907
+                                (LDAP_SERVER_SHUTDOWN_NOTIFY_OID), 1.2.840.113556.1.4.1948
+                                (LDAP_SERVER_RANGE_RETRIEVAL_NOERR_OID), 1.2.840.113556.1.4.1974        
+                                (LDAP_SERVER_FORCE_UPDATE_OID), 1.2.840.113556.1.4.1341 
+                                (LDAP_SERVER_RODC_DCPROMO_OID), 1.2.840.113556.1.4.2026
+                                (LDAP_SERVER_DN_INPUT_OID), 1.2.840.113556.1.4.2064,
+                                1.2.840.113556.1.4.2065, 1.2.840.113556.1.4.2066, 
+                                1.2.840.113556.1.4.2090, 1.2.840.113556.1.4.2205,
+                                1.2.840.113556.1.4.2204, 1.2.840.113556.1.4.2206,
+                                1.2.840.113556.1.4.2211, 1.2.840.113556.1.4.2239,
+                                1.2.840.113556.1.4.2255, 1.2.840.113556.1.4.2256,
+                                1.2.840.113556.1.4.2309, 1.2.840.113556.1.4.2330, 
+                                1.2.840.113556.1.4.2354}
+supportedLDAPPolicies         : {MaxPoolThreads, MaxPercentDirSyncRequests, MaxDatagramRecv,
+                                MaxReceiveBuffer, InitRecvTimeout, MaxConnections, MaxConnIdleTime,
+                                MaxPageSize, MaxBatchReturnMessages, MaxQueryDuration,
+                                MaxDirSyncDuration, MaxTempTableSize, MaxResultSetSize, MinResultSets,
+                                MaxResultSetsPerConn, MaxNotificationPerConn, MaxValRange,
+                                MaxValRangeTransitive, ThreadMemoryLimit, SystemMemoryLimitPercent}
+supportedLDAPVersion          : {3, 2}
+supportedSASLMechanisms       : {GSSAPI, GSS-SPNEGO, EXTERNAL, DIGEST-MD5}
+
+
+
+
+
+PS C:\Foo> # 2. Viewing AD forest details
+PS C:\Foo> Get-ADForest
+
+ApplicationPartitions : {DC=ForestDnsZones,DC=Reskit,DC=Org, DC=DomainDnsZones,DC=Reskit,DC=Org}
+CrossForestReferences : {}
+DomainNamingMaster    : DC1.Reskit.Org
+Domains               : {Reskit.Org}
+ForestMode            : Windows2016Forest
+GlobalCatalogs        : {DC1.Reskit.Org}
+Name                  : Reskit.Org
+PartitionsContainer   : CN=Partitions,CN=Configuration,DC=Reskit,DC=Org
+RootDomain            : Reskit.Org
+SchemaMaster          : DC1.Reskit.Org
+Sites                 : {Default-First-Site-Name}
+SPNSuffixes           : {}
+UPNSuffixes           : {}
+
+
+
+PS C:\Foo> # 3. Viewing AD Domain details
+PS C:\Foo> Get-ADDomain
+
+AllowedDNSSuffixes                 : {}
+ChildDomains                       : {}
+ComputersContainer                 : CN=Computers,DC=Reskit,DC=Org
+DeletedObjectsContainer            : CN=Deleted Objects,DC=Reskit,DC=Org
+DistinguishedName                  : DC=Reskit,DC=Org
+DNSRoot                            : Reskit.Org
+DomainControllersContainer         : OU=Domain Controllers,DC=Reskit,DC=Org
+DomainMode                         : Windows2016Domain
+DomainSID                          : S-1-5-21-1051839064-3594903887-4180521017
+ForeignSecurityPrincipalsContainer : CN=ForeignSecurityPrincipals,DC=Reskit,DC=Org
+Forest                             : Reskit.Org
+InfrastructureMaster               : DC1.Reskit.Org
+LastLogonReplicationInterval       :
+LinkedGroupPolicyObjects           : {CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=Reskit
+                                     ,DC=Org}
+LostAndFoundContainer              : CN=LostAndFound,DC=Reskit,DC=Org
+ManagedBy                          :
+Name                               : Reskit
+NetBIOSName                        : RESKIT
+ObjectClass                        : domainDNS
+ObjectGUID                         : a12396d8-3e8a-431e-8d9b-1b2de80209a5
+ParentDomain                       :
+PDCEmulator                        : DC1.Reskit.Org
+PublicKeyRequiredPasswordRolling   : True
+QuotasContainer                    : CN=NTDS Quotas,DC=Reskit,DC=Org
+ReadOnlyReplicaDirectoryServers    : {}
+ReplicaDirectoryServers            : {DC1.Reskit.Org}
+RIDMaster                          : DC1.Reskit.Org
+SubordinateReferences              : {DC=ForestDnsZones,DC=Reskit,DC=Org, DC=DomainDnsZones,DC=Reskit,DC=Org, 
+                                     CN=Configuration,DC=Reskit,DC=Org}
+SystemsContainer                   : CN=System,DC=Reskit,DC=Org
+UsersContainer                     : CN=Users,DC=Reskit,DC=Org
+
+
+
+
+
+PS C:\Foo> # 4. Checking Netlogon and DNS services
+PS C:\Foo> Get-Service NetLogon, DNS
+
+Status   Name               DisplayName
+------   ----               -----------
+Running  DNS                DNS Server
+Running  Netlogon           NetLogon
+
+
+
+
+
+
+PS C:\Foo> # 5. Getting Initial AD Users
+PS C:\Foo> Get-ADUser -Filter * |
+             Sort-Object -Property Name |
+               Format-Table -Property Name, DistinguishedName
+
+Name          DistinguishedName
+----          -----------------
+Administrator CN=Administrator,CN=Users,DC=Reskit,DC=Org
+Guest         CN=Guest,CN=Users,DC=Reskit,DC=Org
+krbtgt        CN=krbtgt,CN=Users,DC=Reskit,DC=Org
+
+
+
+
+PS C:\Foo> # 6. Getting initial AD groups
+PS C:\Foo> Get-ADGroup -Filter *  |
+             Sort-Object -Property Groupscope,Name |
+               Format-Table -Property Name, GroupScope
+
+Name                                     GroupScope
+----                                     ----------
+Access Control Assistance Operators     DomainLocal
+Account Operators                       DomainLocal
+Administrators                          DomainLocal
+Allowed RODC Password Replication Group DomainLocal
+Backup Operators                        DomainLocal
+Cert Publishers                         DomainLocal
+Certificate Service DCOM Access         DomainLocal
+Cryptographic Operators                 DomainLocal
+Denied RODC Password Replication Group  DomainLocal
+Distributed COM Users                   DomainLocal
+DnsAdmins                               DomainLocal
+Event Log Readers                       DomainLocal
+Guests                                  DomainLocal
+Hyper-V Administrators                  DomainLocal
+IIS_IUSRS                               DomainLocal
+Incoming Forest Trust Builders          DomainLocal
+Network Configuration Operators         DomainLocal
+Performance Log Users                   DomainLocal
+Performance Monitor Users               DomainLocal
+Pre-Windows 2000 Compatible Access      DomainLocal
+Print Operators                         DomainLocal
+RAS and IAS Servers                     DomainLocal
+RDS Endpoint Servers                    DomainLocal
+RDS Management Servers                  DomainLocal
+RDS Remote Access Servers               DomainLocal
+Remote Desktop Users                    DomainLocal
+Remote Management Users                 DomainLocal
+Replicator                              DomainLocal
+Server Operators                        DomainLocal
+Storage Replica Administrators          DomainLocal
+Terminal Server License Servers         DomainLocal
+Users                                   DomainLocal
+Windows Authorization Access Group      DomainLocal
+Cloneable Domain Controllers                 Global
+DnsUpdateProxy                               Global
+Domain Admins                                Global
+Domain Computers                             Global
+Domain Controllers                           Global
+Domain Guests                                Global
+Domain Users                                 Global
+Group Policy Creator Owners                  Global
+Key Admins                                   Global
+Protected Users                              Global
+Read-only Domain Controllers                 Global
+Enterprise Admins                         Universal
+Enterprise Key Admins                     Universal
+Enterprise Read-only Domain Controllers   Universal
+Schema Admins                             Universal
+
+
+
+
+PS C:\Foo> # 7. Examining Enterprise Admins group membership
+PS C:\Foo> Get-ADGroupMember -Identity 'Enterprise Admins'
+
+distinguishedName : CN=Administrator,CN=Users,DC=Reskit,DC=Org
+name              : Administrator
+objectClass       : user
+objectGUID        : 5ee8d68c-6210-44b9-8308-3b120e4efaa6
+SamAccountName    : Administrator
+SID               : S-1-5-21-1051839064-3594903887-4180521017-500
+
+
+
+
+PS C:\Foo> # 8. Checking DNS Zones on DC1
+PS C:\Foo> Get-DnsServerZone -ComputerName DC1
+
+ZoneName             ZoneType   IsAutoCreated  IsDsIntegrated  IsReverseLookupZone  IsSigned
+--------             --------   -------------  --------------  -------------------  --------
+_msdcs.Reskit.Org    Primary    False          True            False                False
+0.in-addr.arpa       Primary    True           False           True                 False
+127.in-addr.arpa     Primary    True           False           True                 False
+255.in-addr.arpa     Primary    True           False           True                 False
+Reskit.Org           Primary    False          True            False                False
+TrustAnchors         Primary    False          False           False                False
+
+
+
+
+
+PS C:\Foo> # 9. Testing domain name DNS resolution
+PS C:\Foo> Resolve-DnsName -Name Reskit.Org
+
+Name         Type   TTL   Section   IPAddress
+----         ----   ---   -------   ---------
+Reskit.Org   AAAA   600   Answer    2a02:8010:6386:0:55f:51d1:c96a:bafe
+Reskit.Org   A      600   Answer    10.10.10.10
+
+
+
