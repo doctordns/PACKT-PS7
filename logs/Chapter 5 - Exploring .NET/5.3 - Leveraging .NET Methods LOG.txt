@@ -35,11 +35,8 @@ Refresh                   Method     void Refresh()
 Start                     Method     bool Start()
 ToString                  Method     string ToString()
 WaitForExit               Method     void WaitForExit(), bool WaitForExit(int milliseconds)
-WaitForExitAsync          Method     System.Threading.Tasks.Task WaitForExitAsync(System.Threading.CancellationToken cancellationToken)
-WaitForInputIdle          Method     bool WaitForInputIdle(), bool WaitForInputIdle(int milliseconds
-
-
-
+WaitForExitAsync          Method     System.Threading.Tasks.Task WaitForExitAsync(System.Threading.Cancellati… 
+WaitForInputIdle          Method     bool WaitForInputIdle(), bool WaitForInputIdle(int milliseconds)
 
 # 3. Using the Kill() method
 
@@ -55,8 +52,11 @@ Get-Process:
 Line |
    2 |  Get-Process -Name Notepad
      |  ~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Cannot find a process with the name "Notepad". Verify the process name and call the cmdlet again.# 4. Confirming Notepad process is destroyed
+     | Cannot find a process with the name "Notepad". Verify the process name
+       and call the cmdlet again.
 
+
+     
 
 
 
@@ -69,7 +69,7 @@ no output
 
 PS C:\Foo> # 6. Viewing files in $Path folder
 PS C:\Foo> $Files = Get-ChildItem -Path $Path
-PS C:\Foo> $Files | Format-Table Name, Attributes
+PS C:\Foo> $Files | Format-Table -Property Name, Attributes
 
 Name            Attributes
 ----            ----------

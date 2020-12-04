@@ -103,7 +103,7 @@ PS C:\Foo> $PWSH |
     1 NoteProperty     {string __NounName=Process}      
 
 
-PS C:\Foo> # 7. Looking at static values within a class
+PS C:\Foo> # 7. Looking at static properties within a class
 PS C:\Foo> $Max = [Int32]::MaxValue
 PS C:\Foo> $Min = [Int32]::MinValue
 PS C:\Foo> "Minimum value [$Min]"

@@ -5,7 +5,7 @@
 
 
 PS C:\Foo> # 1. Counting loaded assemblies
-PS C:\Foo> $Assemblies = [appdomain]::CurrentDomain.GetAssemblies()
+PS C:\Foo> $Assemblies = [System.AppDomain]::CurrentDomain.GetAssemblies()
 PS C:\Foo> "Assemblies loaded: {0:n0}" -f $Assemblies.Count
 Assemblies loaded: 138
 
@@ -31,7 +31,7 @@ False  v4.0.30319     C:\Program Files\PowerShell\7\System.Diagnostics.Process.d
 
 PS C:\Foo> # 3. Checking assemblies in Windows PowerShell
 PS C:\Foo> $SB = {
-             [appdomain]::CurrentDomain.GetAssemblies()
+             [System.AppDomain]::CurrentDomain.GetAssemblies()
            }
 PS C:\Foo> $PS51 = New-PSSession -UseWindowsPowerShell
 PS C:\Foo> $Assin51 = Invoke-Command -Session $PS51 -ScriptBlock $SB
@@ -58,8 +58,8 @@ True   v4.0.30319     C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Microsoft.Power
 
 
 PS C:\Foo> # 5. Exploring the Microsoft.PowerShell.Management module
-PS C:\Foo> $MOD = Get-Module -Name Microsoft.PowerShell.Management -ListAvailable
-PS C:\Foo> $MOD  | Format-List
+PS C:\Foo> $Mod = Get-Module -Name Microsoft.PowerShell.Management -ListAvailable
+PS C:\Foo> $Mod  | Format-List
 
 
 Name              : Microsoft.PowerShell.Management
@@ -122,8 +122,8 @@ CmdletsToExport=@("Add-Content",
 
 PS C:\Foo> # 7. Discovering the module's assembly
 PS C:\Foo> Import-Module -Name Microsoft.PowerShell.Management
-PS C:\Foo> $MATCH = $MANIFEST | Select-String Modules
-PS C:\Foo> $LINE = $MATCH.Line
+PS C:\Foo> $Match = $Manifest | Select-String Modules
+PS C:\Foo> $Line = $Match.Line
 PS C:\Foo> $DLL = ($Line -Split '"')[1]
 PS C:\Foo> Get-Item -Path $PSHOME\$DLL
 
@@ -137,7 +137,7 @@ Mode          LastWriteTime    Length Name
 
 
 PS C:\Foo> # 8. Viewing associated loaded assembly
-PS C:\Foo> $Assemblies2 = [appdomain]::CurrentDomain.GetAssemblies()
+PS C:\Foo> $Assemblies2 = [System.AppDomain]::CurrentDomain.GetAssemblies()
 PS C:\Foo> $Assemblies2 | Where-Object Location -match $DLL
 
 GAC   Version     Location
@@ -147,9 +147,9 @@ False v4.0.30319  C:\Program Files\PowerShell\7\Microsoft.PowerShell.Commands.Ma
 
 
 PS C:\Foo> # 9. Getting details of a command
-PS C:\Foo> $COMMANDS  = $ASSEMBLIES2
+PS C:\Foo> $Commands  = $Assemblies2
                Where-Object Location -match Commands.Management\.dll
-PS C:\Foo> $COMMANDS.GetTypes() | 
+PS C:\Foo> $Commands.GetTypes() | 
              Where-Object Name -match "Addcontentcommand$"
 
 IsPublic IsSerial Name                BaseType
