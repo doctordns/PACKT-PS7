@@ -9,7 +9,7 @@ $SAMPLE =
   'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
   'scripts/goodies/Microsoft.VSCode_profile.ps1'
 (Invoke-WebRequest -Uri $Sample).Content |
-  Out-File $Profile
+  Out-File $Profile -Force
 
 
 # 2. Update Local User Settings for VS Code
@@ -124,7 +124,7 @@ New-Item $VSProfile -Force -WarningAction SilentlyContinue |
 (Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
   Out-File -FilePath  $VSProfile
 
-# 8. Create Console profile
+# 8. Create PS 7 Console profile
 Write-Host 'Creating PowerShell 7 Console Profile'
 $ProfileFile2   = 'Microsoft.PowerShell_Profile.ps1'  
 $ConsoleProfile = Join-Path -Path $ProfileFolder -ChildPath $ProfileFile2
@@ -135,10 +135,6 @@ $URI2 = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
 (Invoke-WebRequest -Uri $URI2 -UseBasicParsing).Content | 
   Out-File -FilePath  $ConsoleProfile
 
-  (Invoke-WebRequest -uri `
-  'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master
-  /scripts/goodies/Microsoft.PowerShell_Profile.ps1').content
-  
 
 # 8. Install Cascadia Code
 $CascadiaFont    = 'Cascadia.ttf'    # font file name
@@ -155,11 +151,9 @@ $FontShellNamespace.CopyHere($CascadiaFile, 0x10)
 
 
 # 13. Now - logoff
+Pause
 logoff.exe
 
 # 14. Relogin and observe the task bar
 
-# 15. Run PowerShell console and observe the profile file running
-
-# 16. Run VS Code from shortcut and observe the profile file running.
 

@@ -37,7 +37,7 @@ $PWSH |
       Sort-Object -Property Count -Descending
 
 
-# 7. Looking at static values within a class
+# 7. Looking at static properties within a class
 $Max = [Int32]::MaxValue
 $Min = [Int32]::MinValue
 "Minimum value [$Min]"

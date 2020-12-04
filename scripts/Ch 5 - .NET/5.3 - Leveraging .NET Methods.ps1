@@ -24,7 +24,7 @@ New-Item -Path $Path -ItemType directory -ErrorAction SilentlyContinue  |
 
 # 6. Viewing files in $Path folder
 $Files = Get-ChildItem -Path $Path
-$Files | Format-Table Name, Attributes
+$Files | Format-Table -Property Name, Attributes
 
 # 7. Encrypting the files
 $Files| ForEach-Object Encrypt

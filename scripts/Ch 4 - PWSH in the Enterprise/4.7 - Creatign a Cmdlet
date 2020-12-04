@@ -1,0 +1,18 @@
+# new cmdlet
+
+ject folders
+md C:\foo\cmdlet
+cd C:\foo\cmdlet
+
+# 2. new project
+dotnet new classlib --name sendgreetings
+
+# 3. what's there
+cd .\sendgreetings
+ls
+
+# 4. Creating global.json
+dotnet new globaljson
+
+# 5. Adding PowerShell package
+dotnet add package PowerShellStandard.Library

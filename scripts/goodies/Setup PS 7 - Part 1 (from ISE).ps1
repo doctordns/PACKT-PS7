@@ -1,6 +1,6 @@
 ﻿# mondo script to setup a VM - Part 1
 #
-# Run im the VM inside an elevated PowerShell 5.1 ISE Console
+# Run INSIDE the VM inside an elevated PowerShell 5.1 ISE Console
 
 # 1. Set Execution Policy for Windows PowerShell
 Write-Host 'Setting Execution Policy'
@@ -39,13 +39,14 @@ C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
 # 6. For the Adventurous - install the preview and daily builds as well
 Write-Host "Installling Pwsh 7.1 preview"
-C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PSPreview |
+C:\Foo\Install-PowerShell.ps1 -Preview -Destination C:\PSPreview |
   Out-Null
 Write-Host "Installing Pwsh 7.1 Daily Build"
-C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PSDailyBuild |
+C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
   Out-Null
 
 # 7. Create Windows PowerShell default Profiles
+#    NB: You create PowerSHell 7 profiles in a later l
 Write-Host "Creating Default profiles"
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
        'Goodies/Microsoft.PowerShell_Profile.ps1'
@@ -78,7 +79,22 @@ $InstallHT = @{
 }             
 .\Install-VSCode.ps1 @InstallHT -ea 0 | Out-Null
 
-# 10. All done with Windows PowerShell
+# 10. Define registry path for autologon, then set admin logon
+Write-Verbose -Message 'Setting Autologon'
+$RegPath  = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon'
+$User     = 'Administrator'
+$Password = 'Pa$$w0rd'
+$Dom      = 'Reskit'  
+Set-ItemProperty -Path $RegPath -Name DefaultUserName   -Value $User     -EA 0  
+Set-ItemProperty -Path $RegPath -Name DefaultPassword   -Value $Password -EA 0
+Set-ItemProperty -Path $RegPath -Name DefaultDomainName -Value $Dom      -EA 0 
+Set-ItemProperty -Path $RegPath -Name AutoAdminLogon    -Value 1         -EA 0  
+
+# 11. Set the PowerConfig to not turn off the virtual monitor
+Write-Verbose -Message 'Setting Monitor poweroff to zero'
+powercfg /change monitor-timeout-ac 0
+
+# 12. All done with Windows PowerShell
 Write-Host "Close VS code, restart as admin and do part 2 inside VS Code"
 Write-Host "Make sure you use an elevated VS CODE!!"
 
