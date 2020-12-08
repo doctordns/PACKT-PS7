@@ -1,7 +1,7 @@
 # 1.1 Install PowerShell 7
 
 # Run on SRV1
-# Run using an elevated Windows PowerShell 5.1 host
+# Run using an elevated Windows PowerShell 5.1 ISE 
 
 # 1. Set Execution Policy for Windows PowerShell
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
@@ -43,12 +43,12 @@ C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
   Out-Null
 
 # 8. Creating Windows PowerShell default profiles
-$URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
-       'Goodies/Microsoft.PowerShell_Profile.ps1'
+$URI = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
+       '/scripts/goodies/Microsoft.PowerShell_Profile.ps1'
 $ProfileFile = $Profile.CurrentUserCurrentHost
 New-Item $ProfileFile -Force -WarningAction SilentlyContinue |
    Out-Null
-(Invoke-WebRequest -Uri $uri -UseBasicParsing).Content | 
+(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
   Out-File -FilePath  $ProfileFile
 $ProfilePath = Split-Path -Path $ProfileFile
 $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_profile.ps1'
