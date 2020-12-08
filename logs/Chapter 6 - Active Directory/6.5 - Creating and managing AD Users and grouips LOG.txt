@@ -1,0 +1,135 @@
+# 6.5 - Creating and managing AD users and groups
+
+# Run on DC1 after it is a DC, and after DC2, UKDC1 created as DCs
+
+# 1.Creating a hash table for general user attributes
+
+no output
+
+
+
+
+# 2. Creating two new users
+
+
+no output
+
+
+# 3. Creating an OU for IT
+
+
+no output
+
+
+
+# 4. Moving users into OU
+
+
+
+
+no output
+
+
+# 5. Creating a third user directly in the IT OU
+
+
+
+no output
+
+
+
+# 6. Adding two users who get removed later
+
+
+
+
+
+no output
+
+
+
+
+
+PS C:\Foo> # 7. Viewing existing AD users
+PS C:\Foo> Get-ADUser -Filter *  -Property *|
+             Format-Table -Property Name, Displayname, SamAccountName
+
+Name           Displayname         SamAccountName
+----           -----------         --------------
+Administrator                      Administrator
+Guest                              Guest
+krbtgt                             krbtgt
+UK$                                UK$
+ThomasL        Thomas Lee (IT)     ThomasL
+Rebecca Tanner Rebecca Tanner (IT) RLT
+Jerry Garcia   Jerry Garcia (IT)   JerryG
+TBR1           User to be removed  TBR1
+TBR2           User to be removed  TBR2
+
+
+
+# 8. Removing via a  Get | Remove pattern
+
+
+
+
+no output
+
+
+
+# 9. Removing a user directly
+
+
+
+
+no output
+
+
+
+# 10. Updatating a user object
+
+
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 11. Viewing updated user
+PS C:\Foo> Get-ADUser -Identity ThomasL -Properties * |
+             Format-Table -Property DisplayName,Name,Office,
+                                    OfficePhone,EmailAddress
+
+DisplayName     Name    Office     OfficePhone EmailAddress
+-----------     ----    ------     ----------- ------------
+Thomas Lee (IT) ThomasL Cookham HQ 4416835420  ThomasL@Reskit.Org
+
+
+
+
+
+# 12. Creating a new domain local group
+
+
+
+no output
+
+
+# 13. Adding all the users in the IT OU into the IT Team group
+
+
+
+no output
+
+
+PS C:\Foo> # 14. Display members of the IT Team group
+PS C:\Foo> Get-ADGroupMember -Identity 'IT Team' |
+             Format-Table SamAccountName, DistinguishedName
+
+SamAccountName DistinguishedName
+-------------- -----------------
+JerryG         CN=Jerry Garcia,OU=IT,DC=Reskit,DC=Org
+RLT            CN=Rebecca Tanner,OU=IT,DC=Reskit,DC=Org
+ThomasL        CN=ThomasL,OU=IT,DC=Reskit,DC=Org

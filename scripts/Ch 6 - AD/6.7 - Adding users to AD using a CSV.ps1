@@ -1,19 +1,18 @@
-﻿# 3.6 - Adding Users to Active Directory using a CSV File
+﻿# 6.6 - Adding Users to Active Directory using a CSV File
 
 # Run On DC1
 
-# 1. Create CSV
+# 1. Creating a CSV file
 $CSVDATA = @'
 Firstname, Initials, Lastname, UserPrincipalName, Alias, Description, Password
-S,K,Masterly, SKM, Sylvester, Data Team, Christmas42
-C,B, Smith, CBS, Claire, Receptionist, Christmas42
+J,K,Smith, JKS, James, Data Team, Christmas42
+Clair,B, Smith, CBS, Claire, Receptionist, Christmas42
 Billy, Bob, JoeBob, BBJB, BillyBob, A Bob, Christmas42
-Malcolm, Dudley, Duelittle, Malcolm, Malcolm, Mr Danger, Christmas42
+Malcolm, Dudley, Duewrong, Malcolm, Malcolm, Mr Danger, Christmas42
 '@
 $CSVDATA | Out-File -FilePath C:\Foo\Users.Csv
 
-# 2. Import a CSV file containing the details of the users you 
-#    want to add to AD:
+# 2. Importing and displaying the CSV
 $Users = Import-CSV -Path C:\Foo\Users.Csv | 
   Sort-Object  -Property Alias
 $Users | Format-Table
@@ -45,17 +44,22 @@ $Users |
 }
 
 # 4. Show All Users in AD (Reskit.Org)
-Get-Aduser -Filter * | 
+Get-ADUser -Filter * | 
   Format-Table -Property Name, UserPrincipalName
+
+
+
+
 
 
 ### Remove the users created in the script
 
-$users = Import-Csv C:\foo\users.csv
+$Users = Import-Csv C:\foo\users.csv
 foreach ($User in $Users)
 {
   Get-ADUser -Identity $user.alias | Remove-AdUser
-
-
-
 }
+
+
+
+

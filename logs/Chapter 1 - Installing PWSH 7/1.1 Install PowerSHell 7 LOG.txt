@@ -29,8 +29,11 @@ No output
 
 PS C:\Foo]> # 5. View Installation Script Help
 PS C:\Foo]> Get-Help -Name C:\Foo\Install-PowerShell.ps1
+The Update-Help cmdlet downloads the most current Help files for Windows PowerShell modules, and installs them on your
+computer. For more information about the Update-Help cmdlet, see https:/go.microsoft.com/fwlink/?LinkId=210614.
+[Y] Yes  [N] No  [S] Suspend  [?] Help (default is "Y"): n
 Install-PowerShell.ps1 [-Destination <string>] [-Daily] [-DoNotOverwrite] [-AddToPath] [-Preview] [<CommonParameters>]
-Install-PowerShell.ps1 [-UseMSI] [-Quiet] [-AddExplorerContextMenu] [-EnablePSRemoting] [-Preview] [<CommonParameters>]     
+Install-PowerShell.ps1 [-UseMSI] [-Quiet] [-AddExplorerContextMenu] [-EnablePSRemoting] [-Preview] [<CommonParameters>]
 
 
 
@@ -43,8 +46,8 @@ PS C:\Foo> $EXTHT = @{
              EnablePSRemoting       = $true
            }
 PS C:\Foo> C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
-VERBOSE: About to download package from 'https://github.com/PowerShell/PowerShell/
-releases/download/v7.0.3/PowerShell-7.0.3-win-x64.msi'
+VERBOSE: About to download package from
+'https://github.com/PowerShell/PowerShell/releases/download/v7.1.0/PowerShell-7.1.0-win-x64.msi'
 
 
 PS C:\Foo> # 7. For the Adventurous - install the preview and daily builds as well

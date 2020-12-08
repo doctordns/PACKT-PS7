@@ -1,4 +1,4 @@
-﻿# Recipe 6.9 - Creating a group policy object
+﻿# Recipe 6.8 - Creating a group policy object
 
 # Run on DC1, after creaating IT Orgizational Unit
 

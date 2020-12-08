@@ -36,13 +36,13 @@ $EXTHT = @{
 }
 C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
-# 7. For the Adventurous - install the preview and daily builds as well
-C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PSPreview |
+# 7. Installing the preview and daily builds as well (for the advenerous)
+C:\Foo\Install-PowerShell.ps1 -Preview -Destination C:\PSPreview |
   Out-Null
-C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PSDailyBuild |
+C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
   Out-Null
 
-# 8. Create Windows PowerShell default Profiles
+# 8. Creating Windows PowerShell default profiles
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
        'Goodies/Microsoft.PowerShell_Profile.ps1'
 $ProfileFile = $Profile.CurrentUserCurrentHost

@@ -5,11 +5,24 @@
 
 
 # 1 Using VS Code, create a Sample Profile File for VS Code
-$SAMPLE = 
+Write-Host "Creating VS Code Default profile"
+$VSCodeProfileFile = $Profile.CurrentUserCurrentHost
+New-Item $VSCodeProfileFile -Force -WarningAction SilentlyContinue | Out-Null
+$VSCodePS7Sample = 
   'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
   'scripts/goodies/Microsoft.VSCode_profile.ps1'
-(Invoke-WebRequest -Uri $Sample).Content |
-  Out-File $Profile -Force
+(Invoke-WebRequest -Uri $VSCodePS7Sample -UseBasicParsing).Content | 
+  Out-File -FilePath  $VSCodeProfileFile
+
+  Write-Host 'Creating PWSH 7 Console Profile'
+$ProfilePath = Split-Path -Path $VSCodeProfileFile
+$ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_profile.ps1'
+New-Item $ConsoleProfile -Force -WarningAction SilentlyContinue | Out-Null
+$ConsolePS7Sample = 
+  'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
+  'scripts/goodies/Microsoft.PowerShell_Profile.ps1'
+(Invoke-WebRequest -Uri $ConsolePS7Sample -UseBasicParsing).Content | 
+  Out-File -FilePath  $ConsoleProfile
 
 
 # 2. Update Local User Settings for VS Code

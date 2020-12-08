@@ -1,7 +1,9 @@
-﻿# Recipe 3-2 - Creating and managing AD users, groups, and computers
+﻿# 6.5 - Creating and managing AD users and groups
 
-# 1.Create a hash table for general user attributes
-$PW = 'Pa$$w0rd'
+# Run on DC1 after it is a DC, and after DC2, UKDC1 created as DCs
+
+# 1.Creating a hash table for general user attributes
+$PW  = 'Pa$$w0rd'
 $PSS = ConvertTo-SecureString -String $PW -AsPlainText -Force
 $NewUserHT = @{}
 $NewUserHT.AccountPassword       = $PSS
@@ -9,7 +11,7 @@ $NewUserHT.Enabled               = $true
 $NewUserHT.PasswordNeverExpires  = $true
 $NewUserHT.ChangePasswordAtLogon = $false
 
-# 2. Create two new users adding to basic hash table
+# 2. Creating two new users
 # First user
 $NewUserHT.SamAccountName    = 'ThomasL'
 $NewUserHT.UserPrincipalName = 'thomasL@reskit.org'
@@ -23,13 +25,15 @@ $NewUserHT.Name              = 'Rebecca Tanner'
 $NewUserHT.DisplayName       = 'Rebecca Tanner (IT)'
 New-ADUser @NewUserHT
 
-# 3. Create an OU for IT and move users into it
+# 3. Creating an OU for IT
 $OUHT = @{
     Name        = 'IT'
     DisplayName = 'Reskit IT Team'
     Path        = 'DC=Reskit,DC=Org'
 }
 New-ADOrganizationalUnit @OUHT
+
+# 4. Moving users into OU
 $MHT1 = @{
     Identity   = 'CN=ThomasL,CN=Users,DC=Reskit,DC=ORG'
     TargetPath = 'OU=IT,DC=Reskit,DC=Org'
@@ -41,7 +45,7 @@ $MHT2 = @{
 }
 Move-ADObject @MHT2
 
-# 4. Create a third user directly in the IT OU
+# 5. Creating a third user directly in the IT OU
 $NewUserHT.SamAccountName    = 'JerryG'
 $NewUserHT.UserPrincipalName = 'jerryg@reskit.org'
 $NewUserHT.Description       = 'Virtualization Team'
@@ -50,7 +54,7 @@ $NewUserHT.DisplayName       = 'Jerry Garcia (IT)'
 $NewUserHT.Path              = 'OU=IT,DC=Reskit,DC=Org'
 New-ADUser @NewUserHT
 
-# 5. Add two users who will then be removed
+# 6. Adding two users who get removed later
 # First user to be removed
 $NewUserHT.SamAccountName    = 'TBR1'
 $NewUserHT.UserPrincipalName = 'tbr@reskit.org'
@@ -64,21 +68,21 @@ $NewUserHT.UserPrincipalName  = 'tbr2@reskit.org'
 $NewUserHT.Name               = 'TBR2'
 New-ADUser @NewUserHT
 
-# 6. See the users that exist so far
+# 7. Viewing existing AD users
 Get-ADUser -Filter *  -Property *| 
   Format-Table -Property Name, Displayname, SamAccountName
 
-# 7. Remove via a  Get | remove
+# 8. Removing via a  Get | Remove pattern
 Get-ADUser -Identity 'CN=TBR1,OU=IT,DC=Reskit,DC=Org' |
     Remove-ADUser -Confirm:$false
 
-# 8. Remove directly
+# 9. Removing a user directly
 $RUHT = @{
   Identity = 'CN=TBR2,OU=IT,DC=Reskit,DC=Org'
   Confirm  = $false}
 Remove-ADUser @RUHT
 
-# 9. Update and display a user
+# 10. Updatating a user object
 $TLHT =@{
   Identity     = 'ThomasL'
   OfficePhone  = '4416835420'
@@ -89,11 +93,13 @@ $TLHT =@{
   HomePage     = 'Https://tfl09.blogspot.com'
 }
 Set-ADUser @TLHT
+
+# 11. Viewing updated user
 Get-ADUser -Identity ThomasL -Properties * |
   Format-Table -Property DisplayName,Name,Office,
                          OfficePhone,EmailAddress 
 
-# 10 Create a new group
+# 12. Creating a new domain local group
 $NGHT = @{
  Name        = 'IT Team'
  Path        = 'OU=IT,DC=Reskit,DC=org'
@@ -102,27 +108,11 @@ $NGHT = @{
 }
 New-ADGroup @NGHT
 
-
-# 11. Move all the users in the IT OU into this group
+# 13. Adding all the users in the IT OU into the IT Team group
 $SB = 'OU=IT,DC=Reskit,DC=Org'
 $ItUsers = Get-ADUser -Filter * -SearchBase $SB
 Add-ADGroupMember -Identity 'IT Team'  -Members $ItUsers
 
-# 12. Display members
-
+# 14. Display members of the IT Team group
 Get-ADGroupMember -Identity 'IT Team' |
   Format-Table SamAccountName, DistinguishedName
-
-# 13. Add a computer to the AD
-$NCHT = @{
-  Name                   = 'Wolf' 
-  DNSHostName            = 'Wolf.Reskit.Org'
-  Description            = 'One for Jerry'
-  Path                   = 'OU=IT,DC=Reskit,DC=Org'
-  OperatingSystemVersion = 'Windows Server 2019 Data Center'
-}
-New-ADComputer @NCHT
-
-# 14 See the computer accounts
-Get-ADComputer -Filter * -Properties * | 
-  Format-Table Name, DNSHost*,LastLogonDate

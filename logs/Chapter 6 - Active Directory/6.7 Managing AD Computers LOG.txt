@@ -1,0 +1,75 @@
+# 6.7 - Managing AD Computers
+
+# Run first on DC1 - with prior recipies competed
+# DC1, UKDC1, and SRV1 online
+
+
+PS C:\Foo> # 1. Getting Computers in the Reskit Domain
+PS C:\Foo> Get-ADComputer -Filter * |
+             Format-Table -Property Name, DistinguishedName
+
+Name  DistinguishedName
+----  -----------------
+DC1   CN=DC1,OU=Domain Controllers,DC=Reskit,DC=Org
+DC2   CN=DC2,OU=Domain Controllers,DC=Reskit,DC=Org
+UKDC1 CN=UKDC1,CN=Computers,DC=Reskit,DC=Org
+
+PS C:\Foo> # 2. Getting Computers in the UK Domain
+PS C:\Foo> Get-ADComputer -Filter * -Server UKDC1 |
+             Format-Table -Property Name, DistinguishedName
+
+Name  DistinguishedName
+----  -----------------
+UKDC1 CN=UKDC1,OU=Domain Controllers,DC=UK,DC=Reskit,DC=Org
+
+
+
+# 3. Creating a new computer in AD
+
+
+
+No Output
+
+
+
+# 4. Creating Credential Object for SRV1
+
+
+
+
+no Output
+
+
+
+# 5. Creating a script block to Join SRV1
+
+
+
+
+no Output
+
+
+PS C:\Foo> # 6. Joining the computer to the domain
+PS C:\Foo> Invoke-Command -ComputerName SRV1 -Credential $CredSRV1 -ScriptBlock $SB
+WARNING: The changes will take effect after you restart the computer SRV1.
+
+
+# 7. Restarting SRV1
+
+
+no Output
+
+
+
+
+PS C:\Foo> # 8. Viewing the resulting computer accounts for Reskit.Org
+PS C:\Foo> Get-ADComputer -Filter * -Properties DNSHostName,LastLogonDate |
+  Format-Table -Property Name, DNSHostName, Enabled
+
+Name  DNSHostName      Enabled
+----  -----------      -------
+DC1   DC1.Reskit.Org      True
+DC2   DC2.Reskit.Org      True
+UKDC1 UKDC1.Reskit.Org   False
+Wolf  Wolf.Reskit.Org     True
+SRV1  SRV1.Reskit.Org     True
