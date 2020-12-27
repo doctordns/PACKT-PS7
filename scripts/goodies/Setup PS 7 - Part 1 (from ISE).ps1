@@ -10,6 +10,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 Write-Host 'Updating PowerShellGet and Nuget'
 Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
+Get-Module | Remove-Module -Force
 Install-Module -Name PowerShellGet -Force -AllowClobber 
 
 # 3. Ensure the C:\Foo Folder exists
@@ -63,6 +64,7 @@ $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_
 # 8. Download the VS Code installation script from PS Gallery
 Write-Host "Download VS Code Installation Script"
 $VSCPATH = 'C:\Foo'
+Set-PSRepository -Name PSGallery     # just bacause
 Save-Script -Name Install-VSCode -Path $VSCPATH
 Set-Location -Path $VSCPATH
 
@@ -98,6 +100,3 @@ powercfg /change monitor-timeout-ac 0
 Write-Host "Close VS code, restart as admin and do part 2 inside VS Code"
 Write-Host "Make sure you use an elevated VS CODE!!"
 
-
-
-$pseditor | fc -Depth 3

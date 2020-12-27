@@ -3,7 +3,7 @@
 # Run this recipe on DC1 after promotion
 # Login as Enterprise Admin.
 
-# 1. Examine AD DSE
+# 1. Examining AD DSE
 Get-ADRootDSE -Server DC1.Reskit.Org
 
 # 2. Viewing AD forest details

@@ -3,7 +3,7 @@
 # Run in PS 7 on SRV1
 
 
-# 1. Simulate a long running script block
+# 1. Simulating a long running script block
 $SB1 = {
   1..3 | ForEach-Object {
     "In iteration $_"
@@ -12,10 +12,10 @@ $SB1 = {
 }
 Invoke-Command -ScriptBlock $SB1
 
-# 2. Time the expression
+# 2. Timing the expression
 Measure-Command -Expression $SB1
 
-# 3. Refactor into using jobs
+# 3. Refactoring into using jobs
 $SB2 = {
 1..3 | ForEach-Object {
   Start-Job -ScriptBlock {param($X) "Iteration $X " ;
@@ -24,14 +24,14 @@ $SB2 = {
 Get-Job | Wait-Job | Receive-Job -Keep
 }
 
-# 4. Invoke the script block
+# 4. Invoking the script block
 Invoke-Command -ScriptBlock $SB2
 
-# 5. Remove the old jobs and time the script block
+# 5. Removing any old jobs and timing the script block
 Get-Job | Remove-Job
 Measure-Command -Expression $SB2
 
-# 6. Define a script block using ForEach-Object -Parallel
+# 6. Defining a script block using ForEach-Object -Parallel
 $SB3 = {
 1..3 | ForEach-Object -Parallel {
                "In iteration $_"
@@ -39,13 +39,13 @@ $SB3 = {
          } 
 }
 
-# 7. Execute the script block
+# 7. Executing the script block
 Invoke-Command -ScriptBlock $SB3
 
-# 8. Now measure it
+# 8. Measuring the script block execution time
 Measure-Command -Expression $SB3
 
-# 9. Create then run two short script blocks
+# 9. Creating and running two short script blocks
 $SB4 = {
     1..3 | ForEach-Object {
                    "In iteration $_"
@@ -60,6 +60,6 @@ $SB5 = {
 }
 Invoke-Command -ScriptBlock $SB5    
 
-# 10. Measure time for both
+# 10. Measuring execution time for both script blocks
 Measure-Command -Expression $SB4    
 Measure-Command -Expression $SB5    

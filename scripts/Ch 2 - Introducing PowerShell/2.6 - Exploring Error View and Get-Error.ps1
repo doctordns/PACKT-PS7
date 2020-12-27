@@ -1,8 +1,8 @@
 # 2.6 - Exploring Error view and Get-Error
 #
-# Run in SRV1 after loading 
+# Run on SRV1 after installing PS 7 and VS Code
 
-# 1. Create a simple script
+# 1. Creating a simple script
 $SCRIPT = @'
   # divide by zero
   42/0  
@@ -10,26 +10,26 @@ $SCRIPT = @'
 $SCRIPTFILENAME = 'C:\Foo\ZeroDivError.ps1'
 $SCRIPT | Out-File -Path $SCRIPTFILENAME
 
-# 2. Run the script and see the default error view
+# 2. Running the script and see the default error view
 & $SCRIPTFILENAME
 
-# 3. Run the same line from the console
+# 3. Running the same line from the console
 42/0  
 
-# 4. View $ErrorView variable
+# 4. Viewing $ErrorView variable
 $ErrorView 
 
-# 5. View Potential values of Error View
+# 5. Viewing Potential values of Error View
 $Type = $ErrorView.GetType().FullName
 [System.Enum]::GetNames($Type)
 
-# 6. Set Value to Normal View and re-create the error
+# 6. Setting Value to Normal View and re-create the error
 $ErrorView = 'NormalView'
 & $SCRIPTFILENAME
 
-# 7. Set value to Category View and re-create the error
+# 7. Setting value to Category View and re-create the error
 $ErrorView = 'CategoryView'
 & $SCRIPTFILENAME
 
-# 8. Set back to ConciseView (default)
+# 8. Setting back to ConciseView (default)
 $ErrorView = 'ConciseView'

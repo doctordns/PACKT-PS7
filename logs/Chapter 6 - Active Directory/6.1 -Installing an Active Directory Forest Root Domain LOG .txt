@@ -73,15 +73,15 @@ Status         : Success
 
 PS C:\Foo> # 6. Creating Forest Root DC on DC1
 PS C:\Foo> $ADHT = @{
-  DomainName                    = 'Reskit.Org'
-  SafeModeAdministratorPassword = $PSS
-  InstallDNS                    = $true
-  DomainMode                    = 'WinThreshold'
-  ForestMode                    = 'WinThreshold'
-  Force                         = $true
-  NoRebootOnCompletion          = $true
-  WarningAction                 = 'SilentlyContinue'
-}
+             DomainName                    = 'Reskit.Org'
+             SafeModeAdministratorPassword = $PSS
+             InstallDNS                    = $true
+             DomainMode                    = 'WinThreshold'
+             ForestMode                    = 'WinThreshold'
+             Force                         = $true
+             NoRebootOnCompletion          = $true
+             WarningAction                 = 'SilentlyContinue'
+           }
 PS C:\Foo> Install-ADDSForest @ADHT
 
 RunspaceId     : 0da9f50f-16a7-4de2-8543-0f61b3e4adb7

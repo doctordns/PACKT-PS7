@@ -8,7 +8,7 @@
 Write-Output 'Something that succeeds'
 if ($?) {Write-Output 'It worked'}
 
-# 2. Check results With Pipeline operator &&
+# 2. Checking results With Pipeline operator &&
 Write-Output 'Something that succeeds' && Write-Output 'It worked'
 
 # 3. Using Pipeline chain operator  ||
@@ -16,15 +16,15 @@ Write-Output 'Something that succeeds' ||
   Write-Output 'You do not see this message'
 
 # 4. Define a simple function
-function Install-CacadiaPLFont{
+function Install-CascadiaPLFont{
   Write-Host 'Installing Cascadia PL font...'
 }
 
-# 5. Demonstrate || operator
+# 5. Using the || operator
 $OldErrorAction        = $ErrorActionPreference
 $ErrorActionPreference = 'SilentlyContinue'
-Get-ChildItem -Path C:\FOO\CASCADIAPL.TTF | OUT-NULL || 
-   Install-CacadiaPLFont
+Get-ChildItem -Path C:\FOO\CASCADIAPL.TTF  || 
+   Install-CascadiaPLFont
 $ErrorActionPreference = $OldErrorAction
 
 # Null Coalescing
@@ -36,7 +36,7 @@ Function Test-NCO {
   }
 }
 
-# 7.	Test null results traditionally
+# 7.	Testing null results traditionally
 $Result1 = Test-NCO    # no parameter
 if ($null -eq $Result1) {
     'Function returned no value'
@@ -50,49 +50,70 @@ if ($null -eq $Result2) {
     $Result2
 }
 
-# 8. Test using Null Coalescing operator ??
+# 8. Testing using Null Coalescing operator ??
 $Result3 =  Test-NCO
 $Result3 ?? 'Function returned no value'
 $Result4 =  Test-NCO 42
 $Result4 ?? 'This is not output, but result is'
 
-# 9. Demonstrate Null Conditional Assignment Operator
+# 9. Demonstrating the Null Conditional Assignment Operator
 $Result5 = Test-NCO
 $Result5 ?? 'Result is is null'
 $Result5 ??= Test-NCO 42
 $Result5
 
-# Null Conditional Operators
-
-# 10. Test running an method on a null object Traditionally
+# 10. Running a method on a null object traditionally
 $BitService.Stop()
 
-# 11. Show Null conditional operator for a method
+# 11. Using the Null conditional operator for a method
 ${BitService}?.Stop()
 
-# 12. Test Null property name access
+# 12. Testing Null property name access
 $x = $null
-${x}?.propname
+${x}?.Propname
 $x = @{Propname=42}
-${x}?.propname
+${x}?.Propname
 
-# 13. Test array member access if a null object
+# 13. Testing array member access if a null object
 $y = $null
 ${y}?[0]
 $y = 1,2,3
 ${y}?[0]
 
-# 14. Use Background processing operator &
+# 14. Using the bckground processing operator &
 Get-CimClass -ClassName Win32_Bios &
 
-# 15. Get the results of the job
-$JobId = (Get-Job | Select -last 1).Id
+# 15. Waiting for the job to complete
+$JobId = (Get-Job | Select-Object -Last 1).Id
 Wait-Job -id $JobId
-$Results = Receive-Job -Id $JobId
-$Results | 
-  Get-Member | 
-    Select-Object -First 1
 
-# 16. View the output
+
+# 16. Viewing the output
+$Results = Receive-Job -Id $JobId
 $Results
 
+# 17. Creating an object without using the ternary operator
+$A = 42; $B = (42,4242) | Get-Random
+$RandomTest = ($true, $false) | Get-Random
+if ($A -eq $B) {
+  $Property1 = $true
+} else {
+  $Property1 = $false
+}
+if ($RandomTest) {
+  $Property2 = 'Hello'
+} else {
+  $Property2 = 'Goodbye'
+}
+[PSCustomObject]@{
+  "Property1" = $Property1
+  "Property2" = $Property2
+} 
+
+
+# 18. Creating an object using the ternary operator
+[PSCustomObject]@{
+    "Property1" = (($A -eq $B) ? $true : $false)
+    "Property2" = (($RandomTest) ? 'Hello' : 'Goodbye')    
+}
+ 

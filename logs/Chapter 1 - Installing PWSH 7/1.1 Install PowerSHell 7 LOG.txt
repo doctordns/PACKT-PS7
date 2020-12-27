@@ -50,18 +50,19 @@ VERBOSE: About to download package from
 'https://github.com/PowerShell/PowerShell/releases/download/v7.1.0/PowerShell-7.1.0-win-x64.msi'
 
 
-PS C:\Foo> # 7. For the Adventurous - install the preview and daily builds as well
+PS C:\Foo> # 7. Installing the preview and daily builds as well (for the adventurous)
 PS C:\Foo> C:\Foo\Install-PowerShell.ps1 -Preview -Destination c:\PWSHPreview |
              Out-Null
 VERBOSE: Destination: C:\PWSHPreview
-VERBOSE: About to download package from 'https://github.com/PowerShell/PowerShell/releases/download/v7.1.0-preview.6/PowerShell-7.1.0-preview.6-win-x64.zip'
-PowerShell has been installed at C:\PWSHPreview
+VERBOSE: About to download package from 'https://github.com/PowerShell/PowerShell/releases/download/v7.2.0-preview.1/PowerShell-7.2.0'
+PowerShell has been installed at C:\PSPreview
 
-PS C:\Foo> C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PWSHDailBuild |
+PS C:\Foo> C:\Foo\Install-PowerShell.ps1 -Daily   -Destination c:\PWSHDailyBuild |
              Out-Null
-VERBOSE: Destination: C:\PWSHDailBuild
-VERBOSE: About to download package from 'https://pscoretestdata.blob.core.windows.net/v7-1-0-daily-20200909/PowerShell-7.1.0-daily.20200909-win-x64.zip'
-PowerShell has been installed at C:\PWSHDailBuild
+VERBOSE: Destination: C:\PWSHDaiylBuild
+VERBOSE: About to download package from 'https://pscoretestdata.blob.core.windows.net/v7-2-0-daily-20201207/PowerShell-7.2.0-daily.20
+201207-win-x64.zip'
+PowerShell has been installed at C:\PWSHDailyBuild
 
 
 
@@ -74,25 +75,50 @@ no output
 
 
 
-PS C:\Foo> # 9. Check versions of PowerShell 7 loaded
-PS C:\Foo> Get-ChildItem -Path C:\pwsh.exe -ErrorAction SilentlyContinue
+PS C:\Foo> # 9. Checking versions of PowerShell 7 loaded
+Get-ChildItem -Path C:\pwsh.exe -Recurse -ErrorAction SilentlyContinue
+
 
     Directory: C:\Program Files\PowerShell\7
 
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
--a----        15/07/2020     20:13         312192 pwsh.exe
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+-a----        06/11/2020     02:33         280456 pwsh.exe                                                                          
 
-    Directory: C:\PWSHDailBuild
 
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
--a----        09/09/2020     01:07         270848 pwsh.exe
+    Directory: C:\PSDailyBuild
 
-    Directory: C:\PWSHPreview
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+-a----        13/11/2020     01:08         269824 pwsh.exe                                                                          
 
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
--a----        14/08/2020     00:46         275336 pwsh.exe
 
+    Directory: C:\PSPreview
+
+Mode                 LastWriteTime         Length Name                                                                              
+----                 -------------         ------ ----                                                                              
+-a----        13/11/2020     20:03         274304 pwsh.exe 
+
+
+
+
+PS C:\Foo> # 10. Updating help
+PS C:\Foo> Update-Help -Force
+Update-Help : Failed to update Help for the module(s) 'PSReadline' with UI culture(s) {en-US} : Unable to retrieve the HelpInfo XML 
+file for UI culture en-US. Make sure the HelpInfoUri property in the module manifest is valid or check your network connection and 
+then try the command again.
+At line:2 char:1
++ Update-Help -Force
++ ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ResourceUnavailable: (:) [Update-Help], Exception
+    + FullyQualifiedErrorId : UnableToRetrieveHelpInfoXml,Microsoft.PowerShell.Commands.UpdateHelpCommand
+ 
+Update-Help : Failed to update Help for the module(s) 'PlatformIdentifier' with UI culture(s) {en-US} : Unable to connect to Help 
+content. The server on which Help content is stored might not be available. Verify that the server is available, or wait until the 
+server is back online, and then try the command again.
+At line:2 char:1
++ Update-Help -Force
++ ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [Update-Help], Exception
+    + FullyQualifiedErrorId : UnableToConnect,Microsoft.PowerShell.Commands.UpdateHelpCommand
 

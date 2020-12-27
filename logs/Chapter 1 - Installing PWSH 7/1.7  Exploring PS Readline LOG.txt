@@ -4,22 +4,22 @@
 
 
 
-
-PS C:\Foo> # 1. Get Commands in the PSReadline module
+PS C:\Foo> # 1. Getting Commands in the PSReadLine module
 PS C:\Foo> Get-Command -Module PSReadLine
 
-CommandType   Name                          Version   Source
------------   ----                          -------   ------
-Function      PSConsoleHostReadLine         2.0.2     PSReadLine
-Cmdlet        Get-PSReadLineKeyHandler      2.0.2     PSReadLine
-Cmdlet        Get-PSReadLineOption          2.0.2     PSReadLine
-Cmdlet        Remove-PSReadLineKeyHandler   2.0.2     PSReadLine
-Cmdlet        Set-PSReadLineKeyHandler      2.0.2     PSReadLine
-Cmdlet        Set-PSReadLineOption          2.0.2     PSReadLine
+CommandType  Name                         Version  Source
+-----------  ----                         -------  ------
+Function     PSConsoleHostReadLine        2.1.0    PSReadLine
+Cmdlet       Get-PSReadLineKeyHandler     2.1.0    PSReadLine
+Cmdlet       Get-PSReadLineOption         2.1.0    PSReadLine
+Cmdlet       Remove-PSReadLineKeyHandler  2.1.0    PSReadLine
+Cmdlet       Set-PSReadLineKeyHandler     2.1.0    PSReadLine
+Cmdlet       Set-PSReadLineOption         2.1.0    PSReadLine
 
 
 
-PS C:\Foo> # 2. Get the first 10 PSReadline key handlers
+
+PS C:\Foo> # 2. Getting the first 10 PSReadLine key handlers
 PS C:\Foo> Get-PSReadLineKeyHandler |
             Select-Object -First 10
               Sort-Object -Property Key |
@@ -48,13 +48,13 @@ Ctrl+c         CopyOrCancelLine   Either copy selected text to the clipboard, or
 Ctrl+x         Cut                Delete selected region placing deleted text in the system clipboard
 
 
-PS C:\Foo> # 3. Discover a count of unbound key handlers
+PS C:\Foo> # 3. Discovering a count of unbound key handlers
 PS C:\Foo> $Unbound = (Get-PSReadLineKeyHandler -Unbound).count
 PS C:\Foo> "$Unbound unbound key handlers"
-110 unbound key handlers
+116 unbound key handlers
 
 
-PS C:\Foo> # 4. Get the PSReadline options
+PS C:\Foo> # 4. Getting the PSReadLine options
 PS C:\Foo> Get-PSReadLineOption
 
 EditMode                               : Windows
@@ -102,7 +102,7 @@ VariableColor                          : "`e[92m
 
 
 
-# 5.	Determine VS Code theme name
+# 5.	Determining the S Code theme name
 
 
 
@@ -110,7 +110,7 @@ NO OUTPUT
 
 
 
-# 6. If theme is VS Light, change the color scheme in Profile          
+# 6. Changing the VS Code colors   
 
 
 no output

@@ -7,50 +7,131 @@
 
 
 
-# 1. Download the VS Code installation script from PS Gallery
+# 1. Downloading the VS Code installation script from PS Gallery
 
 no output
 
 
-PS C:\Foo> # 2. Now run it and add in some popular VSCode Extensions
-PS C:\Foo> $Extensions =  'Streetsidesoftware.code-spell-checker',
->>                'yzhang.markdown-all-in-one',
->>                'hediet.vscode-drawio'
-PS C:\Foo> $InstallHT = @{
->>   BuildEdition         = 'Stable-System'
->>   AdditionalExtensions = $Extensions
->>   LaunchWhenDone       = $true
->> }
-PS C:\Foo> .\Install-VSCode.ps1 @InstallHT
 
+
+PS C:\Foo> # 2. Running the installation script and add in some popular extensions
+PS C:\Foo> $Extensions =  'Streetsidesoftware.code-spell-checker',
+                          'yzhang.markdown-all-in-one',
+                          'hediet.vscode-drawio'
+PS C:\Foo> $InstallHT = @{
+             BuildEdition         = 'Stable-System'
+             AdditionalExtensions = $Extensions
+             LaunchWhenDone       = $true
+           }
+PS C:\Foo> .\Install-VSCode.ps1 @InstallHT | Out-Null
 
 Installing extension ms-vscode.PowerShell...
 Installing extensions...
 Installing extension 'ms-vscode.powershell' v2020.6.0...
-(node:4916) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
-Extension 'ms-vscode.powershell' v2020.6.0 was successfully installed.
 
 Installing extension Streetsidesoftware.code-spell-checker...
-Installing extensions...
-Installing extension 'streetsidesoftware.code-spell-checker' v1.9.0...
-(node:3016) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
-Extension 'streetsidesoftware.code-spell-checker' v1.9.0 was successfully installed.
 
 Installing extension yzhang.markdown-all-in-one...
-Installing extensions...
-Installing extension 'yzhang.markdown-all-in-one' v3.3.0...
-(node:4672) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
-Extension 'yzhang.markdown-all-in-one' v3.3.0 was successfully installed.
 
 Installing extension hediet.vscode-drawio...
-Installing extensions...
-Installing extension 'hediet.vscode-drawio' v0.7.2...
-(node:4964) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
-Extension 'hediet.vscode-drawio' v0.7.2 was successfully installed.
 
 Installation complete, starting Visual Studio Code (64-bit)...
 
 
 
+# 3. Exiting from VS Code
 
+
+No output
+
+
+# 4. Restarting VS Code as an Administrator
+
+
+
+
+No output
+
+
+
+# 5. Opening a new VS Code Terminal window
+
+
+
+PS C:\Foo> # 6. 6.	Creating a Current User\Current Host profile for VS Code
+PS C:\Foo> $SAMPLE =
+             'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
+             'scripts/goodies/Microsoft.VSCode_profile.ps1'
+PS C:\Foo> (Invoke-WebRequest -Uri $Sample).Content |
+             Out-File $Profile
+
+
+
+
+
+
+# 7. Updating user settings for VS Code    
+
+
+no output but screen changes colour as settings immediate take effect
+
+
+
+# 8. Creating a short cut to VSCode
+
+
+no output
+
+
+# 9. Creating a short cut to PowerShell 7
+
+no output
+
+
+# 10. Building an updated Layout XML file
+
+
+no output
+
+
+
+# 11. Importing the  start layout XML file
+
+
+
+no putout
+
+
+
+# 12.  Creating a profile file for PWSH 7 Consoles  
+
+
+no outpout
+
+
+
+
+# 13. Logging off 
+
+no output
+
+
+
+# 14. Logging into Windows to observe the updated task bar
+
+
+but see screen
+
+
+
+# 15.Running PowerShell console and observe the profile file running
+
+see output
+
+
+
+# 16. Running VS Code from shortcut and observe the profile file running
+
+
+see vs code ouutput
 

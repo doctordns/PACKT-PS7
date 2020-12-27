@@ -2,23 +2,23 @@
 #
 #  Run on SRV1
 
-# 1. Get Commands in the PSReadline module
+# 1. Getting Commands in the PSReadline module
 Get-Command -Module PSReadLine
 
-# 2. Get the first 10 PSReadline key handlers
+# 2. Getting the first 10 PSReadLine key handlers
 Get-PSReadLineKeyHandler |
   Select-Object -First 10
     Sort-Object -Property Key |
       Format-Table -Property Key, Function, Description
 
-# 3. Discover a count of unbound key handlers
+# 3. Discovering a count of unbound key handlers
 $Unbound = (Get-PSReadLineKeyHandler -Unbound).count
 "$Unbound unbound key handlers"
 
-# 4. Get the PSReadline options
+# 4. Getting the PSReadline options
 Get-PSReadLineOption 
 
-# 5.	Determine VS Code theme name
+# 5.	Determining the VS Code theme name
 $Path       = $Env:APPDATA
 $CP         = '\Code\User\Settings.json'
 $JsonConfig = Join-Path  $Path -ChildPath $CP
@@ -27,8 +27,7 @@ $Theme = $ConfigJson |
            ConvertFrom-Json |
              Select-Object -ExpandProperty 'workbench.colorTheme'
 
-# 6. If the theme name is the Visual Studio Light, 
-#    change the color scheme
+# 6. Changing the VS Code colors
 If ($Theme -eq 'Visual Studio Light') {
   Set-PSReadLineOption -Colors @{
     Member    = "`e[33m"

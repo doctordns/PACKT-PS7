@@ -36,7 +36,7 @@ $EXTHT = @{
 }
 C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
-# 7. Installing the preview and daily builds as well (for the advenerous)
+# 7. Installing the preview and daily builds (for the adventurous)
 C:\Foo\Install-PowerShell.ps1 -Preview -Destination C:\PSPreview |
   Out-Null
 C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
@@ -45,19 +45,19 @@ C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
 # 8. Creating Windows PowerShell default profiles
 $URI = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
        '/scripts/goodies/Microsoft.PowerShell_Profile.ps1'
-$ProfileFile = $Profile.CurrentUserCurrentHost
+$ProfileFile    = $Profile.CurrentUserCurrentHost
 New-Item $ProfileFile -Force -WarningAction SilentlyContinue |
    Out-Null
 (Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
   Out-File -FilePath  $ProfileFile
-$ProfilePath = Split-Path -Path $ProfileFile
-$ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_profile.ps1'
+$ProfilePath    = Split-Path -Path $ProfileFile
+$ChildPath      = 'Microsoft.PowerShell_profile.ps1'
+$ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath $ChildPath
 (Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
   Out-File -FilePath  $ConsoleProfile
 
-# 9. Check versions of PowerShell 7 loaded
+# 9. Checking versions of PowerShell 7 loaded
 Get-ChildItem -Path C:\pwsh.exe -Recurse -ErrorAction SilentlyContinue
 
-
-# 10 Upate help
+# 10. Updating Windows PowerShell help
 Update-Help -Force

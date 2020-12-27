@@ -1,0 +1,141 @@
+# 7.1 - Configuring an IP address
+
+# Run this code on SRV2 directly
+# Ensure that SRV2 is a work group server.
+
+
+
+PS C:\Foo> # 1. Discovering the adapter, adapter interface and adapter interfaace index
+PS C:\Foo> $IPType    = 'IPv4'
+PS C:\Foo> $Adapter   = Get-NetAdapter |  Where-Object Status -eq 'Up'
+PS C:\Foo> $Interface = $Adapter | Get-NetIPInterface -AddressFamily $IPType
+PS C:\Foo> $Index     = $Interface.IfIndex
+PS C:\Foo> Get-NetIPAddress -InterfaceIndex $Index -AddressFamily $IPType |
+             Format-Table -Property Interface*, IPAddress, PrefixLength
+
+InterfaceAlias InterfaceIndex IPAddress       PrefixLength
+-------------- -------------- ---------       ------------
+Ethernet                    6 169.254.140.135           16
+
+
+
+
+PS C:\Foo> # 2. Setting a new IP address for the NIC
+PS C:\Foo> $IPHT = @{
+             InterfaceIndex = $Index
+             PrefixLength   = 24
+             IPAddress      = '10.10.10.51'
+             DefaultGateway = '10.10.10.254'
+             AddressFamily  = $IPType
+           }
+PS C:\Foo> New-NetIPAddress @IPHT
+
+IPAddress         : 10.10.10.51
+InterfaceIndex    : 6
+InterfaceAlias    : Ethernet
+AddressFamily     : IPv4
+Type              : Unicast
+PrefixLength      : 24
+PrefixOrigin      : Manual
+SuffixOrigin      : Manual
+AddressState      : Tentative
+ValidLifetime     : Infinite ([TimeSpan]::MaxValue)
+PreferredLifetime : Infinite ([TimeSpan]::MaxValue)
+SkipAsSource      : False
+PolicyStore       : ActiveStore
+
+
+
+
+
+PS C:\Foo> # 3. Verifying the new IP address
+PS C:\Foo> Get-NetIPAddress -InterfaceIndex $Index -AddressFamily $IPType |
+             Format-Table IPAddress, InterfaceIndex, PrefixLength
+
+IPAddress   InterfaceIndex PrefixLength
+---------   -------------- ------------
+10.10.10.51              6           24
+
+
+
+
+
+# 4. Setting DNS Server IP address
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 5. Verifying the new IP configuration
+PS C:\Foo> Get-NetIPAddress -InterfaceIndex $Index -AddressFamily $IPType |
+             Format-Table
+
+ifIndex IPAddress   PrefixLength PrefixOrigin SuffixOrigin AddressState PolicyStore
+------- ---------   ------------ ------------ ------------ ------------ -----------
+6       10.10.10.51           24 Manual       Manual       Preferred    ActiveStore
+
+
+
+
+
+PS C:\Foo> # 6. Testing that SRV2 can see the domain controller
+PS C:\Foo> Test-NetConnection -ComputerName DC1.Reskit.Org |
+             Format-Table
+
+ComputerName   RemotePort RemoteAddress PingSucceeded PingReplyDetails (RTT) TcpTestSucceeded
+------------   ---------- ------------- ------------- ---------------------- ----------------
+DC1.Reskit.Org 0          10.10.10.10   True          0 ms                   False
+
+
+
+
+# 7. Creating credential for DC1
+
+
+no output
+
+
+
+# 8. Setting WinRM to trust DC1
+
+
+
+
+
+
+# 9. Enabling non-secure updates to Reskit.Org DNS domain
+
+
+no output
+
+
+
+# 10. Ensuring host writes to reskit.org DNS domain
+
+
+
+no output
+
+
+
+
+# 11. Registering host IP address at DC1
+
+
+
+no output
+
+
+
+
+PS WSMan:\localhost\Client> # 12. Test the DNS server on DC1.Reskit.Org correctly resolves SRV2.
+
+PS WSMan:\localhost\Client> Resolve-DnsName -Name SRV2.Reskit.Org -Type 'A' -Server DC1.Reskit.Org
+
+Name              Type  TTL   Section   IPAddress
+----              ----  ---   -------   ---------
+SRV2.Reskit.Org   A     1200  Answer    10.10.10.51
+

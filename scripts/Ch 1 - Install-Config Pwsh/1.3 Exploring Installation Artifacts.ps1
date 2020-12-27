@@ -2,21 +2,21 @@
 #
 # Run in PWSH 7 Console
 
-# 1. Check Version Number
+# 1. Checking the version table for PowerShell 7 console
 $PSVersionTable
 
-# 2. Examine the installation folder
+# 2. Examining the PowerShell 7 installation folder
 Get-Childitem -Path $env:ProgramFiles\PowerShell\7 -Recurse |
   Measure-Object -Property Length -Sum
 
-# 3. Look at PowerShell Configuration JSON file
+# 3. Viewing PowerShell 7 configuration JSON file
 Get-ChildItem -Path $env:ProgramFiles\PowerShell\7\powershell*.json | 
   Get-Content
 
-# 4. Check Execution Policy
+# 4. Checking initial Execution Policy for PowerShell 7
 Get-ExecutionPolicy  
 
-# 5. View Module folders
+# 5. Viewing module folders
 $I = 0
 $ModPath = $env:PSModulePath -split ';'
 $ModPath |
@@ -24,9 +24,8 @@ $ModPath |
     "[{0:N0}]   {1}" -f $I++, $_
   }
 
-# 6. View the Modules
+# 6. Checking the modules
 $TotalCommands = 0
-$TotalModules  = 0
 Foreach ($Path in $ModPath){
   Try { $Modules = Get-ChildItem -Path $Path -Directory -ErrorAction Stop 
         "Checking Module Path:  [$Path]"
@@ -34,17 +33,16 @@ Foreach ($Path in $ModPath){
   Catch [System.Management.Automation.ItemNotFoundException] {
     "Module path [$path] DOES NOT EXIST ON $(hostname)"
   }
+  $CmdsInPath = 0
   Foreach ($Module in $Modules) {
-    # "Module [$($module.name)] - Commands: [$($Cmds.Count)]"
+    $Cmds = Get-Command -Module ($Module.name)
     $TotalCommands += $Cmds.Count
-    $TotalModules ++
   }
-  ""
 }
 
-# 7. View totals of command and modules
-Get-Module * | Measure-Object
-"{0} commands in {1} modules" -f $TotalCommands, $TotalModules
+# 7. Viewing totals of commands and modules
+$Mods = (Get-Module * -ListAvailable | Measure-Object).count
+"{0} modules providing {1} commands" -f $Mods,$TotalCommands
 
 
 

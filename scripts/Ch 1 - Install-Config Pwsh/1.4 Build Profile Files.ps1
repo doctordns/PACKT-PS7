@@ -2,11 +2,11 @@
 
 # Run on SRV1 after installing PowerShell 7
 
-# 1. Discover the profile file names
-$ProfileFiles = $profile |  Get-Member -MemberType NoteProperty
+# 1. Discovering the profile file names
+$ProfileFiles = $PROFILE |  Get-Member -MemberType NoteProperty
 $ProfileFiles | Format-Table -Property Name, Definition
 
-# 2. Check for Existence of each PowerShell Profile Files
+# 2. Checking for existence of each PowerShell profile files
 Foreach ($ProfileFile in $ProfileFiles){
   "Testing $($ProfileFile.Name)"
   $ProfilePath = $ProfileFile.Definition.split('=')[1]
@@ -20,20 +20,20 @@ Foreach ($ProfileFile in $ProfileFiles){
   ""
 }  
 
-# 3. Discover Current User Current Host Profile
-$CUCHProfile = $profile.CurrentUserCurrentHost
-"Current user, current host profile path: [$CUCHPROFILE]"
+# 3. Discovering Current User/Current Host Profile
+$CUCHProfile = $PROFILE.CurrentUserCurrentHost
+"Current User/Current Host profile path: [$CUCHPROFILE]"
 
-# 4. Create Current user/Current host profile
+# 4. Creating a Current User/Current Host profile for PowerShell 7 console
 $URI = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
        'scripts/goodies/Microsoft.PowerShell_Profile.ps1'
 New-Item $CUCHProfile -Force -WarningAction SilentlyContinue |
    Out-Null
-(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
+(Invoke-WebRequest -Uri $URI).Content | 
   Out-File -FilePath  $CUCHProfile
 
-# 5. Existing from PowerShell 7 console  
+# 5. Exiting from PowerShell 7 console  
 Exit-PSHostProcess
 
-# 6. After Restarting PowerShell 7
-Get-ChildItem -Path $Profile
+# 6. Restarting the PowerShell 7 console and viewing the profile output at startup
+Get-ChildItem -Path $PROFILE

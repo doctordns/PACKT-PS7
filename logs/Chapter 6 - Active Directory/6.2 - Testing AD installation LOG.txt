@@ -1,11 +1,11 @@
 # 6.2 - Testing AD Installation
 
 # Run this recipe on DC1 after promotion
-# Login as Enterprise Admin.
+# Login as Enterprise Admin (Reskit\Administrator)
 
 
 
-PS C:\Foo> # 1. Examine AD DSE
+PS C:\Foo> # 1. Examining AD DSE
 PS C:\Foo> Get-ADRootDSE -Server DC1.Reskit.Org
 
 configurationNamingContext    : CN=Configuration,DC=Reskit,DC=Org

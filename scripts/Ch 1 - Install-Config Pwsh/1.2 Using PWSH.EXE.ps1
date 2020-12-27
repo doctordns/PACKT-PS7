@@ -7,17 +7,17 @@
 
 Start/PWSH/Return
 
-# 2. View the PowerShell Version
+# 2. Viewing the PowerShell Version
 $PSVersionTable
 
-# 3. View the $Host variable
+# 3. Viewing the $Host variable
 $Host
 
-# 4. Look at the PowerShell process
+# 4. Looking at the PowerShell process
 Get-Process -Id $PID| 
-  Format-Custom MainModule -Depth 1
+  Format-Custom -Property MainModule -Depth 1
 
-# 5. Look at resource usage statistics
+# 5. Looking at resource usage statistics
 Get-Process -Id $PID | 
   Format-List CPU,*Memory* 
 
