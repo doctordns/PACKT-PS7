@@ -31,7 +31,7 @@ $Pol2 = New-GPO -Name 'Screen Saver Time Out'
 $Pol2.GpoStatus   = 'ComputerSettingsDisabled'
 $Pol2.Description = '15 minute timeout'
 
-# 5. Seting a Group Policy enforced registry value
+# 5. Setting a Group Policy enforced registry value
 $EPHT3= @{
   Name   = 'Screen Saver Time Out'
   Key    = 'HKCU\Software\Policies\Microsoft\Windows\'+

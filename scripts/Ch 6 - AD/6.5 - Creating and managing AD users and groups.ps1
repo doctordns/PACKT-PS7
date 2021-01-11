@@ -1,6 +1,7 @@
 ﻿# 6.5 - Creating and managing AD users and groups
 
 # Run on DC1 after it is a DC, and after DC2, UKDC1 created as DCs
+# Assumes UKDC1 was originally a domain joined computer in the Reskit.Org domain.
 
 # 1.Creating a hash table for general user attributes
 $PW  = 'Pa$$w0rd'
@@ -82,7 +83,7 @@ $RUHT = @{
   Confirm  = $false}
 Remove-ADUser @RUHT
 
-# 10. Updatating a user object
+# 10. Updating a user object
 $TLHT =@{
   Identity     = 'ThomasL'
   OfficePhone  = '4416835420'

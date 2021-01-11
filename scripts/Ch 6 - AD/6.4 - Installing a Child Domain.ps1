@@ -3,21 +3,21 @@
 # Run on UKDC1 - a domain joined server initially in the Reskit.Org domain
 # also, have DC1.Reskit.Org online
 
-# 1. Import the ServerManager module
+# 1. Importing the ServerManager module
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
 
-# 2. Check DC1 can be resolved
+# 2. Checking DC1 can be resolved
 Resolve-DnsName -Name DC1.Reskit.Org -Type A
 
 # 3. Checking network connection to DC1
 Test-NetConnection -ComputerName DC1.Reskit.Org -Port 445
 Test-NetConnection -ComputerName DC1.Reskit.Org -Port 389
 
-# 4. Add the AD DS features on UKDC1
+# 4. Adding the AD DS features on UKDC1
 $Features = 'AD-Domain-Services'
 Install-WindowsFeature -Name $Features -IncludeManagementTools
 
-# 5. Creating a Credential and installation hash table
+# 5. Creating a credential and installation hash table
 Import-Module -Name ADDSDeployment -WarningAction SilentlyContinue
 $URK    = "Administrator@Reskit.Org" 
 $PW     = 'Pa$$w0rd'
@@ -40,8 +40,8 @@ Install-ADDSDomain @INSTALLHT
 
 ### after roboot - login as UK\Administrator  
 
-# 7. Look at AD forest
+# 7. Looking at the AD forest
 Get-ADForest -Server UKDC1.UK.Reskit.Org
 
-# 8. Look at UK domain
+# 8. Looking at the UK domain
 Get-ADDomain -Server UKDC1.UK.Reskit.Org

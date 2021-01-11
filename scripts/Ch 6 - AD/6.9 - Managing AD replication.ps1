@@ -1,44 +1,59 @@
+# 6.9 Invastigagint Managing AD Replication
 
+# run on DC1, with DC2, UKDC1 up and running
 
-# Check replication
-Get-ADReplicationPartnerMetadata -Target DC1.Reskit.Org -PartnerType Both
+# 1. Checking replication partners for DC1
+Get-ADReplicationPartnerMetadata -Target DC1.Reskit.Org   | 
+  Format-List -Property Server, PartnerType, Partner, 
+                        Partition, LastRep* 
 
+# 2. Checking AD replication partner metadata in the domain                  
+Get-ADReplicationPartnerMetadata -Target Reskit.Org -Scope Domain |
+  Format-Table -Property Server, P*Type, Last*
 
-Get-ADReplicationPartnerMetadata -Target Reskit.Org -Scope Domain
-
-
-
-
-## Active Directory Domain Controller Replication Status##
-$Domaincontroller = 'DC1'
-
-## Define Objects ##
-
-$report = New-Object PSObject -Property @{
-  ReplicationPartners = $null
-  LastReplication = $null
-  FailureCount = $null
-  FailureType = $null
-  FirstFailure = $null
+# 3. Investigating group membership metadata
+$REPLHT = @{
+  Object              = (Get-ADGroup -Identity 'IT Team')
+  Attribute           = 'Member'
+  ShowAllLinkedValues = $true
+  Server              = (Get-ADDomainController)
 }
+Get-ADReplicationAttributeMetadata @REPLHT |
+  Format-Table -Property A*NAME, A*VALUE, *TIME
 
+# 4. Adding two users to the group and removing one
+Add-ADGroupMember -Identity "IT Team" -members Malcolm
+Add-ADGroupMember -Identity "IT Team" -members Claire
+Remove-ADGroupMember -Identity "IT Team" -members Claire -Confirm:$False
+
+# 5 Checking updated metadata
+Get-ADReplicationAttributeMetadata @REPLHT |
+  Format-Table -Property A*NAME,A*VALUE, *TIME
+
+# 6. Creating an initial replication failure report
+$DomainController = 'DC1'
+$Report = [ordered] @{}
 ## Replication Partners ##
-$ReplMeta                   = Get-ADReplicationPartnerMetadata -Target $domaincontroller
-$report.ReplicationPartners = $ReplMeta.Partner
-$report.LastReplication     = $ReplMeta.LastReplicationSuccess
+$ReplMeta = 
+    Get-ADReplicationPartnerMetadata -Target $DomainController
+$Report.ReplicationPartners = $ReplMeta.Partner
+$Report.LastReplication     = $ReplMeta.LastReplicationSuccess
 ## Replication Failures ##
-$REPLF = Get-ADReplicationFailure -Target $domaincontroller
-$report.FailureCount  = $REPLF.FailureCount
-$report.FailureType   = $REPLF.FailureType
-$report.FirstFailure  = $REPLF.FirstFailureTime
-## Format Output ##
-$report | select ReplicationPartners,LastReplication,FirstFailure,FailureCount,FailureType
+$REPLF = Get-ADReplicationFailure -Target $DomainController
+$Report.FailureCount  = $REPLF.FailureCount
+$Report.FailureType   = $REPLF.FailureType
+$Report.FirstFailure  = $REPLF.FirstFailureTime
+$Report.LastFailure   = $REPLF.LastFailure
+$Report 
 
+# 7 Simulating a connection issue
+Stop-Computer DC2  -Force
+Start-Sleep -Seconds 30
 
-# Simulate an issue
-Stop-computer DC2  -Force
+# 8.  Making a change to this AD
+Get-AdUser -identity BillyBob  | 
+  Set-AdUser -Office "Cookham Office" -Server DC1
 
+# 9. Using Repadmin to generate a status report
+repadmin /replsummary
 
-
-
-Get-ADReplicationPartnerMetadata -Target UKDC1 -Partition Schema

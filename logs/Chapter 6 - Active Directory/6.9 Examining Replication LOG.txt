@@ -1,0 +1,166 @@
+# 6.9 Investigating AD Replication
+
+# Run on DC1, with DC2, ukdc1 up and running
+
+
+PS C:\Foo> # 1. Checking replication partners for DC1
+PS C:\Foo> Get-ADReplicationPartnerMetadata -Target DC1.Reskit.Org   |
+             Format-List -Property Server, PartnerType, Partner,
+                                   Partition, LastRep*
+
+Server                 : DC1.Reskit.Org
+PartnerType            : Inbound
+Partner                : CN=NTDS Settings,CN=DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=Reskit,DC=Org
+Partition              : DC=Reskit,DC=Org
+LastReplicationAttempt : 02/01/2021 15:45:10
+LastReplicationResult  : 0
+LastReplicationSuccess : 02/01/2021 15:45:10
+
+
+
+
+PS C:\Foo> # 2. Checking AD replication partner metadata in the domain
+PS C:\Foo> Get-ADReplicationPartnerMetadata -Target Reskit.Org -Scope Domain |
+             Format-Table -Property Server, P*Type, Last*
+
+Server         PartnerType LastChangeUsn LastReplicationAttempt LastReplicationResult LastReplicationSuccess
+------         ----------- ------------- ---------------------- --------------------- ----------------------
+DC1.Reskit.Org     Inbound        172044 02/01/2021 16:10:13                        0 02/01/2021 16:10:13
+DC2.Reskit.Org     Inbound        107760 02/01/2021 16:14:13                        0 02/01/2021 16:14:13
+
+
+PS C:\Foo> # 3. Investigating Group Membership metadata
+PS C:\Foo> $REPLHT = @{
+             Object              = (Get-ADGroup -Identity 'IT Team')
+             Attribute           = 'Member'
+             ShowAllLinkedValues = $true
+             Server              = (Get-ADDomainController)
+           }
+PS C:\Foo> Get-ADReplicationAttributeMetadata @REPLHT |
+             Format-Table -Property A*NAME, A*VALUE, *TIME
+
+AttributeName AttributeValue                           FirstOriginatingCreateTime LastOriginatingChangeTime LastOriginatingDeleteTime
+------------- --------------                           -------------------------- ------------------------- -------------------------
+member        CN=Jerry Garcia,OU=IT,DC=Reskit,DC=Org   06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+member        CN=Rebecca Tanner,OU=IT,DC=Reskit,DC=Org 06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+member        CN=ThomasL,OU=IT,DC=Reskit,DC=Org        06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+
+
+# 4. Adding two users to the group anbd removing one
+
+
+no output
+
+
+
+# 2. Checking AD replication replication metadata in the domain
+PS C:\Foo> Get-ADReplicationPartnerMetadata -Target Reskit.Org -Scope Domain |
+             Format-Table -Property Server, P*Type, Last*
+
+Server         PartnerType LastChangeUsn LastReplicationAttempt LastReplicationResult LastReplicationSuccess
+------         ----------- ------------- ---------------------- --------------------- ----------------------
+DC1.Reskit.Org     Inbound        188065 04/01/2021 12:24:20                        0 04/01/2021 12:24:20
+DC2.Reskit.Org     Inbound        117296 04/01/2021 12:24:35                        0 04/01/2021 12:24:35
+
+
+
+
+
+
+PS C:\Foo> # 3. Investigating group membership metadatga
+PS C:\Foo> $REPLHT = @{
+             Object              = (Get-ADGroup -Identity 'IT Team')
+             Attribute           = 'Member'
+             ShowAllLinkedValues = $true
+             Server              = (Get-ADDomainController)
+           }
+PS C:\Foo> Get-ADReplicationAttributeMetadata @REPLHT |
+             Format-Table -Property A*NAME,A*VALUE, *TIME
+
+AttributeName AttributeValue                           FirstOriginatingCreateTime LastOriginatingChangeTime LastOriginatingDeleteTime
+------------- --------------                           -------------------------- ------------------------- -------------------------
+member        CN=Jerry Garcia,OU=IT,DC=Reskit,DC=Org   06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+member        CN=Rebecca Tanner,OU=IT,DC=Reskit,DC=Org 06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+member        CN=ThomasL,OU=IT,DC=Reskit,DC=Org        06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+
+
+# 4. Adding two users to the group and removing one
+
+no output
+
+
+
+
+
+PS C:\Foo> # 5. Checking the updated metadata
+PS C:\Foo> Get-ADReplicationAttributeMetadata @REPLHT |
+             Format-Table -Property A*NAME,A*VALUE, *TIME
+
+AttributeName AttributeValue                           FirstOriginatingCreateTime LastOriginatingChangeTime LastOriginatingDeleteTime
+------------- --------------                           -------------------------- ------------------------- -------------------------
+member        CN=Claire,OU=IT,DC=Reskit,DC=Org         02/01/2021 15:57:45        02/01/2021 15:58:17       02/01/2021 15:58:17
+member        CN=Malcolm,OU=IT,DC=Reskit,DC=Org        02/01/2021 15:57:41        02/01/2021 15:57:41       01/01/1601 00:00:00
+member        CN=Jerry Garcia,OU=IT,DC=Reskit,DC=Org   06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+member        CN=Rebecca Tanner,OU=IT,DC=Reskit,DC=Org 06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+member        CN=ThomasL,OU=IT,DC=Reskit,DC=Org        06/12/2020 16:33:54        06/12/2020 16:33:54       01/01/1601 00:00:00
+
+
+
+
+
+PS C:\Foo> # 6. Creating a initial replication failure report
+PS C:\Foo> $DomainController = 'DC1'
+PS C:\Foo> $Report = [p0rdered] @{}
+PS C:\Foo> ## Replication Partners ##
+PS C:\Foo> $ReplMeta =
+             Get-ADReplicationPartnerMetadata -Target $DomainController
+PS C:\Foo> $Report.ReplicationPartners = $ReplMeta.Partner
+PS C:\Foo> $Report.LastReplication     = $ReplMeta.LastReplicationSuccess
+PS C:\Foo> ## Replication Failures ##
+PS C:\Foo> $REPLF = Get-ADReplicationFailure -Target $DomainController
+PS C:\Foo> $Report.FailureCount  = $REPLF.FailureCount
+PS C:\Foo> $Report.FailureType   = $REPLF.FailureType
+PS C:\Foo> $Report.FirstFailure  = $REPLF.FirstFailureTime
+PS C:\Foo> $Report
+
+Name                           Value
+----                           -----
+FailureCount                   {0, 0}
+LastReplication                02/01/2021 16:10:13
+FirstFailure                   {21/12/2020 23:56:06, 21/12/2020 23:56:06}
+ReplicationPartners            CN=NTDS Settings,CN=DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=Reskit,DC=Org
+FailureType                    {Link, Link}
+
+
+
+
+# 7 Simulating a connection issue
+
+
+no output
+
+
+
+# 8.  Making a change to this AD
+
+
+No output
+
+
+
+
+PS C:\Foo> # 9. Using Repadmin to generate a status report
+PS C:\Foo> repadmin /replsummary
+Replication Summary Start Time: 2021-01-02 16:46:26
+
+Beginning data collection for replication summary, this may take awhile:
+  ......
+
+Source DSA          largest delta    fails/total %%   error
+ DC1                       46m:33s    0 /   3    0
+ DC2                   01h:47m:36s    4 /   7   57  (1722) The RPC server is unavailable.
+ UKDC1                 01h:01m:16s    0 /   3    0
+
+Experienced the following operational errors trying to retrieve replication information:
+          58 - DC2.Reskit.Org
+

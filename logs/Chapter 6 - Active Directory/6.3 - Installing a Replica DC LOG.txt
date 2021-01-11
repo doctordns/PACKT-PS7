@@ -4,24 +4,25 @@
 # Login as Reskit\Administrator
 
 
-# 1. Import the Server Manager Module
+# 1. Import the Server Manager module
 
 
 NO OUTPUT
 
 
 
-PS C:\Foo> # 2. Check DC1 can be resolved
+PS C:\Foo> # 2. Checking DC1 can be resolved
 PS C:\Foo> Resolve-DnsName -Name DC1.Reskit.Org -Type A
 
-Name                                           Type   TTL   Section    IPAddress
-----                                           ----   ---   -------    ---------
-DC1.Reskit.Org                                 A      3600  Answer     10.10.10.10
-DC1.Reskit.Org                                 A      3600  Answer     10.10.1.17
+Name              Type   TTL   Section   IPAddress
+----              ----   ---   -------   ---------
+DC1.Reskit.Org    A      3600  Answer    10.10.10.10
 
 
 
-PS C:\Foo> # 3. Testing Net Connection to DC1                                                                           PS C:\Foo> ^C
+
+
+PS C:\Foo> # 3. Testing the network connection to DC1                                                                           
 PS C:\Foo> Test-NetConnection -ComputerName DC1.Reskit.Org -Port 445
 
 ComputerName     : DC1.Reskit.Org
@@ -44,16 +45,16 @@ TcpTestSucceeded : True
 
 
 
-PS C:\Foo> # 4. Add the AD DS features on DC2 
+PS C:\Foo> # 4. Adding the AD DS features on DC2 
 PS C:\Foo> Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools                                                                                                                                                                                                                                                                                   
-Success Restart Needed Exit Code      Feature Result                                                                                                                              
-------- -------------- ---------      --------------                                                                                                                             
+Success Restart Needed Exit Code      Feature Result 
+------- -------------- ---------      -------------- 
 True    No             Success        {Active Directory Domain Services, Group Pol…
 
 
 
 
-PS C:\Foo> # 5. Promote DC2 to be a DC
+PS C:\Foo> # 5. Promoting DC2 to be a DC
 PS C:\Foo> Import-Module -Name ADDSDeployment -WarningAction SilentlyContinue
 PS C:\Foo> $URK    = "Administrator@Reskit.Org"
 PS C:\Foo> $PW     = 'Pa$$w0rd'
@@ -73,11 +74,11 @@ PS C:\Foo> Install-ADDSDomainController @INSTALLHT | Out-Null
 
 
 
-PS C:\Foo> PS C:\Foo> # 6. Checking the Computer objects in AD
+PS C:\Foo> # 6. Checking the Computer objects in AD
 PS C:\Foo> Get-ADComputer -Filter * |
-             Format-Table DNSHostname, DistinguishedName
+             Format-Table DNSHostName, DistinguishedName
 
-DNSHostname     DistinguishedName
+DNSHostName     DistinguishedName
 -----------     -----------------
 DC1.Reskit.Org  CN=DC1,OU=Domain Controllers,DC=Reskit,DC=Org
 DC2.Reskit.Org  CN=DC2,OU=Domain Controllers,DC=Reskit,DC=Org
@@ -85,17 +86,18 @@ DC2.Reskit.Org  CN=DC2,OU=Domain Controllers,DC=Reskit,DC=Org
 
 
 
-# 7. Reboot manually
+# 7. Rebooting DC2 manually
 
 
 no OUTPUT
 
 
-PS C:\Foo> # 8. Check DCs in Reskit.Org                                                                                                                                           PS C:\Foo> $SB = 'OU=Domain Controllers,DC=Reskit,DC=Org'
+PS C:\Foo> # 8. Checking DCs in Reskit.Org
+PS C:\Foo> $SB = 'OU=Domain Controllers,DC=Reskit,DC=Org'
 PS C:\Foo> Get-ADComputer -Filter * -SearchBase $SB |
-             Format-Table -Property DNSHostname, Enabled
+             Format-Table -Property DNSHostName, Enabled
 
-DNSHostname    Enabled
+DNSHostName    Enabled
 -----------    -------
 DC2.Reskit.Org    True
 DC1.Reskit.Org    True
@@ -104,9 +106,9 @@ DC1.Reskit.Org    True
 
 
 
-PS C:\Foo> # 9. View Reskit.Org Domain DCs
+PS C:\Foo> # 9. Viewing Reskit.Org Domain DCs
 PS C:\Foo> Get-ADDomain |
-  Format-Table -Property Forest, Name, Replica*
+             Format-Table -Property Forest, Name, Replica*
 
 Forest     Name   ReplicaDirectoryServers
 ------     ----   -----------------------

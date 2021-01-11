@@ -1,4 +1,4 @@
-# Recipe 6.9 - Creating a group policy object
+# Recipe 6. - Creating a group policy object
 
 # Run on DC1, after creaating IT Orgizational Unit
 
@@ -61,8 +61,8 @@ no output
 
 PS C:\Foo> # 7. Display the GPOs in the domain
 PS C:\Foo> Get-GPO -All -Domain Reskit.Org |
-  Sort-Object -Property DisplayName |
-    Format-Table -Property Displayname, Description, GpoStatus
+             Sort-Object -Property DisplayName |
+               Format-Table -Property Displayname, Description, GpoStatus
 
 DisplayName                       Description GpoStatus
 -----------                       ----------- ---------
@@ -107,3 +107,5 @@ Default Domain Controllers Policy  Reskit.Org/Domain Controllers  true       fal
 Default Domain Policy              Reskit.Org                     true       false
 ITPolicy                           Reskit.Org/IT                  true       false
 Screen Saver Time Out              Reskit.Org/IT                  true       false
+
+

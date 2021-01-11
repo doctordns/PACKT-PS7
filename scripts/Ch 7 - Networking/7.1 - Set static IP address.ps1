@@ -16,7 +16,7 @@ Get-NetIPAddress -InterfaceIndex $Index -AddressFamily $IPType |
 $IPHT = @{
   InterfaceIndex = $Index
   PrefixLength   = 24
-  IPAddress      = '10.10.10.51'
+  IPAddress      = '10.10.10.52'
   DefaultGateway = '10.10.10.254'
   AddressFamily  = $IPType
 }
@@ -41,7 +41,7 @@ Get-NetIPAddress -InterfaceIndex $Index -AddressFamily $IPType |
 Test-NetConnection -ComputerName DC1.Reskit.Org |
   Format-Table
 
-# 7. Creating credential for DC1
+# 7. Creating a credential for DC1
 $U    = 'Reskit\Administrator'
 $PPT  = 'Pa$$w0rd'
 $PSS  = ConvertTo-SecureString -String $ppt -AsPlainText -Force
@@ -57,12 +57,12 @@ $DNSSSB = {
   $SBHT = @{
     Name          = 'Reskit.Org'
     DynamicUpdate = 'NonsecureAndSecure'
-}
+  }
   Set-DnsServerPrimaryZone @SBHT
 }
 Invoke-Command -ComputerName DC1 -ScriptBlock $DNSSSB -Credential $Cred
 
-# 10. Ensuring host registers within the Reskit.Org DNS domain
+# 10. Ensuring host registers within the Reskit.Org DNS zone
 $DNSCHT = @{
   InterfaceIndex                 = $Index
   ConnectionSpecificSuffix       = 'Reskit.Org'

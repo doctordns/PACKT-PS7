@@ -92,7 +92,7 @@ DC1.Reskit.Org 0          10.10.10.10   True          0 ms                   Fal
 
 
 
-# 7. Creating credential for DC1
+# 7. Creating credentials for DC1
 
 
 no output
@@ -113,7 +113,7 @@ no output
 
 
 
-# 10. Ensuring host writes to reskit.org DNS domain
+# 10. Ensuring host writes to reskit.org DNS zone
 
 
 
@@ -131,11 +131,12 @@ no output
 
 
 
-PS WSMan:\localhost\Client> # 12. Test the DNS server on DC1.Reskit.Org correctly resolves SRV2.
-
-PS WSMan:\localhost\Client> Resolve-DnsName -Name SRV2.Reskit.Org -Type 'A' -Server DC1.Reskit.Org
+PS C:\Foo> # 12. Test the DNS server on DC1.Reskit.Org correctly resolves SRV2
+PS C:\Foo> Resolve-DnsName -Name SRV2.Reskit.Org -Type 'A' -Server DC1.Reskit.Org
 
 Name              Type  TTL   Section   IPAddress
 ----              ----  ---   -------   ---------
 SRV2.Reskit.Org   A     1200  Answer    10.10.10.51
+
+
 

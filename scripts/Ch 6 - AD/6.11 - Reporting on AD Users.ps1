@@ -1,7 +1,9 @@
-﻿# 3.x - Reporting on AD Users
+﻿# Recipe 6.11 - Reporting on AD Users
 
-# 1. Define a function Get-ReskitUser
-#    The function returns objects related to users in reskit.org
+# Run on DC1
+
+
+# 1. 1.	Defining a function Get-ReskitUser to return objects related to users in Reskit.Org domain 
 Function Get-ReskitUser {
 # Get PDC Emulator DC
 $PrimaryDC = Get-ADDomainController -Discover -Service PrimaryDC
@@ -23,23 +25,23 @@ Foreach ($ADUser in $ADUsers) {
     }
 } # end of function
 
-# 2. Get the users
+# 2. Getting the users
 $RKUsers = Get-ReskitUser
 
-# 3. Build the report header
-$RKReport = ''
+# 3. Building the report header
+$RKReport = ''  # first line of the report
 $RkReport += "*** Reskit.Org AD Report`n"
 $RKReport += "*** Generated [$(Get-Date)]`n"
 $RKReport += "*******************************`n`n"
 
-# 4. Report on Disabled users
+# 4. Reporting on Disabled users
 $RkReport += "*** Disabled Users`n"
 $RKReport += $RKUsers |
     Where-Object {$_.Enabled -NE $true} |
         Format-Table -Property SamAccountName, Displayname |
             Out-String
 
-# 5. Report users who have not recently logged on
+# 5. Reporting users who have not recently logged on
 $OneWeekAgo = (Get-Date).AddDays(-7)
 $RKReport += "`n*** Users Not logged in since $OneWeekAgo`n"
 $RkReport += $RKUsers |
@@ -48,19 +50,18 @@ $RkReport += $RKUsers |
             Format-Table -Property SamAccountName,lastlogondate |
                 Out-String
 
-# 6. Users with high invalid password attempts
-#
+# 6. Discovering users with high invalid password attempts
 $RKReport += "`n*** High Number of Bad Password Attempts`n"
 $RKReport += $RKUsers | Where-Object BadPwdCount -ge 5 |
   Format-Table -Property SamAccountName, BadPwdCount |
     Out-String
 
-# 7. Add Another report header line for this part of the 
+# 7. Adding Another report header line for this part of the 
 #    report and create an empty array of priviledged users
 $RKReport += "`n*** Privileged  User Report`n"
 $PUsers = @()
 
-# 8. Query the Enterprise Admins/Domain Admins/Scheme Admins
+# 8. Querring the Enterprise Admins/Domain Admins/Scheme Admins
 #    groups for members and add to the $Pusers array
 # Get Enterprise Admins group members
 $Members = Get-ADGroupMember -Identity 'Enterprise Admins' -Recursive |
@@ -92,8 +93,8 @@ $PUsers += Foreach ($Member in $Members) {
             WhenCreated, Lastlogondate,SamAccountName
 }
 
-# 9 Add the special users to the report
+# 9 Adding the special users to the report
 $RKReport += $PUsers | Out-String
 
-# 10. Display the report
+# 10. Displaying the final report
 $RKReport

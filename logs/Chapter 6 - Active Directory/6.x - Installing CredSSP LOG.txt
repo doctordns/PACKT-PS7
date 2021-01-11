@@ -1,0 +1,74 @@
+# 4.6 - Installing CredSSP
+
+# Run on SRV1 from an elevated console
+
+
+
+PS C:\Foo> # 1. Getting CredSSP default installation on SRV1
+PS C:\Foo> Get-WSManCredSSP
+The machine is not configured to allow delegating fresh credentials.
+This computer is not configured to receive credentials from a remote client computer.
+
+
+
+
+PS C:\Foo> # 2. Get CredSSP default installation on DC1
+PS C:\Foo> Invoke-Command -ComputerName DC1 -ScriptBlock {Get-WSManCredSSP}
+The machine is not configured to allow delegating fresh credentials. 
+This computer is not configured to receive credentials from a remote client computer.
+
+
+
+
+PS C:\Foo> # 3. Displaying the credential
+PS C:\Foo> $CREDRK.GetNetworkCredential() |
+             Format-List *
+
+UserName       : Administrator
+Password       : Pa$$w0rd
+SecurePassword : System.Security.SecureString
+Domain         : Reskit
+
+
+
+
+S C:\Foo> # 4. Using the credential to create a CredSSP session
+PS C:\Foo> $S1HT = @{
+  ComputerName   = 'DC1'
+  Authentication = 'CredSSP'
+  Credential     = $CREDSRV1
+}
+PS C:\Foo> New-PSSession @S1HT
+
+New-PSSession: [DC1] Connecting to remote server DC1 failed with the 
+following error message : The WinRM client cannot process the request. 
+CredSSP authentication is currently disabled in the client configuration. 
+Change the client configuration and try the request again. CredSSP a
+uthentication must also be enabled in the server configuration. 
+Also, Group Policy must be edited to allow credential delegation to 
+the target computer. Use gpedit.msc and look at the following policy: 
+Computer Configuration -> Administrative Templates -> System -> Credentials Delegation -> 
+Allow Delegating Fresh Credentials.  
+Verify that it is enabled and configured with an SPN appropriate 
+for the target computer. For example, for a target computer name 
+"myserver.domain.com", the SPN can be one of the following: 
+WSMAN/myserver.domain.com or WSMAN/*.domain.com For more information, 
+see the about_Remote_Troubleshooting Help topic.
+
+
+
+
+PS C:\Foo> # 5. Enabling SRV1 to use CredSSP as a client for all remoting
+PS C:\Foo> Set-Item -Path wsman:localhost\client\trustedhosts -Value '*' -Force
+PS C:\Foo> Enable-WSManCredSSP -Role Client -DelegateComputer * -Force
+
+cfg         : http://schemas.microsoft.com/wbem/wsman/1/config/client/auth
+lang        : en-US
+Basic       : true
+Digest      : true
+Kerberos    : true
+Negotiate   : true
+Certificate : true
+CredSSP     : true
+
+

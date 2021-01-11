@@ -1,6 +1,6 @@
-# 6.4 - Installing 
+# 6.4 - Installing a Child Domain LOG
 
-# Run on UKDC1 - a computer joined to reswkit.org
+# Run on UKDC1 - a computer joined to reskit.org
 # With DC1.Reskit.Org is the forest root DC and online
 
 # 1. Import the ServerManager module
@@ -15,7 +15,8 @@ PS C:\Foo> Resolve-DnsName -Name DC1.Reskit.Org -Type A
 Name             Type  TTL   Section   IPAddress
 ----             ----  ---   -------   ---------
 DC1.Reskit.Org   A     3600  Answer    10.10.10.10
-DC1.Reskit.Org   A     3600  Answer    10.10.1.17
+
+
 
 
 
@@ -46,14 +47,14 @@ TcpTestSucceeded : True
 PS C:\Foo> # 4. Adding the AD DS features on UKDC1
 PS C:\Foo> $Features = 'AD-Domain-Services'
 PS C:\Foo> Install-WindowsFeature -Name $Features -IncludeManagementTools                                                                                                                                                                                                                                                                                                                                         
-Success Restart Needed Exit Code      Feature Result                                                                                                                                                     
-------- -------------- ---------      --------------                                                                                                                                                     
-True    No             Success        {Active Directory Domain Services, Group Pol…                                                                                                                     
+Success Restart Needed Exit Code   Feature Result                                                                                                                                                     
+------- -------------- ---------   --------------                                                                                                                                                     
+True    No             Success     {Active Directory Domain Services, Group Pol…                                                                                                                     
 
 
 
 
-# 5. Creating a Credential and installation hash table
+# 5. Creating a credential and installation hash table
 
 
 
@@ -72,7 +73,7 @@ no output
 
 
 
-PS C:\Foo> # 7. Look at AD forest
+PS C:\Foo> # 7. Looking at the AD forest
 PS C:\Foo> Get-ADForest -Server UKDC1.UK.Reskit.Org
 
 ApplicationPartitions : {DC=DomainDnsZones,DC=Reskit,DC=Org, DC=ForestDnsZones,DC=Reskit,DC=Org}
@@ -90,7 +91,7 @@ SPNSuffixes           : {}
 UPNSuffixes           : {}
 
 
-PS C:\Foo> # 8. Look at UK domain
+PS C:\Foo> # 8. Looking at the UK domain
 PS C:\Foo> Get-ADDomain -Server UKDC1.UK.Reskit.Org
 
 AllowedDNSSuffixes                 : {}

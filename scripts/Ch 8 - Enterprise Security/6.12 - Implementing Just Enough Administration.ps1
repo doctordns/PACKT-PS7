@@ -1,8 +1,7 @@
-# Recipe 3.7 - Implementing JEA
+# Recipe 6.12- Implementing JEA
+
 # Run on DC1
-
-
-# Relies on AD IT, and JerryG user create earlier
+# Relies on AD IT, and JerryG user create earlier in Chapter 6.
 
 # 1. Create transcripts folder
 New-Item -Path C:\JEATranscripts -ItemType Directory | Out-Null

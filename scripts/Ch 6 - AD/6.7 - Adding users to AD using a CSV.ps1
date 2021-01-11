@@ -5,8 +5,8 @@
 # 1. Creating a CSV file
 $CSVDATA = @'
 Firstname, Initials, Lastname, UserPrincipalName, Alias, Description, Password
-J,K,Smith, JKS, James, Data Team, Christmas42
-Clair,B, Smith, CBS, Claire, Receptionist, Christmas42
+J, K, Smith, JKS, James, Data Team, Christmas42
+Clair, B, Smith, CBS, Claire, Receptionist, Christmas42
 Billy, Bob, JoeBob, BBJB, BillyBob, A Bob, Christmas42
 Malcolm, Dudley, Duewrong, Malcolm, Malcolm, Mr Danger, Christmas42
 '@
@@ -43,7 +43,7 @@ $Users |
     "Created $($Prop.Name)"
 }
 
-# 4. Show All Users in AD (Reskit.Org)
+# 4. Show all users in AD (Reskit.Org)
 Get-ADUser -Filter * | 
   Format-Table -Property Name, UserPrincipalName
 

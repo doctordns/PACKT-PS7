@@ -139,20 +139,19 @@ UsersContainer                     : CN=Users,DC=Reskit,DC=Org
 
 
 
-PS C:\Foo> # 4. Checking Netlogon and DNS services
-PS C:\Foo> Get-Service NetLogon, DNS
+PS C:\Foo> # 4. Checking Netlogon. ADWS, and DNS services
+PS C:\Foo> Get-Service NetLogon, ADWS, DNS
 
 Status   Name               DisplayName
 ------   ----               -----------
+Running  ADWS               Active Directory Web Services
 Running  DNS                DNS Server
 Running  Netlogon           NetLogon
 
 
 
 
-
-
-PS C:\Foo> # 5. Getting Initial AD Users
+PS C:\Foo> # 5. Getting initial AD users
 PS C:\Foo> Get-ADUser -Filter * |
              Sort-Object -Property Name |
                Format-Table -Property Name, DistinguishedName

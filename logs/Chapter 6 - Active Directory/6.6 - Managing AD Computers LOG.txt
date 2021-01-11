@@ -1,10 +1,10 @@
-# 6.7 - Managing AD Computers
+6.6 - Managing AD Computers
 
 # Run first on DC1 - with prior recipies competed
 # DC1, UKDC1, and SRV1 online
 
 
-PS C:\Foo> # 1. Getting Computers in the Reskit Domain
+PS C:\Foo> # 1. Getting computers in the Reskit Domain
 PS C:\Foo> Get-ADComputer -Filter * |
              Format-Table -Property Name, DistinguishedName
 
@@ -14,7 +14,10 @@ DC1   CN=DC1,OU=Domain Controllers,DC=Reskit,DC=Org
 DC2   CN=DC2,OU=Domain Controllers,DC=Reskit,DC=Org
 UKDC1 CN=UKDC1,CN=Computers,DC=Reskit,DC=Org
 
-PS C:\Foo> # 2. Getting Computers in the UK Domain
+
+
+
+PS C:\Foo> # 2. Getting computers in the UK Domain
 PS C:\Foo> Get-ADComputer -Filter * -Server UKDC1 |
              Format-Table -Property Name, DistinguishedName
 
@@ -64,7 +67,7 @@ no Output
 
 PS C:\Foo> # 8. Viewing the resulting computer accounts for Reskit.Org
 PS C:\Foo> Get-ADComputer -Filter * -Properties DNSHostName,LastLogonDate |
-  Format-Table -Property Name, DNSHostName, Enabled
+             Format-Table -Property Name, DNSHostName, Enabled
 
 Name  DNSHostName      Enabled
 ----  -----------      -------
@@ -73,3 +76,7 @@ DC2   DC2.Reskit.Org      True
 UKDC1 UKDC1.Reskit.Org   False
 Wolf  Wolf.Reskit.Org     True
 SRV1  SRV1.Reskit.Org     True
+
+
+
+

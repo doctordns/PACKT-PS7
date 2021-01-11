@@ -1,0 +1,121 @@
+# Recipe 6.11 - Reporting on AD Users
+
+# Run on DC1
+
+
+# 1. Defining a function Get-ReskitUser
+
+
+NO output
+
+
+# 2. Getting the users
+
+
+NO output
+
+
+
+# 3. Build the report header
+
+
+
+NO output
+
+
+
+# 4. Reporting on Disabled users
+
+
+
+NO output
+
+
+
+# 5. Reporting users who have not recently logged on
+
+
+
+NO output
+
+
+
+# 6. Discovering users with high invalid password attempts
+
+
+NO output
+
+
+
+# 7. Adding Another report header line for this part of the 
+#    report and create an empty array of priviledged users
+
+
+
+NO output
+
+
+
+# 8. Querring the Enterprise Admins/Domain Admins/Scheme Admins
+#
+
+
+NO output
+
+
+
+# 9 Adding the special users to the report
+
+
+NO output
+
+
+
+
+
+
+
+C:\Foo> # 10. Displaying the final report
+C:\Foo> $RKReport
+*** Reskit.Org AD Report
+*** Generated [01/09/2021 14:28:58]
+*******************************
+
+*** Disabled Users
+
+SamAccountname DisplayName
+-------------- -----------
+Guest
+krbtgt
+
+
+*** Users Not logged in since 01/02/2021 14:28:58
+
+SamAccountname LastLogonDate
+-------------- -------------
+UK$
+RLT
+BillyBob
+Claire
+James
+
+
+*** High Number of Bad Password Attempts
+
+SamAccountname BadPWDCount
+-------------- -----------
+Malcolm                  6
+
+
+*** Privileged  User Report
+
+Name          Group             whenCreated         LastlogonDate
+----          -----             -----------         -------------
+Administrator Enterprise Admins 03/12/2020 12:04:13 03/01/2021 17:09:59
+Malcolm       Enterprise Admins 06/12/2020 20:33:28 09/01/2021 14:24:06
+Administrator Domain Admins     03/12/2020 12:04:13 03/01/2021 17:09:59
+Jerry Garcia  Domain Admins     06/12/2020 16:25:45 09/01/2021 14:18:16
+ThomasL       Domain Admins     06/12/2020 16:23:29 09/01/2021 14:16:37
+Administrator Schema Admins     03/12/2020 12:04:13 03/01/2021 17:09:59
+
+

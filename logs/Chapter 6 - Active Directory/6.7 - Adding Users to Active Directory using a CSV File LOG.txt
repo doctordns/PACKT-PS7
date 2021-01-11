@@ -1,4 +1,4 @@
-# 6.6 - Adding Users to Active Directory using a CSV File
+# 6.7 - Adding Users to Active Directory using a CSV File
 
 # Run On DC1
 
@@ -54,7 +54,7 @@ Created James
 
 
 
-PS C:\Foo> # 4. Show All Users in AD (Reskit.Org)
+PS C:\Foo> # 4. Show all users in AD (Reskit.Org)
 PS C:\Foo> Get-ADUser -Filter * |
              Format-Table -Property Name, UserPrincipalName
 

@@ -6,20 +6,20 @@
 # Run on DC2 - a domain server in the reskit domain
 # DC1 is the forest root DC
 
-# 1. Import the Server Manager Module
+# 1. Importing the Server Manager module
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
 
-# 2. Check DC1 can be resolved 
+# 2. Checking DC1 can be resolved 
 Resolve-DnsName -Name DC1.Reskit.Org -Type A
 
-# 3. Testing Net Connection to DC1
+# 3. Testing the network connection to DC1
 Test-NetConnection -ComputerName DC1.Reskit.Org -Port 445
 Test-NetConnection -ComputerName DC1.Reskit.Org -Port 389
 
-# 4. Add the AD DS features on DC2
+# 4. Adding the AD DS features on DC2
 Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
 
-# 5. Promote DC2 to be a DC
+# 5. Promoting DC2 to be a DC
 Import-Module -Name ADDSDeployment -WarningAction SilentlyContinue
 $URK    = "Administrator@Reskit.Org" 
 $PW     = 'Pa$$w0rd'
@@ -39,20 +39,20 @@ Install-ADDSDomainController @INSTALLHT | Out-Null
 
 # 6. Checking the Computer objects in AD
 Get-ADComputer -Filter * | 
-  Format-Table DNSHostname, DistinguishedName
+  Format-Table DNSHostName, DistinguishedName
 
-# 7. Reboot manually
+# 7. Rebooting DC2 manually
 Restart-Computer -Force
 
 ###  DC2 reboots at this point
 ### Relogon as Adminstrator@reskit.org
 
-# 8. Check DCs in Reskit.Org
+# 8. Checking DCs in Reskit.Org
 $SB = 'OU=Domain Controllers,DC=Reskit,DC=Org'
 Get-ADComputer -Filter * -SearchBase $SB |
-  Format-Table -Property DNSHostname, Enabled
+  Format-Table -Property DNSHostNname, Enabled
 
-# 9. View Reskit.Org Domain DCs
+# 9. Viewing Reskit.Org Domain DCs
 Get-ADDomain |
   Format-Table -Property Forest, Name, Replica*
 . 

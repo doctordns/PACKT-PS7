@@ -12,10 +12,10 @@ Get-ADForest
 # 3. Viewing AD Domain details
 Get-ADDomain
 
-# 4. Checking Netlogon and DNS services
-Get-Service NetLogon, DNS 
+# 4. Checking Netlogon, ADWS, and DNS services
+Get-Service NetLogon, ADWS, DNS 
 
-# 5. Getting Initial AD Users
+# 5. Getting initial AD uUsers
 Get-ADUser -Filter * |
   Sort-Object -Property Name |
     Format-Table -Property Name, DistinguishedName
