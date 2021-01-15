@@ -1,9 +1,11 @@
-﻿# 4.4 Configuring a DHCP Scope and DHCP Options
+﻿# 7.4 Configuring a DHCP Scope and DHCP Options
 
 # Run on DC1, after DHCP Server service added
 
-# 1. Create a IPv4 Scope
+# 1. Importing the DHCPServer module
 Import-Module DHCPServer -WarningAction SilentlyContinue
+
+# 2. Creating a IPv4 scope
 $SCOPEHT = @{
   Name         = 'ReskitOrg'
   StartRange   = '10.10.10.150'
@@ -13,10 +15,10 @@ $SCOPEHT = @{
 }
 Add-DhcpServerV4Scope @SCOPEHT
 
-# 2. Get IPV4 Scopes from the server
+# 3. Getting IPV4 scopes from the server
 Get-DhcpServerv4Scope -ComputerName DC1.Reskit.Org
 
-# 3. Set Server Wide Option Values
+# 4. Setting server wide option values
 $OPTION1HT = @{
   ComputerName = 'DC1.Reskit.Org' # DHCP Server to Configure
   DnsDomain    = 'Reskit.Org'     # Client DNS Domain
@@ -24,7 +26,7 @@ $OPTION1HT = @{
 }
 Set-DhcpServerV4OptionValue @OPTION1HT 
 
-# 4. Set a scope specific option
+# 5. Setting a scope specific option
 $OPTION2HT = @{
   ComputerName = 'DC1.Reskit.Org' # DHCP Server to Configure
   Router       = '10.10.10.254'
@@ -32,15 +34,12 @@ $OPTION2HT = @{
 }
 Set-DhcpServerV4OptionValue @OPTION2HT 
 
-# 5. Test the DHCP Sercice
-#    Run on SRV2
-$NICHT = @{
-  InterfaceAlias = 'Ethernet'
-  AddressFamily  = 'IPv4'
-}
-$NIC = Get-NetIPInterface @NICHT
-Set-NetIPInterface -InterfaceAlias $NIC.ifAlias -DHCP Enabled
-Get-NetIPConfiguration
-Resolve-DnsName -Name SRV2.Reskit.Org -Type A
+# 6. Viewing server options
+Get-DhcpServerv4OptionValue | Format-Table -AutoSize
 
+# 7. Viewing scope specific options
+Get-DhcpServerv4OptionValue -ScopeId '10.10.10.10' | 
+  Format-Table -AutoSize
 
+# 8. Viewing DHCPv4 option definitions
+Get-DhcpServerv4OptionDefinition | Format-Table -AutoSize
