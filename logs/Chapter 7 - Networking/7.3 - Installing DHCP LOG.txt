@@ -1,0 +1,69 @@
+# 7.3 - Instal and Authorize DC1 as a DHCP server LOG
+#
+# Run on DC1 after AD setup 
+
+
+
+
+
+PS C:\Foo> # 1. Installing the DHCP Feature on DC1 and add the Management tools
+PS C:\Foo> Import-Module -Name ServerManager -WarningAction SilentlyContinue
+PS C:\Foo> Install-WindowsFeature -Name DHCP -IncludeManagementTools       
+
+Success Restart Needed Exit Code      Feature Result
+------- -------------- ---------      --------------
+True    No             Success        {DHCP Server, DHCP Server Tools}
+
+
+
+# 2. Adding DC1 to Trusted DHCP Servers and add the DHCP Security Group
+
+No output
+
+
+
+# 3. Letting DHCP know it's all configured
+
+
+no output
+
+
+PS C:\Foo> # 4. Restarting DHCP Server
+PS C:\Foo> Restart-Service -Name DHCPServer –Force
+WARNING: Waiting for service 'DHCP Server (DHCPServer)' to start...
+WARNING: Waiting for service 'DHCP Server (DHCPServer)' to start...
+
+
+
+
+PS C:\Foo> # 5. Testing service availability
+PS C:\Foo> Get-Service -Name DHCPServer | 
+             Format-List -Property *
+
+UserName            : NT AUTHORITY\NetworkService
+Description         : Performs TCP/IP configuration for DHCP clients, including dynamic assignments of IP 
+                      addresses, specification of the WINS and DNS servers, and connection-specific DNS names. 
+                      If this service is stopped, the DHCP server will not perform TCP/IP configuration for 
+                      clients. If this service is disabled, any services that explicitly depend on it will fail   
+                      to start.
+DelayedAutoStart    : False
+BinaryPathName      : C:\Windows\system32\svchost.exe -k DHCPServer -p
+StartupType         : Automatic
+Name                : DHCPServer
+RequiredServices    : {RpcSs, Tcpip, SamSs, EventLog, EventSystem}
+CanPauseAndContinue : True
+CanShutdown         : True
+CanStop             : True
+DisplayName         : DHCP Server
+DependentServices   : {}
+MachineName         : .
+ServiceName         : DHCPServer
+ServicesDependedOn  : {RpcSs, Tcpip, SamSs, EventLog, EventSystem}
+StartType           : Automatic
+ServiceHandle       : Microsoft.Win32.SafeHandles.SafeServiceHandle
+Status              : Running
+ServiceType         : Win32OwnProcess, Win32ShareProcess
+Site                :
+Container           : 
+
+

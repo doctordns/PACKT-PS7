@@ -1,0 +1,7 @@
+# 7.6 - Configuring DHCP Load Balancing and Failover  LOG
+
+# Run on DC2 after setting DC1 up as a DHCP Server 
+# And with and a Scope defined
+
+
+

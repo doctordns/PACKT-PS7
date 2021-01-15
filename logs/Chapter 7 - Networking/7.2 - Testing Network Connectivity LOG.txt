@@ -3,7 +3,7 @@
 # Run this on SRV2, after setting a static IP address
 # Static IP address was set in 7.1
 
-PS C:\Foo> # 1. Verify SRV2 itself is up and that loopback is working
+PS C:\Foo> # 1. Verifying SRV2 itself is up, and that loopback is working
 PS C:\Foo> Test-Connection -ComputerName SRV2 -Count 1 -IPv4
 
    Destination: SRV2
@@ -15,7 +15,7 @@ Ping Source   Address      Latency BufferSize Status
 
    
 
-PS C:\Foo> # 2. Test connection to local host's WinRM port
+PS C:\Foo> # 2. Testing connection to local host's WinRM port
 PS C:\Foo> Test-NetConnection -ComputerName SRV2 -CommonTCPPort WinRM
 
 ComputerName     : SRV2
@@ -27,7 +27,7 @@ TcpTestSucceeded : True
 
 
 
-PS C:\Foo> # 3. Test Basic Connectivity to DC1
+PS C:\Foo> # 3. Testing basic connectivity to DC1
 PS C:\Foo> Test-Connection -ComputerName DC1.Reskit.Org -Count 1
 
    Destination: DC1.Reskit.Org
@@ -39,7 +39,7 @@ Ping Source    Address       Latency BufferSize Status
 
 
 
-PS C:\Foo> # 4. Check Connectivity to SMB port on DC1
+PS C:\Foo> # 4. Checking Connectivity to SMB port on DC1
 PS C:\Foo> Test-NetConnection -ComputerName DC1.Reskit.Org -CommonTCPPort SMB
 
 ComputerName     : DC1.Reskit.Org
@@ -53,7 +53,7 @@ TcpTestSucceeded : True
 
 
 
-PS C:\Foo> # 5. Check Connectivity to the LDAP port on DC1
+PS C:\Foo> # 5. Checking Connectivity to the LDAP port on DC1
 PS C:\Foo> Test-NetConnection -ComputerName DC1.Reskit.Org -Port 389
 
 ComputerName     : DC1.Reskit.Org
@@ -66,12 +66,12 @@ TcpTestSucceeded : True
 
 
 
-PS C:\Foo> # 6. Examine path to a remote server on the Internet
+PS C:\Foo> # 6. Examining path to a remote server on the Internet
 PS C:\Foo> $NCHT = @{
               ComputerName     = 'WWW.Packt.Com'
               TraceRoute       = $true
               InformationLevel = 'Detailed'
-           }                                                                                                                  $NCHT = @{                                                                                                                                                                          ComputerName     = 'WWW.Packt.Com'                                                                                                                                                TraceRoute       = $true                                                                                                                                                          InformationLevel = 'Detailed'                                                                                                                                                   }                                                                                                                                                                                 
+           }
 PS C:\Foo> Test-NetConnection @NCHT    # Check our wonderful publisher
 
 ComputerName           : WWW.Packt.Com
