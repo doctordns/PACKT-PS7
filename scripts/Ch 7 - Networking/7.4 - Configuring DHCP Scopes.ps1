@@ -38,7 +38,7 @@ Set-DhcpServerV4OptionValue @OPTION2HT
 Get-DhcpServerv4OptionValue | Format-Table -AutoSize
 
 # 7. Viewing scope specific options
-Get-DhcpServerv4OptionValue -ScopeId '10.10.10.10' | 
+Get-DhcpServerv4OptionValue -ScopeId '10.10.10.0' | 
   Format-Table -AutoSize
 
 # 8. Viewing DHCPv4 option definitions

@@ -11,7 +11,7 @@ $FEATUREHT = @{
 }
 Install-WindowsFeature @FEATUREHT
 
-# 2. Letting DHCP know it is fully Configured
+# 2. Letting DHCP know it is fully configured
 $IPHT = @{
   Path  = 'HKLM:\SOFTWARE\Microsoft\ServerManager\Roles\12'
   Name  = 'ConfigurationState'
@@ -23,10 +23,10 @@ Set-ItemProperty @IPHT
 Import-Module -Name DHCPServer -WarningAction 'SilentlyContinue'
 Add-DhcpServerInDC -DnsName DC2.Reskit.Org
 
-# 4. Viewing Authorized DHCP SServers
+# 4. Viewing authorized DHCP servers in the Reskit domain
 Get-DhcpServerInDC
 
-# 5. Configure failover and load balancing:
+# 5. Configure failover and load balancing
 $FAILOVERHT = @{
   ComputerName       = 'DC1.Reskit.Org'
   PartnerServer      = 'DC2.Reskit.Org'
