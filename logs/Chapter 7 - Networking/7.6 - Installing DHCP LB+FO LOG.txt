@@ -88,7 +88,7 @@ VERBOSE: Activate scopes on partner server DC2.Reskit.Org ......................
 
 
 
-PS C:\Foo> # 6. Geting active leases in the scope (from both servers!)
+PS C:\Foo> # 6. Getting active leases in the scope (from both servers!)
 PS C:\Foo> $DHCPServers = 'DC1.Reskit.Org', 'DC2.Reskit.Org'
 PS C:\Foo> $DHCPServers |
              ForEach-Object {

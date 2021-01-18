@@ -41,7 +41,7 @@ Invoke-Command -ComputerName DC1.Reskit.org -ScriptBlock {
   Add-DhcpServerv4Failover @Using:FAILOVERHT  
 }
 
-# 6. Geting active leases in the scope (from both servers!)
+# 6. Getting active leases in the scope (from both servers!)
 $DHCPServers = 'DC1.Reskit.Org', 'DC2.Reskit.Org' 
 $DHCPServers |   
   ForEach-Object { 
