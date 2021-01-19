@@ -17,7 +17,7 @@ $NSIPS
 $CFHT = @{
   Name          = 'Packt.Com'
   MasterServers = $NSIPS
-}DDDD
+}
 Add-DnsServerConditionalForwarderZone @CFHT
 
 # 4. Checking zone on DC1 

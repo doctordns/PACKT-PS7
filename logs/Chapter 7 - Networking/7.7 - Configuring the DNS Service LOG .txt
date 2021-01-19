@@ -1,4 +1,4 @@
-# 7.7 - Configuring the DNS Service  LOLG
+# 7.7 - Configuring CH
 
 # Run this on DC2 after promoting to DC
 
@@ -36,13 +36,13 @@ No output
 no output
 
 
-# 6. Creating script block to configure DC1 to have two DNS servers
+# 6. Creating a script block to configure DC1 to have two DNS servers
 
 
 no output
 
 
-# 7. Configuring DC2 to have two DNS Serversr
+# 7. Configuring DC2 to have two DNS Servers
 
 
 no output
@@ -103,6 +103,20 @@ PS C:\Foo> $DNSRV |
 CacheTimeout EnableProbes EnableReception
 ------------ ------------ ---------------
 00:15:00     True         True
+
+
+
+
+# 13. Set Reskit.Org zone to be seccure only
+
+no output
+
+# 14. Pre-staging SRV2 in AD
+
+No output
+
+# 15. Adding SRV2 to DOmain
+# RUnning on SRV2
 
 
 

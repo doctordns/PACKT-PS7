@@ -74,6 +74,10 @@ Set-DnsClient  @DNSCHT
 # 11. Registering host IP address at DC1
 Register-DnsClient 
 
+# 12. PreStaging SRV2 in AD
+New-ADComputer -Name SRV2
+
+
 # 12. Testing the DNS server on DC1.Reskit.Org correctly resolves SRV2
 Resolve-DnsName -Name SRV2.Reskit.Org -Type 'A' -Server DC1.Reskit.Org
   

@@ -44,7 +44,7 @@ Packt.Com  Forwarder  False          False           False
 
 PS C:\Foo> # 5. Testing conditional forwarding
 PS C:\Foo> Resolve-DNSName -Name WWW.Packt.Com -Server DC1 |
- Format-Table
+             Format-Table
 
 Name          Type TTL Section IPAddress
 ----          ---- --- ------- ---------

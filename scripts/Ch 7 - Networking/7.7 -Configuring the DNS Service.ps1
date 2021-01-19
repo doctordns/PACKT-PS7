@@ -43,7 +43,7 @@ $SB2 = {
 # 5. Configuring DC2 to have two DNS Servers
 Invoke-Command -ScriptBlock $SB2
 
-# 6. Creating script block to configure DC1 to have two DNS servers
+# 6. Creating a script block to configure DC1 to have two DNS servers
 $SB3 = {
   $NIC = 
     Get-NetIPInterface -InterfaceAlias "Ethernet" -AddressFamily IPv4
@@ -83,3 +83,36 @@ $DNSRV |
 # 12. Viewing ENDS Settings
 $DNSRV |
   Select-Object -ExpandProperty ServerEdns
+
+# 13. Setting Reskit.Org zone to be secure only
+$DNSSSB = {
+  $SBHT = @{
+    Name          = 'Reskit.Org'
+    DynamicUpdate = 'Secure'
+  }
+  Set-DnsServerPrimaryZone @SBHT
+}
+Invoke-Command -ComputerName DC1 -ScriptBlock $DNSSSB
+Invoke-Command -ComputerName DC2 -ScriptBlock $DNSSSB
+
+# 14. Pre-staging SRV2 in AD
+New-ADComputer -Name SRV2
+
+# 15. Adding SRV2 to Domain
+# run on SRV2
+$User  = 'Reskit\Administrator'
+$Pass  = 'Pa$$w0rd'
+$PSS   = $Pass | ConvertTo-SecureString -Force -AsPlainText
+$CRED  = [PSCredential]::new($User,$PSS)
+$Sess  = New-PSSession -UseWindowsPowerShell
+Invoke-Command -Session $Sess -Scriptblock {
+  $ACHT = @{
+    Credential = $using:Cred 
+    Domain     = 'Reskit.org' 
+    Force      = $True
+  }
+  Add-Computer @ACHT
+  Restart-Computer
+}
+
+

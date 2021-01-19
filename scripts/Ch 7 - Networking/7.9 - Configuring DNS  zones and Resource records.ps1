@@ -3,7 +3,6 @@
 # Run on DC1 after building the domain
 
 # 1. Create a new primary forward DNS zone for Cookham.Net
-Import-Module DNSServer
 $ZHT1 = @{
   Name              = 'Cookham.Net'
   ResponsiblePerson = 'dnsadmin.cookham.net.' 
@@ -25,33 +24,31 @@ Add-DnsServerPrimaryZone @ZHT2
 Register-DnsClient
 Invoke-Command -ComputerName DC2 -ScriptBlock {Register-DnsClient}
 
-# 4. Check The DNS zones on DC1
+# 4. Check the DNS zones on DC1
 Get-DNSServerZone -ComputerName DC1
 
-# 5. Add Resource Record to Cookham.Net zone
-# Add an A record
+# 5. Adding Resource Record to Cookham.Net zone
+# Adding an A record
 $RRHT1 = @{
   ZoneName      =  'Cookham.Net'
   A              =  $true
   Name           = 'Home'
   AllowUpdateAny =  $true
   IPv4Address    = '10.42.42.42'
-  TimeToLive     = (30 * (24 * 60 * 60))  # 30 days in seconds
-}
+}  
 Add-DnsServerResourceRecord @RRHT1
-# Add a Cname record
+# Adding a Cname record
 $RRHT2 = @{
   ZoneName      = 'Cookham.Net'
   Name          = 'MAIL'
   HostNameAlias = 'Home.Cookham.Net'
-  TimeToLive     = (30 * (24 * 60 * 60))  # 30 days in seconds
 }
 Add-DnsServerResourceRecordCName @RRHT2
-# Add an MX record
+# Adding an MX record
 $MXHT = @{
   Preference     = 10 
   Name           = '.'
-  TimeToLive     = '1:00:00'
+  TimeToLive     = '4:00:00'
   MailExchange   = 'Mail.Cookham.Net'
   ZoneName       = 'Cookham.Net'
 }
@@ -62,12 +59,14 @@ Restart-Service -Name DNS
 $SB = {Restart-Service -Name DNS}
 Invoke-Command -ComputerName DC2 -ScriptBlock $SB
 
-# 7. Check results of RRs in Cookham.Net zone
+# 7. Checking results of RRs in Cookham.Net zone
 Get-DnsServerResourceRecord -ZoneName 'Cookham.Net'
 
-# 8. Test DNS Resolution on DC2, DC1
-# Test The Cname
+# 8. Testing DNS resolution on DC2, DC1
+# Testing The Cname
 Resolve-DnsName -Server DC1.Reskit.Org -Name 'Mail.Cookham.Net'
-# Test The MX on DC2
-Resolve-DnsName -Server DC2.Reskit.Org -Name 'Cookham.Net'  -Type MX 
+# Testing the MX on DC2
+Resolve-DnsName -Server DC2.Reskit.Org -Name 'Cookham.Net'
 
+# 9. Testing reverse lookup zone
+Resolve-DnsName -Name '10.10.10.10'
