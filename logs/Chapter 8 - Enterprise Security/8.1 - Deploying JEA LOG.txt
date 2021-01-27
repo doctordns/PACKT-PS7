@@ -1,0 +1,273 @@
+# 1. Creating transcripts folder   LO
+
+# run from DC1
+
+
+# 1. Creating transcripts folder 
+
+
+no output
+
+
+# 2. Creating a role capabilities folder
+
+
+
+no output
+
+
+
+
+# 3. Creating a JEA session configuration folder
+
+
+
+
+no output
+
+
+
+# 4. Creating DNSAdminsJEA as a global security group
+
+
+
+
+
+
+no output
+
+
+
+
+
+# 5. Adding JerryG to the DNS Admins group
+
+
+
+no output
+
+
+# 6. Creating a role capabilities file
+
+
+
+no output
+
+
+
+
+# 7. Creating a JEA session configuration folder
+
+
+
+no output
+
+
+
+
+# 7. Creating a JEA session configuration file
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 8. Testing the session configuration file
+PS C:\Foo> Test-PSSessionConfigurationFile -Path $P
+True
+
+
+PS C:\Foo> # 9. Enabling remoting on DC1
+Enable-PSRemoting -Force |
+  Out-Null
+WARNING: PowerShell remoting has been enabled only for PowerShell 6+ 
+configurations and does not affect Windows PowerShell remoting 
+configurations. Run this cmdlet in Windows PowerShell to affect all 
+PowerShell remoting configurations.
+
+
+
+
+PS C:\Foo> # 10. Registering the JEA session configuration
+$SCHT = @{
+  Path  = $P
+  Name  = 'DnsAdminsJEA'
+  Force =  $true
+}
+Register-PSSessionConfiguration @SCHT
+
+   WSManConfig: Microsoft.WSMan.Management\WSMan::localhost\Plugin
+
+Type            Keys                                Name
+----            ----                                ----
+Container       {Name=DnsAdminsJEA}                 DnsAdminsJEA
+
+
+
+
+
+
+PS C:\Foo> # 11. Viewing remoting endpoints
+PS C:\Foo> Get-PSSessionConfiguration  |
+             Format-Table -Property NAME, PSVersion, Run*Account
+
+Name             PSVersion RunAsVirtualAccount
+----             --------- -------------------
+DnsAdminsJEA     7.1       True
+PowerShell.7     7.1       false
+PowerShell.7.1.1 7.1       false
+
+
+
+
+PS C:\Foo> # 12. Verifying what the user can do
+PS C:\Foo> $SCHT = @{
+             ConfigurationName = 'DnsAdminsJEA'
+             Username          = 'Reskit\JerryG' 
+           }
+PS C:\Foo> Get-PSSessionCapability  @SCHT |
+             Sort-Object -Property Module
+
+
+CommandType   Name                               Version    Source
+-----------   ----                               -------    ------
+Alias         clear -> Clear-Host
+Function      Select-Object
+Function      Restart-Computer
+Function      Out-Default
+Function      Measure-Object
+Function      Get-HW
+Function      Get-Help
+Function      Get-FormatData
+Application   ipconfig.exe                        10.0.2027… C:\Windows\system32\ipconfig.exe
+Function      Get-Command
+Function      Exit-PSSession
+Function      Clear-Host
+Application   whoami.exe                          10.0.2027… C:\Windows\system32\whoami.exe
+Alias         gh -> Get-Help
+Alias         gcm -> Get-Command
+Alias         measure -> Measure-Object
+Alias         select -> Select-Object
+Alias         exsn -> Exit-PSSession
+Alias         cls -> Clear-Host
+Function      Add-DnsServerRecursionScope         2.0.0.0    DnsServer
+Function      Reset-DnsServerZoneKeyMasterRole    2.0.0.0    DnsServer
+Function      Restore-DnsServerPrimaryZone        2.0.0.0    DnsServer
+Function      Restore-DnsServerSecondaryZone      2.0.0.0    DnsServer
+Function      Resume-DnsServerZone                2.0.0.0    DnsServer
+Function      Set-DnsServerCache                  2.0.0.0    DnsServer
+Function      Remove-DnsServerZoneTransferPolicy  2.0.0.0    DnsServer
+Function      Set-DnsServerClientSubnet           2.0.0.0    DnsServer
+...
+
+
+# 13. Creating credentials for user JerryG
+
+
+no output
+
+
+
+
+# 14. Defining three script blocks and an invocation splatting hash table
+
+
+
+
+
+
+PS C:\Foo> # 15. Getting commands available within the JEA session
+PS C:\Foo> Invoke-Command -ScriptBlock $SB1 @ICMHT |
+             Sort-Object -Property Module |
+               Select-Object -First 15
+
+CommandType   Name                                    Version   Source       PSComputerName
+-----------   ----                                    -------   ------       --------------
+Function      Get-HW                                                         DC1.Reskit.Org
+Function      Select-Object                                                  DC1.Reskit.Org
+Function      Clear-Host                                                     DC1.Reskit.Org
+Function      Restart-Computer                                               DC1.Reskit.Org
+Function      Exit-PSSession                                                 DC1.Reskit.Org
+Function      Out-Default                                                    DC1.Reskit.Org
+Function      Get-Command                                                    DC1.Reskit.Org
+Function      Get-Help                                                       DC1.Reskit.Org
+Function      Get-FormatData                                                 DC1.Reskit.Org
+Function      Measure-Object                                                 DC1.Reskit.Org
+Function      Register-DnsServerDirectoryPartition    2.0.0.0   DnsServer    DC1.Reskit.Org
+Function      Set-DnsServerConditionalForwarderZone   2.0.0.0   DnsServer    DC1.Reskit.Org
+Function      Set-DnsServerClientSubnet               2.0.0.0   DnsServer    DC1.Reskit.Org
+Function      Set-DnsServerCache                      2.0.0.0   DnsServer    DC1.Reskit.Org
+Function      Set-DnsServer                           2.0.0.0   DnsServer    DC1.Reskit.Org
+
+
+
+PS C:\Foo> # 16. Invoking a JEA-defined function in a JEA session As JerryG
+PS C:\Foo> Invoke-Command -ScriptBlock $SB2 @ICMHT
+Hello JEA World
+
+
+
+PS C:\Foo> # 17. Getting DNSServer commands available to JerryG
+PS C:\Foo> $C = Invoke-Command -ScriptBlock $SB3 @ICMHT 
+PS C:\Foo> "$($C.Count) DNS commands available"
+131 DNS commands available
+
+
+
+PS C:\Foo> # 18. Examining the contents of the transcripts folder
+PS C:\Foo> Get-ChildItem -Path $PSCHT.TranscriptDirectory
+
+    Directory: C:\JEATranscripts
+
+Mode          LastWriteTime    Length Name
+----          -------------    ------ ----
+-a---   21/01/2021    16:35     13073 PowerShell_transcript.DC1.7qAp4PE1.20210121163511.txt
+-a---   21/01/2021    16:37     12844 PowerShell_transcript.DC1.BKqjIcrW.20210121163704.txt
+-a---   21/01/2021    16:33     13688 PowerShell_transcript.DC1.cg9xfV+m.20210121163300.txt
+-a---   21/01/2021    16:36       805 PowerShell_transcript.DC1.FrVp28pN.20210121163624.txt
+
+
+
+PS C:\Foo> # 19. Examining a transcript
+PS C:\Foo> Get-ChildItem -Path $PSCHT.TranscriptDirectory | 
+             Select-Object -First 1  |
+               Get-Content
+**********************
+PowerShell transcript start
+Start time: 20210121163511
+Username: RESKIT\JerryG
+RunAs User: WinRM Virtual Users\WinRM VA_1_RESKIT_JerryG
+Configuration Name: DnsAdminsJEA
+Machine: DC1 (Microsoft Windows NT 10.0.20270.0)
+Host Application: C:\Windows\system32\wsmprovhost.exe -Embedding
+Process ID: 10040
+PSVersion: 7.1.1
+PSEdition: Core
+GitCommitId: 7.1.1
+OS: Microsoft Windows 10.0.20270
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.10032.0, 6.0.0, 6.1.0, 6.2.0, 7.0.0, 7.1.1
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+PS>CommandInvocation(Get-Command): "Get-Command"
+>> ParameterBinding(Get-Command): name="ListImported"; value="False"
+>> ParameterBinding(Get-Command): name="ShowCommandInfo"; value="False"
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Add-DnsServerClientSubnet                          2.0.0.0    DnsServer
+Function        Add-DnsServerConditionalForwarderZone              2.0.0.0    DnsServer
+Function        Add-DnsServerDirectoryPartition                    2.0.0.0    DnsServer
+Function        Add-DnsServerForwarder                             2.0.0.0    DnsServer
+Function        Add-DnsServerPrimaryZone                           2.0.0.0    DnsServer
+Function        Add-DnsServerQueryResolutionPolicy                 2.0.0.0    DnsServer
+Function        Add-DnsServerRecursionScope                        2.0.0.0    DnsServer
+Function        Add-DnsServerResourceRecord                        2.0.0.0    DnsServer
+Function        Add-DnsServerResourceRecordA                       2.0.0.0    DnsServer
+
+
+

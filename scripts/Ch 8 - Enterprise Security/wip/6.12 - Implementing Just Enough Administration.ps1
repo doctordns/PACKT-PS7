@@ -3,7 +3,7 @@
 # Run on DC1
 # Relies on AD IT, and JerryG user create earlier in Chapter 6.
 
-# 1. Create transcripts folder
+# 1. Creatte transcripts folder
 New-Item -Path C:\JEATranscripts -ItemType Directory | Out-Null
 
 # 2. Create capabilities folder
