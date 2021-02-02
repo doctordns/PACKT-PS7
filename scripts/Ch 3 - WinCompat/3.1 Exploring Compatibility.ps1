@@ -55,7 +55,7 @@ $SBC = {
 # 8. Discovering all 7.1 cmdlets
 $CMDS71 = Invoke-Command -ScriptBlock $SBC -Session $SP71 | 
             Where-Object CommandType -eq 'Cmdlet'
-"Total commands available in PowerShell 7.1 [{0}]" -f $Cmds71.count
+"Total commands available in PowerShell 7.1 [{0}]" -f $Cmds71.Count
 
 # 9. Discovering all 5.1 cmdlets
 $CMDS51 = Invoke-Command -ScriptBlock $SBC -Session $SWP51 |

@@ -33,7 +33,7 @@ NO OUTPUT
 
 
 
-No otuptu
+No output
 
 
 
@@ -45,41 +45,42 @@ PS C:\Foo> Invoke-Command -ScriptBlock $SBMP -Session $SWP51
 
 Name                           Value
 ----                           -----
-PSVersion                      5.1.20226.1000
 SerializationVersion           1.1.0.1
-PSRemotingProtocolVersion      2.3
-BuildVersion                   10.0.20226.1000
-PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0, 5.0, 5.1.20226.1000}
-WSManStackVersion              3.0
 PSEdition                      Desktop
+BuildVersion                   10.0.20270.1000
 CLRVersion                     4.0.30319.42000
+WSManStackVersion              3.0
+PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0, 5.0, 5.1.20270.1000}
+PSRemotingProtocolVersion      2.3
+PSVersion                      5.1.20270.1000
 
-C:\Users\Administrator\Documents\WindowsPowerShell\Modules
+C:\Users\Administrator.RESKIT\Documents\WindowsPowerShell\Modules
 C:\Program Files\WindowsPowerShell\Modules
 C:\Windows\system32\WindowsPowerShell\v1.0\Modules
 
 
 
 PS C:\Foo> # 6. Reviewing paths in PowerShell 7.1
-PS C:\Foo> Invoke-Command -ScriptBlock $SBMP -Session $SP71
+Invoke-Command -ScriptBlock $SBMP -Session $SP71
 
 Name                           Value
 ----                           -----
-PSVersion                      7.1.0-rc.1
-PSRemotingProtocolVersion      2.3
 SerializationVersion           1.1.0.1
-Platform                       Win32NT
-OS                             Microsoft Windows 10.0.20226
-GitCommitId                    7.1.0-rc.1
-PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0, 5.0, 5.1.10032.0, 6.0.0, 6.1.0, 6.2.0, 7.0.0, 7.1.0}
-WSManStackVersion              3.0
 PSEdition                      Core
-
-C:\Users\Administrator\Documents\PowerShell\Modules
+PSVersion                      7.1.1
+GitCommitId                    7.1.1
+WSManStackVersion              3.0
+OS                             Microsoft Windows 10.0.20270
+PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0, 5.0, 5.1.10032.0, 6.0.0, 6.1.0, 6.2.0, 7.0.0, 7.1.1}
+PSRemotingProtocolVersion      2.3
+Platform                       Win32NT
+C:\Users\Administrator.RESKIT\Documents\PowerShell\Modules
 C:\Program Files\PowerShell\Modules
-c:\pspreview\Modules
+c:\program files\powershell\7\Modules
 C:\Program Files\WindowsPowerShell\Modules
 C:\Windows\system32\WindowsPowerShell\v1.0\Modules
+
+
 
 
 
@@ -89,6 +90,7 @@ C:\Windows\system32\WindowsPowerShell\v1.0\Modules
 
 
 NO OUTPUT
+
 
 
 PS C:\Foo> # 8. Discovering all 7.1 cmdlets
@@ -118,7 +120,7 @@ no OUTPUT
 
 PS C:\Foo> # 11. Discover new cmdlets in PowerShell 7.1
 PS C:\Foo> Compare-Object $Commands51 $Commands71  |
-             Where-Object sideindicator -match '^=>'
+             Where-Object SideIndicator -match '^=>'
 
 InputObject               SideIndicator
 -----------               -------------
@@ -172,37 +174,36 @@ Manifest   3.1.0.0               Microsoft.PowerShell.Management     Desk      {
 Script     1.0                   Microsoft.PowerShell.ODataUtils     Desk      Export-ODataEndpointProxy                     localhost
 Manifest   3.0.0.0               Microsoft.PowerShell.Security       Desk      {Get-Credential, Get-ExecutionPolicy, Unprot… localhost
 Manifest   3.1.0.0               Microsoft.PowerShell.Utility        Desk      {Get-PSCallStack, Update-TypeData, Add-Type,… localhost
-
+9 modules found in 5.1.20270.1000
 
 
 
 
 
 PS C:\Foo> # 14. View core modules in PowerShell 7.1
-PS C:\Foo> Invoke-Command -Session $SP71 -ScriptBlock $CMSB
+Invoke-Command -Session $SP71 -ScriptBlock $CMSB
 
-    Directory: C:\pspreview\Modules
+    Directory: C:\program files\powershell\7\Modules
 
-ModuleType Version    PreRelease Name                                PSEdition ExportedCommands                              PSComputerName
----------- -------    ---------- ----                                --------- ----------------                              --------------
-Manifest   1.2.5                 Microsoft.PowerShell.Archive        Desk      {Compress-Archive, Expand-Archive}            localhost
-Manifest   7.0.0.0               Microsoft.PowerShell.Diagnostics    Core      {Get-WinEvent, Get-Counter, New-WinEvent}     localhost
-Manifest   7.0.0.0               Microsoft.PowerShell.Host           Core      {Stop-Transcript, Start-Transcript}           localhost
-Manifest   7.0.0.0               Microsoft.PowerShell.Management     Core      {Set-Service, Set-ItemProperty, Get-Content,… localhost
-Manifest   7.0.0.0               Microsoft.PowerShell.Security       Core      {Get-Credential, Get-ExecutionPolicy, Unprot… localhost
-Manifest   7.0.0.0               Microsoft.PowerShell.Utility        Core      {Enable-RunspaceDebug, Import-Clixml, Add-Ty… localhost
+ModuleType Version    PreRelease Name                                PSEdition ExportedCommands                                  PSComputerName
+---------- -------    ---------- ----                                --------- ----------------                                  --------------
+Manifest   1.2.5                 Microsoft.PowerShell.Archive        Desk      {Compress-Archive, Expand-Archive}                localhost
+Manifest   7.0.0.0               Microsoft.PowerShell.Diagnostics    Core      {Get-WinEvent, Get-Counter, New-WinEvent}         localhost
+Manifest   7.0.0.0               Microsoft.PowerShell.Host           Core      {Start-Transcript, Stop-Transcript}               localhost
+Manifest   7.0.0.0               Microsoft.PowerShell.Management     Core      {Convert-Path, New-PSDrive, New-ItemProperty, Re… localhost
+Manifest   7.0.0.0               Microsoft.PowerShell.Security       Core      {Test-FileCatalog, Unprotect-CmsMessage, Set-Exe… localhost
+Manifest   7.0.0.0               Microsoft.PowerShell.Utility        Core      {Format-Custom, Write-Verbose, Disable-PSBreakpo… localhost
 
     Directory: C:\Program Files\WindowsPowerShell\Modules
 
-ModuleType Version    PreRelease Name                                PSEdition ExportedCommands                              PSComputerName
----------- -------    ---------- ----                                --------- ----------------                              --------------
-Script     1.0.1                 Microsoft.PowerShell.Operation.Val… Desk      {Get-OperationValidation, Invoke-OperationVa… localhost
+ModuleType Version    PreRelease Name                                PSEdition ExportedCommands                                  PSComputerName
+---------- -------    ---------- ----                                --------- ----------------                                  --------------
+Script     1.0.1                 Microsoft.PowerShell.Operation.Val… Desk      {Invoke-OperationValidation, Get-OperationValida… localhost
 
     Directory: C:\Windows\system32\WindowsPowerShell\v1.0\Modules
 
-ModuleType Version    PreRelease Name                                PSEdition ExportedCommands                              PSComputerName
----------- -------    ---------- ----                                --------- ----------------                              --------------
-Manifest   3.0.0.0               Microsoft.PowerShell.Diagnostics    Core,Desk {Get-WinEvent, Get-Counter, Import-Counter, … localhost
-Manifest   1.0.0.0               Microsoft.PowerShell.LocalAccounts  Core,Desk {Get-LocalGroupMember, algm, Get-LocalUser, … localhost
-
-
+ModuleType Version    PreRelease Name                                PSEdition ExportedCommands                                  PSComputerName
+---------- -------    ---------- ----                                --------- ----------------                                  --------------
+Manifest   3.0.0.0               Microsoft.PowerShell.Diagnostics    Core,Desk {Get-WinEvent, Get-Counter, New-WinEvent, Import… localhost
+Manifest   1.0.0.0               Microsoft.PowerShell.LocalAccounts  Core,Desk {Add-LocalGroupMember, nlg, Enable-LocalUser, rl… localhost
+9 modules found in 7.1.1

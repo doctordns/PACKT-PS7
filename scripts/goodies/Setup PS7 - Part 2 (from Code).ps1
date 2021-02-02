@@ -4,26 +4,23 @@
 
 
 
-# 1 Using VS Code, create a Sample Profile File for VS Code
+# 1. Using VS Code, create a Sample Profile File for VS Code
 Write-Host "Creating VS Code Default profile"
 $VSCodeProfileFile = $Profile.CurrentUserCurrentHost
 New-Item $VSCodeProfileFile -Force -WarningAction SilentlyContinue | Out-Null
 $VSCodePS7Sample = 
   'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
   'scripts/goodies/Microsoft.VSCode_profile.ps1'
-(Invoke-WebRequest -Uri $VSCodePS7Sample -UseBasicParsing).Content | 
-  Out-File -FilePath  $VSCodeProfileFile
+Start-BitsTransfer -Source $VSCodePS7Sample -Destination $VSCodeProfileFile
 
-  Write-Host 'Creating PWSH 7 Console Profile'
+Write-Host 'Creating PWSH 7 Console Profile'
 $ProfilePath = Split-Path -Path $VSCodeProfileFile
 $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_profile.ps1'
 New-Item $ConsoleProfile -Force -WarningAction SilentlyContinue | Out-Null
 $ConsolePS7Sample = 
   'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
   'scripts/goodies/Microsoft.PowerShell_Profile.ps1'
-(Invoke-WebRequest -Uri $ConsolePS7Sample -UseBasicParsing).Content | 
-  Out-File -FilePath  $ConsoleProfile
-
+Start-BitsTransfer -Source $ConsolePS7Sample -Destination $ConsoleProfile
 
 # 2. Update Local User Settings for VS Code
 $JSON = @'
@@ -134,8 +131,7 @@ $URI = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
        "scripts/goodies/$ProfileFile"
 New-Item $VSProfile -Force -WarningAction SilentlyContinue |
    Out-Null
-(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
-  Out-File -FilePath  $VSProfile
+Start-BitsTransfer -Source $URI  -Destination $VSProfile
 
 # 8. Create PS 7 Console profile
 Write-Host 'Creating PowerShell 7 Console Profile'
@@ -145,8 +141,7 @@ New-Item $ConsoleProfile -Force -WarningAction SilentlyContinue |
    Out-Null
 $URI2 = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
         "scripts/goodies/$ProfileFile2"    
-(Invoke-WebRequest -Uri $URI2 -UseBasicParsing).Content | 
-  Out-File -FilePath  $ConsoleProfile
+Start-BitsTransfer -Source $URI2 -Destination $ConsoleProfile
 
 
 # 8. Install Cascadia Code

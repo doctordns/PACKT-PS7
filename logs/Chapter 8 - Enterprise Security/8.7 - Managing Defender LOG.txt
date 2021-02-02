@@ -1,0 +1,184 @@
+# 8.7 - Managing WindowsDefender
+
+# Run on DC1
+
+
+
+# 1. Ensuring Defender and tools are installed
+
+
+No output but a reboot
+
+PS C:\Foo> # 2. Discovering the cmdlets in the Defender module
+PS C:\Foo> Import-Module -Name Defender
+PS C:\Foo> Get-Command -Module Defender
+
+CommandType  Name                   Version  Source
+-----------  ----                   -------  ------
+Function     Add-MpPreference       1.0      Defender
+Function     Get-MpComputerStatus   1.0      Defender
+Function     Get-MpPreference       1.0      Defender
+Function     Get-MpThreat           1.0      Defender
+Function     Get-MpThreatCatalog    1.0      Defender
+Function     Get-MpThreatDetection  1.0      Defender
+Function     Remove-MpPreference    1.0      Defender
+Function     Remove-MpThreat        1.0      Defender
+Function     Set-MpPreference       1.0      Defender
+Function     Start-MpScan           1.0      Defender
+Function     Start-MpWDOScan        1.0      Defender
+Function     Update-MpSignature     1.0      Defender
+
+
+
+
+
+PS C:\Foo> # 3. Checking the Defender service status
+PS C:\Foo> Get-Service  -Name WinDefend
+
+Status   Name       DisplayName
+------   ----       -----------
+Running  WinDefend  Microsoft Defender Antivirus Service
+
+
+
+
+PS C:\Foo> # 4. Checking Defender status
+PS C:\Foo> Get-MpComputerStatus
+
+AMEngineVersion                 : 1.1.17800.5
+AMProductVersion                : 4.18.2101.4
+AMRunningMode                   : Normal
+AMServiceEnabled                : True
+AMServiceVersion                : 4.18.2101.4
+AntispywareEnabled              : True
+AntispywareSignatureAge         : 0
+AntispywareSignatureLastUpdated : 29/01/2021 22:30:02
+AntispywareSignatureVersion     : 1.329.3130.0
+AntivirusEnabled                : True
+AntivirusSignatureAge           : 0
+AntivirusSignatureLastUpdated   : 29/01/2021 22:30:02
+AntivirusSignatureVersion       : 1.329.3130.0
+BehaviorMonitorEnabled          : True
+ComputerID                      : E2B5FDA9-B412-494E-994A-5DA21BC8E0A4
+ComputerState                   : 0
+FullScanAge                     : 0
+FullScanEndTime                 : 29/01/2021 21:33:50
+FullScanStartTime               : 29/01/2021 21:21:40
+IoavProtectionEnabled           : True
+IsTamperProtected               : False
+IsVirtualMachine                : True
+LastFullScanSource              : 1
+LastQuickScanSource             : 2
+NISEnabled                      : True
+NISEngineVersion                : 1.1.17800.5
+NISSignatureAge                 : 0
+NISSignatureLastUpdated         : 29/01/2021 22:30:02
+NISSignatureVersion             : 1.329.3130.0
+OnAccessProtectionEnabled       : True
+QuickScanAge                    : 0
+QuickScanEndTime                : 30/01/2021 03:07:26
+QuickScanStartTime              : 30/01/2021 03:07:06
+RealTimeProtectionEnabled       : True
+RealTimeScanDirection           : 0
+PSComputerName                  :
+
+
+
+
+
+PS C:\Foo> # 5. Getting and counting threat catalog
+PS C:\Foo> $ThreatCatalog = Get-MpThreatCatalog
+PS C:\Foo> "There are $($ThreatCatalog.count) threats in the catalog"
+There are 201761 threats in the catalog
+
+
+
+
+
+PS C:\Foo> # 6. Viewing five threats in the catalog
+PS C:\Foo> $ThreatCatalog |
+             Select-Object -First 5 |
+               Format-Table -Property SeverityID, ThreatID, ThreatName
+
+SeverityID ThreatID ThreatName
+---------- -------- ----------
+         5     1596 TrojanSpy:Win32/AcidBattery
+         5     1600 TrojanDownloader:Win32/AcidReign
+         5     1604 Backdoor:Win32/AckCmd
+         2     1605 Dialer:Win32/Aconti
+         5     1622 MonitoringTool:Win32/ActiveKeylogger
+
+
+
+
+# 7. Set key settings
+
+
+
+no output
+
+
+
+European Institute for Computer Anti-Virus Research (EICAR) 
+https://www.eicar.org/?page_id=3950
+
+
+PS C:\Foo> # 8. Creating a false positive threat
+PS C:\Foo> $TF = 'C:\Foo\FalsePositive1.Txt'
+PS C:\Foo> $FP = 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-' +
+                 'STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'
+PS C:\Foo> $FP | Out-File -FilePath $TF
+PS C:\Foo> Get-Content -Path $TF
+
+
+no output
+
+
+
+# 9. Running a quick scan on C:\Fo
+
+
+no putput...
+
+
+
+PS C:\Foo> # 10. Viewing detected threats
+PS C:\Foo> Get-MpThreat
+
+
+CategoryID       : 42
+DidThreatExecute : False
+IsActive         : False
+Resources        : {file:_C:\Foo\FalsePositive1.txt}
+RollupStatus     : 33
+SchemaVersion    : 1.0.0.0
+SeverityID       : 5
+ThreatID         : 2147519003
+ThreatName       : Virus:DOS/EICAR_Test_File
+TypeID           : 0
+PSComputerName   :
+
+
+
+
+
+
+PS C:\Foo> # 11. Viewing Defender enabled threat protection
+PS C:\Foo> Get-MpComputerStatus |
+             Format-List -Property *Enabled, *Time
+
+AMServiceEnabled          : True
+AntispywareEnabled        : True
+AntivirusEnabled          : True
+BehaviorMonitorEnabled    : True
+IoavProtectionEnabled     : True
+NISEnabled                : True
+OnAccessProtectionEnabled : True
+RealTimeProtectionEnabled : True
+FullScanEndTime           : 30/01/2021 12:22:45
+FullScanStartTime         : 30/01/2021 12:10:38
+QuickScanEndTime          : 30/01/2021 03:07:26
+QuickScanStartTime        : 30/01/2021 03:07:06
+
+
+

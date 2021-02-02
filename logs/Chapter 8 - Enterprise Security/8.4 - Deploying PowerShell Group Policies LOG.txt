@@ -1,18 +1,24 @@
+# 8.4 Deploying PowerSHell Group Policies f LOG
+
+# Run on DC1 - Login as Administrator
+
+
+
 PS C:\Foo> # 1. Discovering the GPO related files
 PS C:\Foo> Get-ChildItem -Path $PSHOME -Filter *Core*Policy*
 
     Directory: C:\Program Files\PowerShell\7
 
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
--a---          13/01/2021    18:47          15882 InstallPSCorePolicyDefinitions.ps1
--a---          13/01/2021    18:39           9675 PowerShellCoreExecutionPolicy.adml
--a---          13/01/2021    18:39           6198 PowerShellCoreExecutionPolicy.admx
+Mode          LastWriteTime  Length Name
+----          -------------  ------ ----
+-a---   13/01/2021    18:47   15882 InstallPSCorePolicyDefinitions.ps1
+-a---   13/01/2021    18:39    9675 PowerShellCoreExecutionPolicy.adml
+-a---   13/01/2021    18:39    6198 PowerShellCoreExecutionPolicy.admx
 
 
 
 
-PS C:\Foo> # 2. Install the PowerShell 7 group policy files
+PS C:\Foo> # 2. Installing the PowerShell 7 group policy files
 PS C:\Foo> $LOC = 'C:\Program Files\PowerShell\7\' +         # $PSHome
                   'InstallPSCorePolicyDefinitions.ps1'       # Script
 PS C:\Foo> & $LOC -VERBOSE
@@ -25,7 +31,7 @@ VERBOSE: PowerShellCoreExecutionPolicy.adml was installed successfully
 
 
 
-PS C:\Foo> # 3. Creating and displaying a new GPO Object for IT group
+PS C:\Foo> # 3. Creating and displaying a new GPO object for IT group
 PS C:\Foo> $PshGPO = New-GPO -Name 'PowerShell GPO for IT'
 PS C:\Foo> $PshGPO
 
@@ -68,5 +74,12 @@ no output
 
 no output
 
+
+
+# 8. Assigning GPO to IT OU
+
+
+
+no output
 
 
