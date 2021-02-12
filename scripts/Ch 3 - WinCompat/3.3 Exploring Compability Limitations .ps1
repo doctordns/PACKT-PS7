@@ -2,7 +2,7 @@
 
 
 # 1. Attempting to view a Windows PowerShell module
-Get-Module -Name ServerManager
+Get-Module -Name ServerManager -ListAvailable
 
 # 2. Trying to load a module without edition check
 Import-Module -Name ServerManager -SkipEditionCheck

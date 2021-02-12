@@ -22,7 +22,7 @@ $SCR = Find-Script
 "DSC Resources found:     [{0:N0}]"  -f $DSC.count
 "Scripts found:           [{0:N0}]"  -f $SCR.count
 
-# 5. Discovering NTFS Related modules
+# 5. Discovering NTFS-related modules
 $MOD | 
   Where-Object Name -match NTFS
 
@@ -52,14 +52,14 @@ Save-Module -Name CountriesPS -Path $DLFLDR
 Get-ChildItem -Path $DLFLDR -Recurse |
   Format-Table -Property Fullname
 
-# 12. Importing the CounriesPS module
+# 12. Importing the CountriesPS module
 $ModuleFolder = "$DLFLDR\CountriesPS"
 Get-ChildItem -Path $ModuleFolder -Filter *.psm1 -Recurse |
     Select-Object -ExpandProperty FullName -First 1 |
         Import-Module -Verbose
 
 # 13. Checking commands in the module
-Get-Command -Module CountriesPSc
+Get-Command -Module CountriesPS
 
 # 14. Using the Get-Country command
 Get-Country -Name 'United Kingdom'

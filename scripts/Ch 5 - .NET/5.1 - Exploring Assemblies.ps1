@@ -23,7 +23,8 @@ $Assin51 |
     Sort-Object -Property Location
 
 # 5. Exploring the Microsoft.PowerShell.Management module
-$Mod = Get-Module -Name Microsoft.PowerShell.Management -ListAvailable
+$Mod = 
+  Get-Module -Name Microsoft.PowerShell.Management -ListAvailable
 $Mod  | Format-List
 
 # 6. Viewing module manifest

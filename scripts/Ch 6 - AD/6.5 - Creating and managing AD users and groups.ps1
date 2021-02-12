@@ -34,7 +34,7 @@ $OUHT = @{
 }
 New-ADOrganizationalUnit @OUHT
 
-# 4. Moving users into OU
+# 4. Moving users into the OU
 $MHT1 = @{
     Identity   = 'CN=ThomasL,CN=Users,DC=Reskit,DC=ORG'
     TargetPath = 'OU=IT,DC=Reskit,DC=Org'

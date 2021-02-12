@@ -17,7 +17,7 @@ $Users = Import-CSV -Path C:\Foo\Users.Csv |
   Sort-Object  -Property Alias
 $Users | Format-Table
 
-# 3. Add the users using the CSV
+# 3. Adding the users using the CSV
 $Users | 
   ForEach-Object -Parallel {
     $User = $_ 
@@ -43,7 +43,7 @@ $Users |
     "Created $($Prop.Name)"
 }
 
-# 4. Show all users in AD (Reskit.Org)
+# 4. Showing all users in AD (Reskit.Org)
 Get-ADUser -Filter * | 
   Format-Table -Property Name, UserPrincipalName
 

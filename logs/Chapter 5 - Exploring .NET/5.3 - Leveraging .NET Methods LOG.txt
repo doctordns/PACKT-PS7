@@ -1,7 +1,7 @@
 # 5.3 Leveraging .NET methods   LOG
 
 
-# run on serv1
+# run on SRV1
 
 
 # 1. Starting Notepad

@@ -71,7 +71,7 @@ Modules found:           [6,204]
 DSC Resources found:     [1,771]
 Scripts found:           [1,241]
 
-PS C:\Foo> # 5. Discovering NTFS Related modules
+PS C:\Foo> # 5. Discovering NTFS-related modules
 PS C:\Foo> $MOD |
              Where-Object Name -match NTFS
 
@@ -193,7 +193,7 @@ C:\Foo\DownloadedModules\CountriesPS\1.0.0.0\Public\Get-Country.ps1
 
 
 
-PS C:\Foo> # 12. Importing the CounriesPS module
+PS C:\Foo> # 12. Importing the CountriesPS module
 PS C:\Foo> $ModuleFolder = "$DLFLDR\CountriesPS"
 PS C:\Foo> Get-ChildItem -Path $ModuleFolder -Filter *.psm1 -Recurse |
              Select-Object -ExpandProperty FullName -First 1 |

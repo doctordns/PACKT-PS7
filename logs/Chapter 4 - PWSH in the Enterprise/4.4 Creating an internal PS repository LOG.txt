@@ -1,4 +1,4 @@
-# Recipe 4.4 - Creating an internal PowerShell repository
+# Recipe 4.4 - Creating a local PowerShell repository
 
 # Run on SRV1
 
@@ -6,7 +6,7 @@
 
 # 1. Creating repository folder
 
-no ouptut
+no output
 
 
 
@@ -73,7 +73,7 @@ Hello World
 
 
 
-# 8. Creating a manifest for the new module
+# 8. Creating a PowerSHell module manifest for the new module
 
 
 

@@ -19,15 +19,15 @@ $PROVIDERS |
       Format-Table -AutoSize -Wrap
 
 # 4. Discovering and counting available packages
-$PAGKAGES = Find-Package
-"Discovered {0:N0} packages" -f $PAGKAGES.count
+$PACKAGES = Find-Package
+"Discovered {0:N0} packages" -f $PACKAGES.Count
 
 # 5. Showing first 5 packages discovered
-$PAGKAGES  |
+$PACKAGES  |
     Select-Object -First 5 |
       Format-Table -AutoSize -Wrap
 
-# 6. Installing Chocolatier provider
+# 6. Installing the Chocolatier provider
 Install-PackageProvider -Name Chocolatier -Force |
   Out-Null
 

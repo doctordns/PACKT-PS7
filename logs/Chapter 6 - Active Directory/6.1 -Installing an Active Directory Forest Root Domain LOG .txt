@@ -16,7 +16,7 @@ True    No             Success    {Active Directory Domain Services, Group Polâ€
 
 
 
-PS C:\Foo> # 2. Importing ADDeployment module
+PS C:\Foo> # 2. Importing the ADDeployment module
 PS C:\Foo> Import-Module -Name ADDSDeployment
 WARNING: Module ADDSDeployment is loaded in Windows PowerShell using WinPSCompatSession
 remoting session; please note that all input and output of commands from this module will 
@@ -51,7 +51,7 @@ no output
 
 
 
-PS C:\Foo> # 5. Testing DC Forest installation starting on DC1
+PS C:\Foo> # 5. Testing DC forest installation starting on DC1
 PS C:\Foo> $FOTHT = @{
               DomainName           = 'Reskit.Org'
               InstallDNS           = $true 
@@ -92,7 +92,7 @@ RebootRequired : True
 Status         : Success
 
 
-PS C:\Foo> # 7. Checking Key AD and related services
+PS C:\Foo> # 7. Checking key AD and related services
 PS C:\Foo> Get-Service -Name DNS, Netlogon
 
 Status   Name               DisplayName
@@ -102,7 +102,7 @@ Stopped  Netlogon           Netlogon
 
 
 
-PS C:\Foo> # 8. Checking DNS Zones
+PS C:\Foo> # 8. Checking DNS zones
 PS C:\Foo> Get-DnsServerZone
 
 ZoneName           ZoneType   IsAutoCreated   IsDsIntegrated  IsReverseLookupZone  IsSigned

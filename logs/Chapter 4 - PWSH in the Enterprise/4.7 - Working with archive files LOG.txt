@@ -2,7 +2,7 @@
 
 # Run on SRV1
 
-PS C:\Foo> # 1.  Getting achive module
+PS C:\Foo> # 1.  Getting archive module
 PS C:\Foo> Get-Module -Name Microsoft.Powershell.Archive -ListAvailable
 
     Directory: C:\program files\powershell\7\Modules
@@ -12,7 +12,7 @@ ModuleType Version  PreRelease Name                          PSEdition ExportedC
 Manifest   1.2.5               Microsoft.PowerShell.Archive  Desk      {Compress-Archive, Expand-Archive}
 
 
-PS C:\Foo> # 2. Discovering comands in archive module
+PS C:\Foo> # 2. Discovering commands in archive module
 PS C:\Foo> Get-Command -Module Microsoft.PowerShell.Archive
 
 CommandType  Name               Version   Source
@@ -35,7 +35,7 @@ no output
 
 
 
-PS C:\Foo> # 5. Measuring files to archive
+PS C:\Foo> # 5. Measuring size of the files to archive
 PS C:\Foo> $Files = Get-ChildItem -Path 'C:\Foo\Archive'
 PS C:\Foo> $Count = $Files.Count
 PS C:\Foo> $LenKB = (($Files | Measure-Object -Property length -Sum).Sum)/1mb
@@ -109,8 +109,8 @@ no output
 no output
 
 
-PS C:\Foo> # 13. Measuring decompressed files
-PS C:\Foo> $Files = Get-ChildItem -Path $OUTF
+PS C:\Foo> # 13. Measuring the size of the decompressed files
+PS C:\Foo> $Files = Get-ChildItem -Path $Opath
 PS C:\Foo> $Count = $Files.Count
 PS C:\Foo> $LenKB = (($Files | Measure-Object -Property length -Sum).Sum)/1mb
 PS C:\Foo> "[{0}] decompressed files, occupying {1:n2}mb" -f $Count, $LenKB

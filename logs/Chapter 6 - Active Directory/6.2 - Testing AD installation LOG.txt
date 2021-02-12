@@ -5,7 +5,7 @@
 
 
 
-PS C:\Foo> # 1. Examining AD DSE
+PS C:\Foo> # 1. Examining Root Directory Service Entry (DSE)
 PS C:\Foo> Get-ADRootDSE -Server DC1.Reskit.Org
 
 configurationNamingContext    : CN=Configuration,DC=Reskit,DC=Org
@@ -237,7 +237,7 @@ SID               : S-1-5-21-1051839064-3594903887-4180521017-500
 
 
 
-PS C:\Foo> # 8. Checking DNS Zones on DC1
+PS C:\Foo> # 8. Checking DNS zones on DC1
 PS C:\Foo> Get-DnsServerZone -ComputerName DC1
 
 ZoneName             ZoneType   IsAutoCreated  IsDsIntegrated  IsReverseLookupZone  IsSigned

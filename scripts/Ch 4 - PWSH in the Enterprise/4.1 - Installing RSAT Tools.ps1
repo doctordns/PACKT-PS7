@@ -2,13 +2,13 @@
 #
 # Uses SRV1
 
-# Run From CL1
+# Run From SRV1
 
 
 # 1. Displaying counts of available PowerShell commands
-$CommandsBeforeRSAT = Get-Command -Module *
+$CommandsBeforeRSAT = Get-Command 
 $CmdletsBeforeRSAT = $CommandsBeforeRSAT  |
-    Where-Object commandtype -eq 'Cmdlet'
+    Where-Object CommandType -eq 'Cmdlet'
 $CommandCountBeforeRSAT = $CommandsBeforeRSAT.Count
 $CmdletCountBeforeRSAT  = $CmdletsBeforeRSAT.Count
 "On Host: [$(hostname)]"
@@ -24,20 +24,19 @@ $CommandsBeforeRSAT |
   Get-Member |
     Select-Object -ExpandProperty TypeName -Unique
 
-
 # 4. Getting the collection of PowerShell modules and a count of 
 #    modules before adding the RSAT tools
 $ModulesBefore = Get-Module -ListAvailable 
 
-# 5. Displaying a count of modules available before adding the RSAT tools
+# 5. Displaying a count of modules available
+#    before adding the RSAT tools
 $CountOfModulesBeforeRSAT = $ModulesBefore.Count
 "$CountOfModulesBeforeRSAT modules available"
 
 # 6. Getting a count of features actually available on SRV1
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
 $Features  = Get-WindowsFeature 
-$FeaturesI = $Features | Where-Object Installed
-| Where-object installed
+$FeaturesI = $Features | Where-Object Installed 
 $RsatF     = $Features |
                Where-Object Name -Match 'RSAT'
 $RSATFI    = $RSATF | 
@@ -63,7 +62,7 @@ $IFSRV1A  = $FSRV1A | Where-Object Installed
 $RSFSRV1A = $FSRV1A | Where-Object Installed | 
               Where-Object Name -Match 'RSAT'
 
-# 11. Displaying after effects
+# 11. Displaying counts of commands after installing the RSAT tools
 "After Installation of RSAT tools on SRV1"
 "$($IFSRV1A.count) features installed on SRV1"
 "$($RSFSRV1A.count) RSAT features installed on SRV1"

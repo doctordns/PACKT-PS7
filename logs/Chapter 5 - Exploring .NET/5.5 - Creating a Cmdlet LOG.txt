@@ -117,7 +117,7 @@ namespace Reskit
 PS C:\Foo\Cmdlet\SendGreeting> $Cmdlet | Out-File .\SendGreetingCommand.cs
 
 
-# 8. Removing unused class file 
+# 8. Removing the unused class file 
 
 
 
@@ -152,7 +152,7 @@ no output
 
 
 
-PS C:\Foo\Cmdlet\SendGreeting> # 11. Examining at Module
+PS C:\Foo\Cmdlet\SendGreeting> # 11. Examining the module's details
 PS C:\Foo\Cmdlet\SendGreeting> Get-Module SendGreeting
 
 ModuleType Version    PreRelease Name           ExportedCommands

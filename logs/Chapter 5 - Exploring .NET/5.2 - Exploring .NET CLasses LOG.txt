@@ -19,8 +19,8 @@ Mode         LastWriteTime  Length Name
 
 PS C:\Foo> # 2. Discovering the underlying class
 PS C:\Foo> $TYPE = $FILE.GetType().FullName
-PS C:\Foo> ".Net Class: $TYPE"
-.Net Class: System.IO.FileInfo
+PS C:\Foo> ".NET Class: $TYPE"
+.NET Class: System.IO.FileInfo
 
 
 
@@ -75,9 +75,9 @@ PS C:\Foo> $I = 42
 PS C:\Foo> $IntType  = $I.GetType()
 PS C:\Foo> $TypeName = $IntType.Name
 PS C:\Foo> $BaseType = $IntType.BaseType.Name
-PS C:\Foo> ".Net Class name     : $TypeName"
-PS C:\Foo> ".NET Class Base Type: $BaseType"
-.Net Class name      : System.Int32
+PS C:\Foo> ".Net Class name      : $TypeName"
+PS C:\Foo> ".NET Class Base Type : $BaseType"
+.NET Class name      : System.Int32
 .NET Class base type : ValueType
 
 

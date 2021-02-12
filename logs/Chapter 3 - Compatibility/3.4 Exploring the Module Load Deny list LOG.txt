@@ -3,7 +3,7 @@
 # Fun on SRV1 after loading PowerShell 7 and VS Code.
 
 
-PS C:\Foo> # 1. Geting the PowerShell configuration file
+PS C:\Foo> # 1. Getting the PowerShell configuration file
 PS C:\Foo> $CFFile = "$PSHOME/powershell.config.json"
 PS C:\Foo> Get-Item -Path $CFFile
 

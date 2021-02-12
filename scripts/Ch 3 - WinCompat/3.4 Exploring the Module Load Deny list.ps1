@@ -2,7 +2,7 @@
 
 # Fun on SRV1 after loading PowerShell 7 and VS Code.
 
-# 1. Geting the PowerShell configuration file
+# 1. Getting the PowerShell configuration file
 $CFFile = "$PSHOME/powershell.config.json"
 Get-Item -Path $CFFile
 
@@ -20,9 +20,4 @@ Get-Module -Name BestPractices
 
 # 6. Attempting to use Get-BpaModel
 Get-BpaModel 
-
-
-
-
-
 

@@ -20,7 +20,7 @@ PS C:\Foo> $Cert |
 
 Thumbprint                                Subject                 EnhancedKeyUsageList
 ----------                                -------                 --------------------
-F0D830F1764CDB36122C6971AB7E917E7225D7C8  CN=Reskit Code Signing  Code Signing
+4510B4F754B1704E7FF72779D7FBDEA6E44D88AE  CN=Reskit Code Signing  Code Signing
 
 
 
@@ -54,7 +54,7 @@ PS C:\Foo> Set-AuthenticodeSignature @SHT
 
 SignerCertificate                         Status         StatusMessage                              Path
 -----------------                         ------         -------------                              ----
-F0D830F1764CDB36122C6971AB7E917E7225D7C8  UnknownError   A certificate chain processed, but termin… signed.ps1
+4510B4F754B1704E7FF72779D7FBDEA6E44D88AE  UnknownError   A certificate chain processed, but termin… signed.ps1
 
 
 
@@ -65,7 +65,7 @@ PS C:\Foo> Get-ChildItem -Path C:\Foo\Signed.ps1
 
 Mode          LastWriteTime   Length Name
 ----          -------------   ------ ----
--a---   28/10/2020    09:39     2133 Signed.ps1
+-a---   28/10/2020    09:39     2137 Signed.ps1
 
 
 
@@ -115,7 +115,7 @@ PS C:\Foo> Get-Content -Path C:\Foo\Signed.ps1.
 
 
 PS C:\Foo> # 7. Testing the signature
-PS C:\Foo> Get-AuthenticodeSignature -FilePath C:\foo\signed.ps1 |
+PS C:\Foo> Get-AuthenticodeSignature -FilePath C:\Foo\Signed.ps1 |
              Format-List
 
 SignerCertificate      : [Subject]
@@ -125,7 +125,7 @@ SignerCertificate      : [Subject]
                            CN=Reskit Code Signing
 
                          [Serial Number]
-                           7C64798B43CF918D41F9B0EDFAADDD47
+                           23FBA3EA5E75CBBA41C34A283CDDC425
 
                          [Not Before]
                            28/10/2020 09:23:47
@@ -134,7 +134,7 @@ SignerCertificate      : [Subject]
                            28/10/2021 10:43:47
 
                          [Thumbprint]
-                           F0D830F1764CDB36122C6971AB7E917E7225D7C8
+                           4510B4F754B1704E7FF72779D7FBDEA6E44D88AE
 
 TimeStamperCertificate :
 Status                 : UnknownError
@@ -145,13 +145,39 @@ SignatureType          : Authenticode
 IsOSBinary             : False
 
 
-# 8. Ensuring certificate is trusted
+
+
+PS C:\Foo> # 8. Running the signed script
+PS C:\Foo> C:\Foo\Signed.ps1
+Hello World from PowerShell 7!
+Running on [SRV1]
+
+
+# 9. Setting the execution policy to all signed
+
 
 no output
 
 
 
-PS C:\Foo> # 9. Checking the signature
+
+PS C:\Foo> # 10. Running the signed script
+PS C:\Foo> C:\Foo\Signed.ps1
+C:\Foo\Signed.ps1: File C:\Foo\Signed.ps1 cannot be loaded. A certificate chain processed, 
+but terminated in a root certificate which is not trusted by the trust provider..
+
+
+
+
+# 11. Copying Certificate to Current User Trusted Root store
+
+no output - but a popup.
+
+
+
+
+
+PS C:\Foo> # 12. Checking the signature
 PS C:\Foo> Get-AuthenticodeSignature -FilePath C:\Foo\Signed.ps1 |
              Format-List
 
@@ -172,7 +198,7 @@ SignerCertificate      : [Subject]
                            28/10/2021 10:43:47
 
                          [Thumbprint]
-                           F0D830F1764CDB36122C6971AB7E917E7225D7C8
+                           4510B4F754B1704E7FF72779D7FBDEA6E44D88AE
 
 TimeStamperCertificate :
 Status                 : Valid
@@ -182,6 +208,29 @@ SignatureType          : Authenticode
 IsOSBinary             : False
 
 
+
+PS C:\Foo> # 13. Running the signed script
+PS C:\Foo> C:\Foo\Signed.ps1
+Do you want to run software from this untrusted publisher?
+File C:\Foo\Signed.ps1 is published by CN=Reskit Code Signing and is 
+not trusted on your system. Only run scripts from trusted publishers.
+[V] Never run [D] Do not run [R] Run once [A] Always run [?] Help (default is "Do not run"):
+
+
+
+
+# 14.  Copying cert to Trusted Publisher store
+
+
+no output
+
+
+
+
+PS C:\Foo> # 15. Running the signed script
+PS C:\Foo> C:\Foo\Signed.ps1
+Hello World from PowerShell 7!
+Running on [SRV1]
 
 
 

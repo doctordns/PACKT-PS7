@@ -37,7 +37,7 @@ $INSTALLHT = @{
 Install-ADDSDomainController @INSTALLHT | Out-Null
 
 
-# 6. Checking the Computer objects in AD
+# 6. Checking the computer objects in AD
 Get-ADComputer -Filter * | 
   Format-Table DNSHostName, DistinguishedName
 
@@ -52,7 +52,6 @@ $SB = 'OU=Domain Controllers,DC=Reskit,DC=Org'
 Get-ADComputer -Filter * -SearchBase $SB |
   Format-Table -Property DNSHostNname, Enabled
 
-# 9. Viewing Reskit.Org Domain DCs
+# 9. Viewing Reskit.Org domain DCs
 Get-ADDomain |
   Format-Table -Property Forest, Name, Replica*
-. 

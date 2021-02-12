@@ -6,7 +6,7 @@
 # 1. Getting archive module
 Get-Module -Name Microsoft.Powershell.Archive -ListAvailable
 
-# 2. Discovering comands in archive module
+# 2. Discovering commands in archive module
 Get-Command -Module Microsoft.PowerShell.Archive
 
 # 3. Making a new folder
@@ -62,7 +62,7 @@ New-Item @NIHT2 | Out-Null
 # 12. Decompress the Archive1.zip archive
 Expand-Archive -Path $AFILE1 -DestinationPath $Opath
 
-# 13. Measuring decompressed files
+# 13. Measuring the size of the decompressed files
 $Files = Get-ChildItem -Path $Opath
 $Count = $Files.Count
 $LenKB = (($Files | Measure-Object -Property length -Sum).Sum)/1mb

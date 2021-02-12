@@ -8,7 +8,7 @@ Get-ADComputer -Filter * |
   Format-Table -Property Name, DistinguishedName
 
 # 2. Getting computers in the UK Domain
-Get-ADComputer -Filter * -Server UKDC1 |
+Get-ADComputer -Filter * -Server UKDC1.UK.Reskit.Org |
   Format-Table -Property Name, DistinguishedName
 
 # 3. Creating a new computer in the Reskit.Org domain
@@ -42,6 +42,7 @@ $SB = {
 }  
 
 # 6. Joining the computer to the domain
+Set-Item -Path WSMan:\localhost\Client\TrustedHosts -Value '*'
 Invoke-Command -ComputerName SRV1 -Credential $CredSRV1 -ScriptBlock $SB
 
 # 7. Restarting SRV1

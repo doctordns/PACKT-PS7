@@ -74,7 +74,7 @@ PS C:\Foo> Install-ADDSDomainController @INSTALLHT | Out-Null
 
 
 
-PS C:\Foo> # 6. Checking the Computer objects in AD
+PS C:\Foo> # 6. Checking the computer objects in AD
 PS C:\Foo> Get-ADComputer -Filter * |
              Format-Table DNSHostName, DistinguishedName
 
@@ -106,7 +106,7 @@ DC1.Reskit.Org    True
 
 
 
-PS C:\Foo> # 9. Viewing Reskit.Org Domain DCs
+PS C:\Foo> # 9. Viewing Reskit.Org domain DCs
 PS C:\Foo> Get-ADDomain |
              Format-Table -Property Forest, Name, Replica*
 

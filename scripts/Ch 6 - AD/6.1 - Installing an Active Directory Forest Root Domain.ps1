@@ -7,7 +7,7 @@
 # 1. Installing the AD Domain Services feature and management tools
 Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
 
-# 2. Importing ADDeployment module
+# 2. Importing the ADDeployment module
 Import-Module -Name ADDSDeployment 
 
 # 3. Examining the commands in the ADDSDeployment module
@@ -45,10 +45,10 @@ $ADHT = @{
 }
 Install-ADDSForest @ADHT
 
-# 7. Checking Key AD and related services
+# 7. Checking key AD and related services
 Get-Service -Name DNS, Netlogon
 
-# 8. Checking DNS Zones
+# 8. Checking DNS zones
 Get-DnsServerZone
 
 # 9. Restarting DC1 to complete promotion

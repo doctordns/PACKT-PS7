@@ -7,7 +7,7 @@
 PS C:\Foo> # 1. Counting loaded assemblies
 PS C:\Foo> $Assemblies = [System.AppDomain]::CurrentDomain.GetAssemblies()
 PS C:\Foo> "Assemblies loaded: {0:n0}" -f $Assemblies.Count
-Assemblies loaded: 138
+Assemblies loaded: 85
 
 
 
@@ -58,7 +58,8 @@ True   v4.0.30319     C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Microsoft.Power
 
 
 PS C:\Foo> # 5. Exploring the Microsoft.PowerShell.Management module
-PS C:\Foo> $Mod = Get-Module -Name Microsoft.PowerShell.Management -ListAvailable
+PS C:\Foo> $Mod = 
+             Get-Module -Name Microsoft.PowerShell.Management -ListAvailable
 PS C:\Foo> $Mod  | Format-List
 
 

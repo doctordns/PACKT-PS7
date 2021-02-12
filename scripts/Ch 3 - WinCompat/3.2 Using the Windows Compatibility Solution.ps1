@@ -4,7 +4,7 @@
 
 
 # 1. Discovering the Server Manager module
-Get-Module -Name ServerManager
+Get-Module -Name ServerManager -ListAvailable
 
 # 2. Discovering a command in the Server Manager module
 Get-Command -Name Get-WindowsFeature

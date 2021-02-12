@@ -3,7 +3,7 @@
 # Run this recipe on DC1 after promotion
 # Login as Enterprise Admin.
 
-# 1. Examining AD DSE
+# 1. Examining Root Directory Service Entry (DSE)
 Get-ADRootDSE -Server DC1.Reskit.Org
 
 # 2. Viewing AD forest details
@@ -28,7 +28,7 @@ Get-ADGroup -Filter *  |
 # 7. Examining Enterprise Admins group membership
 Get-ADGroupMember -Identity 'Enterprise Admins'  
 
-# 8. Checking DNS Zones on DC1
+# 8. Checking DNS zones on DC1
 Get-DnsServerZone -ComputerName DC1  
 
 # 9. Testing domain name DNS resolution 

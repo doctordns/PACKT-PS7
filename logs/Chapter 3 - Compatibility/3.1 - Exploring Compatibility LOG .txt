@@ -1,4 +1,4 @@
-# 3.1 - Exploring Compatibiolity
+# 3.1 - Exploring Compatibility  LOG
 #
 # Run on SRV1 after installing PowerShell 7
 
@@ -61,7 +61,7 @@ C:\Windows\system32\WindowsPowerShell\v1.0\Modules
 
 
 PS C:\Foo> # 6. Reviewing paths in PowerShell 7.1
-Invoke-Command -ScriptBlock $SBMP -Session $SP71
+PS C:\Foo> Invoke-Command -ScriptBlock $SBMP -Session $SP71
 
 Name                           Value
 ----                           -----
@@ -74,6 +74,7 @@ OS                             Microsoft Windows 10.0.20270
 PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0, 5.0, 5.1.10032.0, 6.0.0, 6.1.0, 6.2.0, 7.0.0, 7.1.1}
 PSRemotingProtocolVersion      2.3
 Platform                       Win32NT
+
 C:\Users\Administrator.RESKIT\Documents\PowerShell\Modules
 C:\Program Files\PowerShell\Modules
 c:\program files\powershell\7\Modules
@@ -153,7 +154,7 @@ no OUTPUT
 
 
 
-PS C:\Foo> # 13. View core modules in Windows PowerSHell 5.1
+PS C:\Foo> # 13. View core modules in Windows PowerShell 5.1
 PS C:\Foo> Invoke-Command -Session $SWP51 -ScriptBlock $CMSB 
 
     Directory: C:\Program Files\WindowsPowerShell\Modules
@@ -181,7 +182,7 @@ Manifest   3.1.0.0               Microsoft.PowerShell.Utility        Desk      {
 
 
 PS C:\Foo> # 14. View core modules in PowerShell 7.1
-Invoke-Command -Session $SP71 -ScriptBlock $CMSB
+PS C:\Foo> Invoke-Command -Session $SP71 -ScriptBlock $CMSB
 
     Directory: C:\program files\powershell\7\Modules
 
@@ -207,3 +208,6 @@ ModuleType Version    PreRelease Name                                PSEdition E
 Manifest   3.0.0.0               Microsoft.PowerShell.Diagnostics    Core,Desk {Get-WinEvent, Get-Counter, New-WinEvent, Import… localhost
 Manifest   1.0.0.0               Microsoft.PowerShell.LocalAccounts  Core,Desk {Add-LocalGroupMember, nlg, Enable-LocalUser, rl… localhost
 9 modules found in 7.1.1
+
+
+

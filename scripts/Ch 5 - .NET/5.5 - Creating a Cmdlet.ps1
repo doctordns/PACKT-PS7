@@ -53,7 +53,7 @@ namespace Reskit
 "@
 $Cmdlet | Out-File .\SendGreetingCommand.cs
 
-# 8. Removing unused class file 
+# 8. Removing the unused class file 
 Remove-Item -Path .\Class1.cs
 
 # 9. Building the cmdlet
@@ -63,7 +63,7 @@ dotnet build
 $DLLPath = '.\bin\Debug\net5.0\SendGreeting.dll'
 Import-Module -Name $DLLPath
 
-# 11. Examining at Module
+# 11. Examining the module's details
 Get-Module SendGreeting
 
 # 12. Using the cmdlet

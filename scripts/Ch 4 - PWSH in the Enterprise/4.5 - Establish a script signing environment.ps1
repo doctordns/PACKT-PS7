@@ -41,7 +41,37 @@ Get-Content -Path C:\Foo\Signed.ps1.
 Get-AuthenticodeSignature -FilePath C:\Foo\Signed.ps1 |
   Format-List
 
-# 8. Ensuring certificate is trusted
+# 8. Running the signed script
+C:\Foo\Signed.ps1  
+
+# 9. Setting the execution policy to all signed
+Set-ExecutionPolicy -ExecutionPolicy AllSigned -Scope Process
+
+# 10. Running the signed script
+C:\Foo\Signed.ps1  
+
+# 11. Copying Certificate to Current User Trusted Root store
+$DestStoreName  = 'Root'
+$DestStoreScope = 'CurrentUser'
+$Type   = 'System.Security.Cryptography.X509Certificates.X509Store'
+$MHT = @{
+  TypeName = $Type  
+  ArgumentList  = ($DestStoreName, $DestStoreScope)
+}
+$DestStore = New-Object  @MHT
+$DestStore.Open(
+  [System.Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite)
+$DestStore.Add($Cert)
+$DestStore.Close()
+
+# 12. Checking the signature
+Get-AuthenticodeSignature -FilePath C:\Foo\Signed.ps1 | 
+  Format-List
+
+# 13. Running the signed script
+C:\Foo\Signed.ps1  
+
+# 14. Copying cert to Trusted Publisher store
 $DestStoreName  = 'TrustedPublisher'
 $DestStoreScope = 'CurrentUser'
 $Type   = 'System.Security.Cryptography.X509Certificates.X509Store'
@@ -51,17 +81,12 @@ $MHT = @{
 }
 $DestStore = New-Object  @MHT
 $DestStore.Open(
-  [System.Security.Cryptography.X509Certificates.OpenFlags]::
-    ReadWrite)
+  [System.Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite)
 $DestStore.Add($Cert)
 $DestStore.Close()
 
-# 9. Checking the signature
-Get-AuthenticodeSignature -FilePath C:\Foo\Signed.ps1 | 
-  Format-List
-
-
-
+# 15. Running the signed script
+C:\Foo\Signed.ps1  
 
 
 

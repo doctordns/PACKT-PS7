@@ -8,7 +8,7 @@ $FILE
 
 # 2. Discovering the underlying class
 $TYPE = $FILE.GetType().FullName
-".Net Class name: $TYPE"
+".NET Class name: $TYPE"
 
 # 3. Getting member types of Fileinfo object
 $File | 
@@ -25,7 +25,7 @@ $I = 42
 $IntType  = $I.GetType()
 $TypeName = $IntType.FullName
 $BaseType = $IntType.BaseType.Name
-".Net Class name      : $TypeName"
+".NET Class name      : $TypeName"
 ".NET Class base type : $BaseType"
 
 # 6. Looking atpProcess objects

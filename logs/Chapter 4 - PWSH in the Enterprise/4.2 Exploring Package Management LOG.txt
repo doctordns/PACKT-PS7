@@ -70,8 +70,8 @@ WinGet            Package Management (OneGet) provider that facilitates installi
 
 
 PS C:\Foo> # 4. Discovering and counting available packages
-PS C:\Foo> $PAGKAGES = Find-Package
-PS C:\Foo> "Discovered {0:N0} packages" -f $PAGKAGES.count
+PS C:\Foo> $PACKAGES = Find-Package
+PS C:\Foo> "Discovered {0:N0} packages" -f $PACKAGES.Count
 Discovered 6,009 packages
 
 
@@ -81,7 +81,7 @@ Discovered 6,009 packages
 
 
 PS C:\Foo> # 5. Showing first 5 packages discovered
-PS C:\Foo> $PAGKAGES  |
+PS C:\Foo> $PACKAGES  |
              Select-Object -First 5 |
               Format-Table -AutoSize -Wrap
 
@@ -111,7 +111,7 @@ PackageManagement  1.4.7   PSGallery PackageManagement (a.k.a. OneGet) is a new 
 
 
 
-PS C:\Foo> # 6. Installing Chocolatier provider
+PS C:\Foo> # 6. Installing the Chocolatier provider
 
 
 no output

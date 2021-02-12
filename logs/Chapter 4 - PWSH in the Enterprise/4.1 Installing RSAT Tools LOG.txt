@@ -2,23 +2,23 @@
 #
 # Uses SRV1
 
-# Run From CL1
+# Run From SRV1
 
 
 
 
 PS C:\Foo> # 1. Displaying counts of available PowerShell commands
-PS C:\Foo> $CommandsBeforeRSAT = Get-Command -Module *
+PS C:\Foo> $CommandsBeforeRSAT = Get-Command 
 PS C:\Foo> $CmdletsBeforeRSAT = $CommandsBeforeRSAT  |
-             Where-Object commandtype -eq 'Cmdlet'
+             Where-Object CommandType -eq 'Cmdlet'
 PS C:\Foo> $CommandCountBeforeRSAT = $CommandsBeforeRSAT.Count
 PS C:\Foo> $CmdletCountBeforeRSAT  = $CmdletsBeforeRSAT.Count
 PS C:\Foo> "On Host: [$(hostname)]"
 PS C:\Foo> "Total Commands available before RSAT installed [$CommandCountBeforeRSAT]"
 PS C:\Foo> "Cmdlets available before RSAT installed        [$CmdletCountBeforeRSAT]"
 On Host: [SRV1]
-Total Commands available before RSAT installed [1805]
-Cmdlets available before RSAT installed        [590]
+Total Commands available before RSAT installed [1829]
+Cmdlets available before RSAT installed        [594]
 
 
 
@@ -30,8 +30,8 @@ PS C:\Foo> $CommandsBeforeRSAT |
 Count Name     Group
 ----- ----     -----
    58 Alias    {Add-AppPackage, Add-AppPackageVolume, Add-AppProvisionedPackage, Add-ProvisionedAppPackag… 
- 1157 Function {A:, Add-BCDataCacheExtension, Add-DnsClientDohServerAddress, Add-DnsClientNrptRule, Add-D… 
-  590 Cmdlet   {Add-AppxPackage, Add-AppxProvisionedPackage, Add-AppxVolume, Add-BitsFile, Add-Certificat…
+ 1177 Function {A:, Add-BCDataCacheExtension, Add-DnsClientDohServerAddress, Add-DnsClientNrptRule, Add-D… 
+  594 Cmdlet   {Add-AppxPackage, Add-AppxProvisionedPackage, Add-AppxVolume, Add-BitsFile, Add-Certificat…
 
 
 
@@ -54,10 +54,11 @@ NO OUTPUT
 
 
 
-PS C:\Foo> # 5. Displaying a count of modules available before adding the RSAT tools
+PS C:\Foo> # 5. Displaying a count of modules available 
+           #    before adding the RSAT tools
 PS C:\Foo> $CountOfModulesBeforeRSAT = $ModulesBefore.count
 PS C:\Foo> "$CountOfModulesBeforeRSAT modules available prior to adding RSAT"
-79 modules available
+78 modules available
 
 
 
@@ -78,11 +79,10 @@ PS C:\Foo> "Total RSAT features available [{0}]"  -f $RSATF.count
 PS C:\Foo> "Total RSAT features installed [{0}]"  -f $RSATFI.count
 
 On Host [SRV1]
-Total features available      [267]
-Total features installed      [15]
+Total features available      [266]
+Total features installed      [12]
 Total RSAT features available [50]
 Total RSAT features installed [0]
-
 
 
 
@@ -115,13 +115,15 @@ No OUTPUT
 
 
 
-PS C:\Foo> # 11. Displaying after effects
+PS C:\Foo> # 11. Displaying counts of commands after installing the RSAT tools
 PS C:\Foo> "After Installation of RSAT tools on SRV1"
 PS C:\Foo> "$($IFSRV1A.count) features installed on SRV1"
 PS C:\Foo> "$($RSFSRV1A.count) RSAT features installed on SRV1"
 After Installation of RSAT tools on SRV1
-79 features installed on SRV1
+76 features installed on SRV1
 50 RSAT features installed on SRV1
+
+
 
 
 PS C:\Foo> # 12. Displaying RSAT tools on SRV1

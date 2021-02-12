@@ -18,7 +18,7 @@ UKDC1 CN=UKDC1,CN=Computers,DC=Reskit,DC=Org
 
 
 PS C:\Foo> # 2. Getting computers in the UK Domain
-PS C:\Foo> Get-ADComputer -Filter * -Server UKDC1 |
+PS C:\Foo> Get-ADComputer -Filter * -Server UKDC1.UK.Reskit.Org |
              Format-Table -Property Name, DistinguishedName
 
 Name  DistinguishedName
@@ -53,6 +53,7 @@ no Output
 
 
 PS C:\Foo> # 6. Joining the computer to the domain
+PS C:\Foo> Set-Item -Path WSMan:\localhost\Client\TrustedHosts -Value '*'
 PS C:\Foo> Invoke-Command -ComputerName SRV1 -Credential $CredSRV1 -ScriptBlock $SB
 WARNING: The changes will take effect after you restart the computer SRV1.
 

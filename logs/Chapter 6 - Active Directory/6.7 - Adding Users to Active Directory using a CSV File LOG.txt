@@ -22,7 +22,7 @@ Malcolm   Dudley   Duewrong Malcolm           Malcolm  Mr Danger    Christmas42
 
 
 
-PS C:\Foo> # 3. Add the users using the CSV
+PS C:\Foo> # 3. Adding the users using the CSV
 PS C:\Foo> $Users |
              ForEach-Object -Parallel {
                $User = $_
@@ -54,7 +54,7 @@ Created James
 
 
 
-PS C:\Foo> # 4. Show all users in AD (Reskit.Org)
+PS C:\Foo> # 4. Showing all users in AD (Reskit.Org)
 PS C:\Foo> Get-ADUser -Filter * |
              Format-Table -Property Name, UserPrincipalName
 
