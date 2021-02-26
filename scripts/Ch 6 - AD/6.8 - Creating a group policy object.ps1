@@ -64,7 +64,7 @@ $RPath = 'C:\Foo\GPOReport1.HTML'
 Get-GPOReport -All -ReportType Html -Path $RPath
 Invoke-Item -Path $RPath
 
-# 9. Getting Report in XML format
+# 9. Getting report in XML format
 Get-GPOReport -All -ReportType XML -Path $RPath2
 $XML = [xml] (Get-Content -Path $RPath2)
 

@@ -3,7 +3,7 @@
 # Run on DC2 after setting DC1 up as a DHCP Server 
 # And with and a Scope defined
 
-# 1. Installing the DHCP Server feature on DC2
+# 1. Installing the DHCP server feature on DC2
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
 $FEATUREHT = @{
   Name                   = 'DHCP'
@@ -26,7 +26,7 @@ Add-DhcpServerInDC -DnsName DC2.Reskit.Org
 # 4. Viewing authorized DHCP servers in the Reskit domain
 Get-DhcpServerInDC
 
-# 5. Configure failover and load balancing
+# 5. Configuring fail-over and load balancing
 $FAILOVERHT = @{
   ComputerName       = 'DC1.Reskit.Org'
   PartnerServer      = 'DC2.Reskit.Org'
@@ -37,7 +37,7 @@ $FAILOVERHT = @{
   Force              = $true
   Verbose            = $True
 }
-Invoke-Command -ComputerName DC1.Reskit.org -ScriptBlock {
+Invoke-Command -ComputerName DC1.Reskit.Org -ScriptBlock {
   Add-DhcpServerv4Failover @Using:FAILOVERHT  
 }
 
@@ -49,7 +49,7 @@ $DHCPServers |
     Get-DhcpServerv4Scope -ComputerName $_ | Format-Table
   }
 
-# 7. Viewing DHCP Server Statistics from both DHCP Servers
+# 7. Viewing DHCP server statistics from both DHCP Servers
 $DHCPServers |
   ForEach-Object {
     "Server $_" | Format-Table

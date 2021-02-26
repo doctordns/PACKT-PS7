@@ -2,11 +2,11 @@
 #
 # Run on DC1 after AD setup 
 
-# 1. Installing the DHCP Feature on DC1 and add the Management tools
+# 1. Installing the DHCP feature on DC1 and add the management tools
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
 Install-WindowsFeature -Name DHCP -IncludeManagementTools
 
-# 2. Adding DC1 to Trusted DHCP Servers and add the DHCP Security Group
+# 2. Adding DC1 to trusted DHCP servers and add the DHCP security group
 Import-Module -Name DHCPServer -WarningAction SilentlyContinue
 Add-DhcpServerInDC
 Add-DHCPServerSecurityGroup 
@@ -19,7 +19,7 @@ $DHCPHT = @{
 }
 Set-ItemProperty @DHCPHT
 
-# 4. Restarting DHCP Server 
+# 4. Restarting DHCP server 
 Restart-Service -Name DHCPServer –Force 
 
 # 5. Testing service availability

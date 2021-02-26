@@ -1,0 +1,195 @@
+# Recipe 9.1 - Managing physical Disks and Volumes LOG
+#
+# Run on SRV1
+# SRV1, SRV2 has 8 extra disks that are 'bare' and just added to the VM
+
+# 0. Add new disks to the SRV1, SRV2 VMs
+# Run on VM host
+# Assumes a single C:, and SCSI bus 0 is unoccupied.
+
+
+No Output
+
+
+PS C:\Foo> # 1. Getting the first new physical disk on SRV1
+PS C:\Foo> $Disks = Get-Disk |
+           Where-Object PartitionStyle -eq Raw |
+             Select-Object -First 1
+PS C:\Foo> $Disks | Format-Table -AutoSize
+
+Number Friendly Name     Serial Number HealthStatus OperationalStatus Total Size Partition Style
+------ -------------     ------------- ------------ ----------------- ---------- ---------------
+1      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+
+
+
+
+# 2. Initializing the first disk
+
+
+
+
+no OUtput
+
+
+
+
+PS C:\Foo> # 3. Re-displaying all disks in SRV1
+PS C:\Foo> Get-Disk |
+             Format-Table -AutoSize
+
+Number Friendly Name     Serial Number HealthStatus OperationalStatus Total Size Partition Style
+------ -------------     ------------- ------------ ----------------- ---------- ---------------
+0      Virtual HD                      Healthy      Online                128 GB MBR
+1      Msft Virtual Disk               Healthy      Online                 64 GB GPT
+2      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+3      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+4      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+5      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+6      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+7      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+8      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+
+
+
+
+
+
+PS C:\Foo> # 4. Viewing Volumes on SRV1
+PS C:\Foo> Get-Volume | Sort-Object -Property DriveLetter
+
+DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------         -------------- --------- ------------ ----------------- -------------      ----
+                                 NTFS           Fixed     Healthy      OK                     80.59 MB    496 MB
+A                                Unknown        Removable Healthy      Unknown                     0 B       0 B
+C                                NTFS           Fixed     Healthy      OK                    110.06 GB 127.51 GB
+D           SSS_X64FRE_EN-US_DV9 Unknown        CD-ROM    Healthy      OK                          0 B   4.38 GB
+
+
+
+
+
+
+
+
+PS C:\Foo> # 5. Creating a F: volume in disk 1
+PS C:\Foo> Clear-Disk -Number $Disks[0].DiskNumber -Confirm:$false -RemoveData
+PS C:\Foo> $NVHT1 = @{
+             DiskNumber   =  $Disks[0].DiskNumber
+             FriendlyName = 'Files'
+             FileSystem   = 'NTFS'
+             DriveLetter  = 'F'
+           }
+PS C:\Foo> New-Volume @NVHT1 
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining     Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------     ----
+F           Files        NTFS           Fixed     Healthy      OK                     63.89 GB 63.98 GB
+
+
+
+PS C:\Foo> # 6. Creating two partitions in disk 2 - first create S volume
+PS C:\Foo> Initialize-Disk -Number 2 -PartitionStyle MBR
+PS C:\Foo> New-Partition -DiskNumber 2  -DriveLetter S -Size 32gb
+
+   DiskPath: \\?\scsi#disk&ven_msft&prod_virtual_disk#6&fa491f9&0&000001#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+
+PartitionNumber  DriveLetter Offset    Size Type 
+---------------  ----------- ------    ---- ---- 
+1                S           1048576  32 GB Logical 
+
+
+
+
+
+PS C:\Foo> # 7. Creating a second partition T on disk 2
+PS C:\Foo> New-Partition -DiskNumber 2  -DriveLetter T -UseMaximumSize
+
+   DiskPath: \\?\scsi#disk&ven_msft&prod_virtual_disk#6&fa491f9&0&000002#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+
+PartitionNumber  DriveLetter Offset        Size Type
+---------------  ----------- ------        ---- ----
+2                T           34360786944  32 GB Logical
+
+
+
+
+
+PS C:\Foo> # 8. Formatting S: and T:
+PS C:\Foo> $NVHT1 = @{
+             DriveLetter        = 'S'
+             FileSystem         = 'NTFS'
+             NewFileSystemLabel = 'GD Shows'}                                                                                                                                                        
+PS C:\Foo> Format-Volume @NVHT1
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining  Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------  ----
+S           GD Shows     NTFS           Fixed     Healthy      OK                     31.93 GB 32 GB
+
+PS C:\Foo> $NVHT2 = @{
+             DriveLetter        = 'T'
+             FileSystem         = 'FAT32'
+             NewFileSystemLabel = 'GD Pictures'}
+PS C:\Foo> Format-Volume @NVHT2
+
+DriveLetter FriendlyName    FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------    -------------- --------- ------------ ----------------- -------------      ----
+T           GD PICTURES     FAT32          Fixed     Healthy      OK                     31.983 GB 31.98 GB
+
+
+
+
+
+PS C:\Foo> # 9. Getting partitions on SRV1
+PS C:\Foo> Get-Partition  |
+             Sort-Object -Property DriveLetter |
+               Format-Table -Property DriveLetter, Size, Type
+
+DriveLetter         Size Type     
+-----------         ---- ----     
+              520093696 Unknown  
+               16759808 Reserved
+               16759808 Reserved
+          C 136915714048 IFS      
+          F  68701650944 Basic
+          S  34359738368 IFS
+          T  34357641216 FAT32 XINT13
+
+
+
+PS C:\Foo> # 10. Getting volumes on SRV1
+PS C:\Foo> Get-Volume |
+             Sort-Object -Property DriveLetter
+
+DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------         -------------- --------- ------------ ----------------- -------------      ----
+                                 NTFS           Fixed     Healthy      OK                     80.59 MB    496 MB
+A                                Unknown        Removable Healthy      Unknown                     0 B       0 B
+C                                NTFS           Fixed     Healthy      OK                    110.14 GB 127.51 GB
+D           SSS_X64FRE_EN-US_DV9 Unknown        CD-ROM    Healthy      OK                          0 B   4.38 GB
+F           Files                NTFS           Fixed     Healthy      OK                     63.89 GB  63.98 GB
+S           GD Shows             NTFS           Fixed     Healthy      OK                     31.93 GB     32 GB
+T           GD PICTURES          FAT32          Fixed     Healthy      OK                     31.98 GB  31.98 GB
+
+
+
+
+
+
+PS C:\Foo> # 11. Viewing disks in SRV1
+PS C:\Foo> Get-Disk | Format-Table
+
+Number Friendly Name     Serial Number HealthStatus OperationalStatus Total Size Partition Style
+------ -------------     ------------- ------------ ----------------- ---------- ---------------
+0      Virtual HD                      Healthy      Online                128 GB MBR
+1      Msft Virtual Disk               Healthy      Online                 64 GB GPT
+2      Msft Virtual Disk               Healthy      Online                 64 GB MBR
+3      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+4      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+5      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+6      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+7      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+8      Msft Virtual Disk               Healthy      Offline                64 GB RAW
+
+
+
+

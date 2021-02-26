@@ -3,14 +3,14 @@
 # Run on DC1, after DHCP Server service added
 
 
-# 1. Importing the DHCP Server module
+# 1. Importing the DHCP server module
 
 
 no output
 
 
 
-# 2. Creating a IPv4 Scope
+# 2. Creating an IPv4 Scope
 
 
 no output
@@ -20,21 +20,21 @@ no output
 PS C:\Foo> # 3. Getting IPV4 scopes from the server
 PS C:\Foo> Get-DhcpServerv4Scope -ComputerName DC1.Reskit.Org
 
-ScopeId         SubnetMask      Name           State    StartRange      EndRange        LeaseDuration
--------         ----------      ----           -----    ----------      --------        -------------
-10.10.10.0      255.255.255.0   ReskitOrg      Active   10.10.10.150    10.10.10.199  
+ScopeId     SubnetMask     Name       State   StartRange    EndRange      LeaseDuration
+-------     ----------     ----       -----   ----------    --------      -------------
+10.10.10.0  255.255.255.0  ReskitOrg  Active  10.10.10.150  10.10.10.199  
 
 
 
 
-# 4. Setting Server Wide Option Values
+# 4. Setting server-wide Option Values
 
 
 No Output
 
 
 
-# 5. Setting a scope specific option
+# 5. Setting a scope-specific option
 
 
 
@@ -54,7 +54,7 @@ OptionId Name            Type        Value         VendorClass UserClass PolicyN
 
 
 
-PS C:\Foo> # 7. Viewing scope specific options
+PS C:\Foo> # 7. Viewing scope-specific options
 PS C:\Foo> Get-DhcpServerv4OptionValue -ScopeId '10.10.10.10' | 
              Format-Table -AutoSize
 

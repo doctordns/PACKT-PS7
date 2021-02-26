@@ -6,17 +6,17 @@
 
 
 
-PS C:\Foo> # 1. Installing the DHCP Feature on DC1 and add the Management tools
+PS C:\Foo> # 1. Installing the DHCP feature on DC1 and adding the management tools
 PS C:\Foo> Import-Module -Name ServerManager -WarningAction SilentlyContinue
 PS C:\Foo> Install-WindowsFeature -Name DHCP -IncludeManagementTools       
 
-Success Restart Needed Exit Code      Feature Result
-------- -------------- ---------      --------------
-True    No             Success        {DHCP Server, DHCP Server Tools}
+Success Restart Needed Exit Code   Feature Result
+------- -------------- ---------   --------------
+True    No             Success     {DHCP Server, DHCP Server Tools}
 
 
 
-# 2. Adding DC1 to Trusted DHCP Servers and add the DHCP Security Group
+# 2. Adding DC1 to Trusted DHCP servers and add the DHCP security fGroup
 
 No output
 
@@ -28,7 +28,7 @@ No output
 no output
 
 
-PS C:\Foo> # 4. Restarting DHCP Server
+PS C:\Foo> # 4. Restarting DHCP server
 PS C:\Foo> Restart-Service -Name DHCPServer –Force
 WARNING: Waiting for service 'DHCP Server (DHCPServer)' to start...
 WARNING: Waiting for service 'DHCP Server (DHCPServer)' to start...

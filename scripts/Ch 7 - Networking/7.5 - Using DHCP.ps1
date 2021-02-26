@@ -3,7 +3,7 @@
 # Run on SRV2 after you have installed and configured DHCP Server on DC1.
 # SRV2 remains a workgroup server.
 
-# 1. Adding DHCP RSAT Tools
+# 1. Adding DHCP RSAT tools
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
 Install-WindowsFeature -Name RSAT-DHCP 
 
@@ -22,7 +22,7 @@ Get-DhcpServerv4FreeIPAddress -ComputerName dc1 -ScopeId 10.10.10.42
 # 6. Getting SRV2 NIC Configuration
 $NIC = Get-NetIPConfiguration -InterfaceIndex 6 
 
-# 7. Getting IP Interface
+# 7. Getting IP interface
 $NIC | 
   Get-NetIPInterface  | 
     Where-Object AddressFamily -eq 'IPv4'
@@ -34,7 +34,7 @@ $NIC |
       Set-NetIPInterface -Dhcp Enabled
 
 # 9. Checking IP address assigned
-Get-NetIPAddress -InterfaceAlias "Ethernet"     | 
+Get-NetIPAddress -InterfaceAlias "Ethernet"  | 
   Where-Object AddressFamily -eq 'IPv4'
 
 # 10. Getting updated V4 scope statistics from DC1
@@ -43,7 +43,7 @@ Get-DhcpServerv4ScopeStatistics -ComputerName DC1
 # 11. Discovering the next free IP address
 Get-DhcpServerv4FreeIPAddress -ComputerName dc1 -ScopeId 10.10.10.42
 
-# 12. Checking IPv4 DNS Name Resolution 
+# 12. Checking IPv4 DNS name resolution 
 Resolve-DnsName -Name SRV2.reskit.org -Type A
 
 

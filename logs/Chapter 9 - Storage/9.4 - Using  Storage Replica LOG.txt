@@ -1,0 +1,258 @@
+# 9.4 - Managing Storage Replica  LOG
+# 
+# Run on SRV1, with SRV2, DC1 online
+
+
+
+PS C:\Foo> # 1. Getting disk number of the disk holding the F partition
+PS C:\Foo> $Part = Get-Partition -DriveLetter F
+PS C:\Foo> "F drive on disk [$($Part.DiskNumber)]"
+F drive on disk [1]
+
+
+
+PS C:\Foo> # 2. Creating F: drive on SRV2
+PS C:\Foo> $SB = {
+PS C:\Foo> $NVHT = @{
+               DiskNumber   =  $using:Part.DiskNumber
+               FriendlyName = 'Files'
+               FileSystem   = 'NTFS'
+               DriveLetter  = 'F'
+             }
+             New-Volume @NVHT
+           }
+PS C:\Foo> Invoke-Command -ComputerName SRV2 -ScriptBlock $SB
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining     Size PSComputerName
+----------- ------------ -------------- --------- ------------ ----------------- -------------     ---- --------------
+F           Files        NTFS           Fixed     Healthy      OK                     63.84 GB 63.98 GB SRV2
+
+
+
+
+
+# 3. Creating content on F: on SRV1
+
+no output
+
+
+
+PS C:\Foo> # 4. Showing what is on F: locally
+PS C:\Foo> Get-ChildItem -Path F:\ -Recurse | Measure-Object
+
+Count             : 10100
+Average           :
+Sum               : 
+Maximum           :
+Minimum           : 
+StandardDeviation :
+Property          : 
+
+
+
+
+
+PS C:\Foo> # 5. And examine the same drives remotely on SRV2
+$SB2 = {
+  Get-ChildItem -Path F:\ -Recurse |
+    Measure-Object
+}
+Invoke-Command -ComputerName SRV2 -ScriptBlock $SB2
+
+Count          : 0
+Average        :
+Sum            :
+Maximum        : 
+Minimum        :
+Property       :
+PSComputerName : SRV2
+
+
+
+# 6. Adding the storage replica feature to SRV1
+
+
+No Output
+
+
+
+
+# 7. Restarting SRV1 to finish the installation process
+
+
+no output
+
+
+
+
+PS C:\Foo> # 8. Adding the SR Feature to SRV2                                                                                                                                                    
+PS C:\Foo> $SB= {                                                                                                                                                                                   
+             Add-WindowsFeature -Name Storage-Replica | Out-Null
+           }
+PS C:\Foo> Invoke-Command -ComputerName SRV2 -ScriptBlock $SB
+WARNING: You must restart this server to finish the installation process.
+
+
+
+# 9. Restarting SRV2 and waiting for the restart
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 10. Creating a G: volume in disk 2 on SRV1
+PS C:\Foo> $SB4 = {
+             $NVHT = @{
+               DiskNumber   =  2
+               FriendlyName = 'SRLOGS' 
+               DriveLetter  = 'G'
+             }
+             Clear-Disk -Number 2 -RemoveData -Confirm:$False
+             Initialize-Disk -Number 2 | Out-Null
+             New-Volume @NVHT
+           }
+PS C:\Foo> Invoke-Command -ComputerName SRV1 -ScriptBlock $SB4
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining     Size PSComputerName
+----------- ------------ -------------- --------- ------------ ----------------- -------------     ---- --------------
+G           SRLOGS       NTFS           Fixed     Healthy      OK                     63.89 GB 63.98 GB SRV1
+
+
+
+PS C:\Foo> # 11. Creating G: volume on SRV2
+PS C:\Foo> Invoke-Command -ComputerName SRV2 -ScriptBlock $SB4
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining     Size PSComputerName
+----------- ------------ -------------- --------- ------------ ----------------- -------------     ---- --------------
+G           SRLOGS       NTFS           Fixed     Healthy      OK                     63.84 GB 63.98 GB SRV2
+
+
+
+
+PS C:\Foo> # 12. Viewing volumes on SRV1
+PS C:\Foo> Get-Volume | Sort-Object -Property Driveletter
+
+DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------         -------------- --------- ------------ ----------------- -------------      ----
+                                 NTFS           Fixed     Healthy      OK                     80.59 MB    496 MB
+A                                Unknown        Removable Healthy      Unknown                     0 B       0 B
+C                                NTFS           Fixed     Healthy      OK                    110.34 GB 127.51 GB
+D           SSS_X64FRE_EN-US_DV9 Unknown        CD-ROM    Healthy      OK                          0 B   4.38 GB
+F           Files                NTFS           Fixed     Healthy      OK                     63.76 GB  63.98 GB
+G           SRLOGS               NTFS           Fixed     Healthy      OK                     63.89 GB  63.98 GB
+W                                Unknown        Fixed     Healthy      Unknown                     0 B       0 B
+X           x-exFAT              exFAT          Fixed     Healthy      OK                        15 GB     15 GB
+Y           Y-FAT32              FAT32          Fixed     Healthy      OK                     14.98 GB  14.98 GB
+Z           Z-ReFS               ReFS           Fixed     Healthy      OK                     17.87 GB  18.94 GB
+
+
+
+
+PS C:\Foo> # 13. Viewing volumes on SRV2
+PS C:\Foo> Invoke-Command -Computer SRV2 -Scriptblock {
+             Get-Volume | Sort-Object -Property Driveletter
+           }
+
+DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size PSComputerName
+----------- ------------         -------------- --------- ------------ ----------------- -------------      ---- --------------
+                                 NTFS           Fixed     Healthy      OK                     79.58 MB    495 MB SRV2
+A                                Unknown        Removable Healthy      Unknown                     0 B       0 B SRV2
+C                                NTFS           Fixed     Healthy      OK                    105.07 GB 127.51 GB SRV2
+D           SSS_X64FRE_EN-US_DV9 Unknown        CD-ROM    Healthy      OK                          0 B   4.38 GB SRV2
+F           Files                NTFS           Fixed     Healthy      OK                     63.84 GB  63.98 GB SRV2
+G           SRLOGS               NTFS           Fixed     Healthy      OK                     63.84 GB  63.98 GB SRV2
+
+
+
+
+PS C:\Foo> # 14. Creating an SR replica group
+PS C:\Foo> $SRHT =  @{
+             SourceComputerName       = 'SRV1'
+             SourceRGName             = 'SRV1RG'
+             SourceVolumeName         = 'F:'
+             SourceLogVolumeName      = 'G:'
+             DestinationComputerName  = 'SRV2'
+             DestinationRGName        = 'SRV2RG'
+             DestinationVolumeName    = 'F:'
+             DestinationLogVolumeName = 'G:'
+             LogSizeInBytes           = 2gb
+           }
+PS C:\Foo> New-SRPartnership @SRHT 
+
+RunspaceId              : 40ed48ce-142e-48bf-b2c4-f4ad19c4835f
+DestinationComputerName : SRV2
+DestinationRGName       : SRV2RG
+Id                      : 750c9c67-4bc6-485a-bd8f-33c893dc8c2d
+SourceComputerName      : SRV1
+SourceRGName            : SRV1RG
+
+
+
+
+
+PS C:\Foo> # 15. Examining the volumes on SRV2
+PS C:\Foo> $SB5 = {
+             Get-Volume |
+               Sort-Object -Property DriveLetter |
+                 Format-Table
+           }
+PS C:\Foo> Invoke-Command -ComputerName SRV2 -ScriptBlock $SB5
+
+DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------         -------------- --------- ------------ ----------------- -------------      ----
+                                 NTFS           Fixed     Healthy      OK                     79.58 MB    495 MB
+A                                Unknown        Removable Healthy      Unknown                     0 B       0 B
+C                                NTFS           Fixed     Healthy      OK                    105.07 GB 127.51 GB
+D           SSS_X64FRE_EN-US_DV9 Unknown        CD-ROM    Healthy      OK                          0 B   4.38 GB
+F                                Unknown        Fixed     Healthy      Unknown                     0 B       0 B
+G           SRLOGS               NTFS           Fixed     Healthy      OK                     61.84 GB  63.98 GB
+
+
+
+
+
+
+# 16. Reversing the replication
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 17. Viewing the SR Partnership
+PS C:\Foo> Get-SRPartnership
+
+RunspaceId              : 40ed48ce-142e-48bf-b2c4-f4ad19c4835f
+DestinationComputerName : SRV1
+DestinationRGName       : SRV1RG
+Id                      : 750c9c67-4bc6-485a-bd8f-33c893dc8c2d
+SourceComputerName      : SRV2
+SourceRGName            : SRV2RG
+
+
+
+
+
+
+
+PS C:\Foo> # 18. Examining the files remotely on SRV2
+PS C:\Foo> $SB6 = {
+             Get-ChildItem -Path F:\ -Recurse |
+               Measure-Object
+           }
+PS C:\Foo> Invoke-Command -ComputerName SRV2 -ScriptBlock $SB6
+
+Count          : 10100
+Average        :
+Sum            :
+Maximum        : 
+Minimum        :
+Property       :
+PSComputerName : SRV2
+
+

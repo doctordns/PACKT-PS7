@@ -4,7 +4,7 @@
 # Ensure that SRV2 is a work group server and initially set for DHCP
 # Also ensure no DHCP server is available in the Reskit.org domain (yet)
 
-# 1. Discovering the adapter, adapter interface and adapter interfaace index
+# 1. Discovering the adapter, adapter interface and adapter interface index
 $IPType    = 'IPv4'
 $Adapter   = Get-NetAdapter |  Where-Object Status -eq 'Up'     
 $Interface = $Adapter | Get-NetIPInterface -AddressFamily $IPType
@@ -74,10 +74,9 @@ Set-DnsClient  @DNSCHT
 # 11. Registering host IP address at DC1
 Register-DnsClient 
 
-# 12. PreStaging SRV2 in AD
+# 12. Pre-staging SRV2 in AD
 New-ADComputer -Name SRV2
 
-
-# 12. Testing the DNS server on DC1.Reskit.Org correctly resolves SRV2
+# 13. Testing the DNS server on DC1.Reskit.Org correctly resolves SRV2
 Resolve-DnsName -Name SRV2.Reskit.Org -Type 'A' -Server DC1.Reskit.Org
   

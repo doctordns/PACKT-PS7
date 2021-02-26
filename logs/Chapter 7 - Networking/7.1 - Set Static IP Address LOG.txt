@@ -5,7 +5,7 @@
 
 
 
-PS C:\Foo> # 1. Discovering the adapter, adapter interface and adapter interfaace index
+PS C:\Foo> # 1. Discovering the adapter, adapter interface and adapter interface index
 PS C:\Foo> $IPType    = 'IPv4'
 PS C:\Foo> $Adapter   = Get-NetAdapter |  Where-Object Status -eq 'Up'
 PS C:\Foo> $Interface = $Adapter | Get-NetIPInterface -AddressFamily $IPType
@@ -131,7 +131,15 @@ no output
 
 
 
-PS C:\Foo> # 12. Test the DNS server on DC1.Reskit.Org correctly resolves SRV2
+# 12. Pre-staging SRV2 in AD
+
+
+
+no output
+
+
+
+PS C:\Foo> # 13. Testing the DNS server on DC1.Reskit.Org correctly resolves SRV2
 PS C:\Foo> Resolve-DnsName -Name SRV2.Reskit.Org -Type 'A' -Server DC1.Reskit.Org
 
 Name              Type  TTL   Section   IPAddress

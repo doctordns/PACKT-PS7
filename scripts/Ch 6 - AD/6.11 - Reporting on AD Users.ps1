@@ -34,14 +34,14 @@ $RkReport += "*** Reskit.Org AD Report`n"
 $RKReport += "*** Generated [$(Get-Date)]`n"
 $RKReport += "*******************************`n`n"
 
-# 4. Reporting on Disabled users
+# 4. Reporting on disabled users
 $RkReport += "*** Disabled Users`n"
 $RKReport += $RKUsers |
     Where-Object {$_.Enabled -NE $true} |
         Format-Table -Property SamAccountName, Displayname |
             Out-String
 
-# 5. Reporting users who have not recently logged on
+# 5. Reporting on users who have not recently logged on
 $OneWeekAgo = (Get-Date).AddDays(-7)
 $RKReport += "`n*** Users Not logged in since $OneWeekAgo`n"
 $RkReport += $RKUsers |
@@ -50,7 +50,7 @@ $RkReport += $RKUsers |
             Format-Table -Property SamAccountName,lastlogondate |
                 Out-String
 
-# 6. Discovering users with high invalid password attempts
+# 6. Discovering users with a high number of invalid password attempts
 $RKReport += "`n*** High Number of Bad Password Attempts`n"
 $RKReport += $RKUsers | Where-Object BadPwdCount -ge 5 |
   Format-Table -Property SamAccountName, BadPwdCount |
@@ -62,7 +62,7 @@ $RKReport += "`n*** Privileged  User Report`n"
 $PUsers = @()
 
 # 8. Querring the Enterprise Admins/Domain Admins/Scheme Admins
-#    groups for members and add to the $Pusers array
+#    groups for members and adding them to the $Pusers array
 # Get Enterprise Admins group members
 $Members = Get-ADGroupMember -Identity 'Enterprise Admins' -Recursive |
     Sort-Object -Property Name

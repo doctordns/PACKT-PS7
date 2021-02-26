@@ -1,0 +1,120 @@
+# Recipe 9.2 - Managing File Systems  LOG
+# Run on SRV1
+
+
+
+# 1. Getting disk to use on SRV1
+
+no output
+
+
+
+
+
+PS C:\Foo> # 2. Viewing disk
+PS C:\Foo> $Disk | Format-List
+
+UniqueId           : 600224806AD90C2695DB591D9D0FC623
+Number             : 3
+Path               : \\?\scsi#disk&ven_msft&prod_virtual_disk#6&fa491f9&0&000002#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+Manufacturer       : Msft    
+Model              : Virtual Disk
+SerialNumber       : 
+Size               : 64 GB
+AllocatedSize      : 0
+LogicalSectorSize  : 512
+PhysicalSectorSize : 4096
+NumberOfPartitions : 0
+PartitionStyle     : RAW
+IsReadOnly         : False
+IsSystem           : False
+IsBoot             : False
+
+
+
+# 3. Viewing partitions on the disk
+
+no output
+
+
+
+PS C:\Foo> # 4. Initializing this disk amd creating 4 partitions
+PS C:\Foo> New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter W -Size 15gb
+PS C:\Foo> New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter X -Size 15gb
+PS C:\Foo> New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter Y -Size 15gb
+PS C:\Foo> $UMHT= @{UseMaximumSize = $true}
+PS C:\Foo> New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter Z @UMHT
+
+   DiskPath: \\?\scsi#disk&ven_msft&prod_virtual_disk#6&fa491f9&0&000002#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+
+PartitionNumber  DriveLetter Offset             Size Type
+---------------  ----------- ------             ---- ----
+2                W           16777216          15 GB Basic
+3                X           16122904576       15 GB Basic
+4                Y           32229031936       15 GB Basic
+5                Z           48335159296    18.98 GB Basic
+
+
+
+
+PS C:\Foo> # 5. Formatting each partition
+PS C:\Foo> $FHT1 = @{
+             DriveLetter        = 'W'
+             FileSystem         = 'FAT'
+             NewFileSystemLabel = 'w-fat'
+           }
+PS C:\Foo> Format-Volume @FHT1
+PS C:\Foo> $FHT2 = @{
+             DriveLetter        = 'X'
+             FileSystem         = 'exFAT'
+             NewFileSystemLabel = 'x-exFAT'
+           }
+PS C:\Foo> Format-Volume @FHT2
+PS C:\Foo> $FHT3 = @{
+             DriveLetter        = 'Y'
+             FileSystem         = 'FAT32'
+             NewFileSystemLabel = 'Y-FAT32'
+           }
+PS C:\Foo> Format-Volume  @FHT3
+PS C:\Foo> $FHT4 = @{
+             DriveLetter        = 'Z'
+             FileSystem         = 'ReFS'
+             NewFileSystemLabel = 'Z-ReFS'
+           }
+PS C:\Foo> Format-Volume @FHT4
+Format-Volume:
+Line |
+   7 |  Format-Volume @FHT1
+     |  ~~~~~~~~~~~~~~~~~~~
+     | Size Not Supported
+Activity ID: {a0a18533-2fa2-4de3-93c8-a295c731873e}
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining     Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------     ----
+X           x-exFAT      exFAT          Fixed     Healthy      OK                        15 GB    15 GB
+Y           Y-FAT32      FAT32          Fixed     Healthy      OK                     14.98 GB 14.98 GB
+Z           Z-ReFS       ReFS           Fixed     Healthy      OK                     17.87 GB 18.94 GB
+
+
+
+
+
+PS C:\Foo> # 6. Getting volumes on SRV1
+PS C:\Foo> Get-Volume | Sort-Object DriveLetter
+
+DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------         -------------- --------- ------------ ----------------- -------------      ----
+                                 NTFS           Fixed     Healthy      OK                     80.59 MB    496 MB
+A                                Unknown        Removable Healthy      Unknown                     0 B       0 B
+C                                NTFS           Fixed     Healthy      OK                    110.33 GB 127.51 GB
+D           SSS_X64FRE_EN-US_DV9 Unknown        CD-ROM    Healthy      OK                          0 B   4.38 GB
+F           Files                NTFS           Fixed     Healthy      OK                     63.89 GB  63.98 GB
+S           GD Shows             NTFS           Fixed     Healthy      OK                     31.93 GB     32 GB
+T           GD PICTURES          FAT32          Fixed     Healthy      OK                     31.98 GB  31.98 GB
+W                                Unknown        Fixed     Healthy      Unknown                     0 B       0 B
+X           x-exfat              exFAT          Fixed     Healthy      OK                        15 GB     15 GB
+Y           Y-FAT32              FAT32          Fixed     Healthy      OK                     14.98 GB  14.98 GB
+Z           z-refs               ReFS           Fixed     Healthy      OK                     17.87 GB  18.94 GB
+
+
+

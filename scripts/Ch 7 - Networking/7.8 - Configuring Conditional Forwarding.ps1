@@ -2,9 +2,9 @@
 
 # Run On DC1
 
-# 1.Obtaining the IP Addresses of DNS servers for Packt.Com
-$NS = Resolve-DnsName -Name Packt.Com -Type NS | 
-  Where-Object Name -eq 'Packt.Com'
+# 1.Obtaining the IP aAddresses of DNS servers for packt.com
+$NS = Resolve-DnsName -Name packt.Com -Type NS | 
+  Where-Object Name -eq 'packt.com'
 $NS
 
 # 2.Obtaining the IPV4 addresses for these hosts

@@ -24,7 +24,7 @@ NO output
 
 
 
-# 4. Reporting on Disabled users
+# 4. Reporting on disabled users
 
 
 
@@ -32,7 +32,7 @@ NO output
 
 
 
-# 5. Reporting users who have not recently logged on
+# 5. Reporting on users who have not recently logged on
 
 
 
@@ -40,7 +40,7 @@ NO output
 
 
 
-# 6. Discovering users with high invalid password attempts
+# 6. Discovering users with a high number of invalid password attempts
 
 
 NO output

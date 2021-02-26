@@ -40,7 +40,7 @@ $SB2 = {
   Start-Service -Name DNS
 }
 
-# 5. Configuring DC2 to have two DNS Servers
+# 5. Configuring DC2 to have two DNS servers
 Invoke-Command -ScriptBlock $SB2
 
 # 6. Creating a script block to configure DC1 to have two DNS servers
@@ -56,7 +56,7 @@ $SB3 = {
   Start-Service -Name DNS
 }
 
-# 7. Configuring DC2 to have two DNS servers
+# 7. Configuring DCa to have two DNS servers
 Invoke-Command -ScriptBlock $SB3 -ComputerName DC1
 
 # 8. Update DHCP scope to add 2 DNS entries
@@ -69,10 +69,10 @@ $DNSOPTIONHT = @{
 Set-DhcpServerV4OptionValue @DNSOPTIONHT -ComputerName DC1
 Set-DhcpServerV4OptionValue @DNSOPTIONHT -ComputerName DC2
 
-# 9. Getting DNS Service details
+# 9. Getting DNS service details
 $DNSRV = Get-DNSServer -ComputerName DC2.Reskit.Org
 
-# 10. Viewing Recursion settings
+# 10. Viewing recursion settings
 $DNSRV |
   Select-Object -ExpandProperty ServerRecursion
 

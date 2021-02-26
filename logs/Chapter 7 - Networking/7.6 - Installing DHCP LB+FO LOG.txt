@@ -4,7 +4,7 @@
 # And with and a Scope defined
 
 
-PS C:\Foo> # 1. Installing the DHCP Server feature on DC2
+PS C:\Foo> # 1. Installing the DHCP server feature on DC2
 PS C:\Foo> Import-Module -Name ServerManager -WarningAction SilentlyContinue
 PS C:\Foo> $FEATUREHT = @{
              Name                   = 'DHCP'
@@ -40,7 +40,7 @@ IPAddress            DnsName
 
 
 
-PS C:\Foo> # 5. Configure failover and load balancing
+PS C:\Foo> # 5. Configuring fail-over and load balancing
 PS C:\Foo> $FAILOVERHT = @{
               ComputerName       = 'DC1.Reskit.Org'
               PartnerServer      = 'DC2.Reskit.Org'
@@ -52,11 +52,11 @@ PS C:\Foo> $FAILOVERHT = @{
               Verbose            = $True
             }
 
-
-PS C:\Foo> Invoke-Command -ComputerName DC1.Reskit.org -ScriptBlock {
-             gc @Using:FAILOVERHT
+PS C:\Foo> Invoke-Command -ComputerName DC1.Reskit.Org -ScriptBlock {
+             Add-DhcpServerv4Failover @Using:FAILOVERHT
            }
-VERBOSE: A new failover relationship will be created between servers DC1.Reskit.Org and DC2.Reskit.Org. The configuration of the specified scopes on server DC1.Reskit.Org will be replicated to the partner server.
+VERBOSE: A new failover relationship will be created between servers DC1.Reskit.Org and DC2.Reskit.Org. The configuration 
+of the specified scopes on server DC1.Reskit.Org will be replicated to the partner server.
 VERBOSE: Add scopes on partner server DC2.Reskit.Org .................................In progress.
 VERBOSE: Update properties for scope 10.10.10.0 (1 of 1) on partner server DC2.Reskit.Org .............In progress.
 VERBOSE: Update properties for scope 10.10.10.0 (1 of 1) on partner server DC2.Reskit.Org .............Successful.
@@ -111,7 +111,7 @@ ScopeId    SubnetMask    Name      State  StartRange   EndRange     LeaseDuratio
 
 
 
-PS C:\Foo> # 7. Viewing DHCP statistics from both DHCP servers
+PS C:\Foo> # 7. Viewing DHCP server statistics from both DHCP servers
 PS C:\Foo> $DHCPServers |
              ForEach-Object {
                 "Server $_" | Format-Table

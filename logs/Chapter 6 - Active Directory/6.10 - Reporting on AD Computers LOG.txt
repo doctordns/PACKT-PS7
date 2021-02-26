@@ -49,8 +49,10 @@ NO Output
 # 9. Reporting on computer accounts that have not logged in
 #    the past 1 week to one month ago
 
+NO Output
 
-PS C:\Foo> #10. Displaying the Report
+
+PS C:\Foo> # 10. Displaying the report
 PS C:\Foo> $RKReport
 
 *** Reskit.Org AD Daily AD Computer Report

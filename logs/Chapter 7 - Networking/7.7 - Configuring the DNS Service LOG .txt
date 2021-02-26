@@ -1,6 +1,8 @@
 # 7.7 - Configuring CH
 
 # Run this on DC2 after promoting to DC
+# Needs SRV2 on line initially as a work group computer
+# This recipe makes it domain joined.
 
 
 PS C:\Foo> # 1. Installing the DNS feature on DC2
@@ -30,7 +32,7 @@ no output
 No output
 
 
-# 5. Configuring DC2 to have two DNS Servers
+# 5. Configuring DC2 to have two DNS servers
 
 
 no output
@@ -42,7 +44,7 @@ no output
 no output
 
 
-# 7. Configuring DC2 to have two DNS Servers
+# 7. Configuring DC1 to have two DNS Servers
 
 
 no output
@@ -69,7 +71,7 @@ no output
 
 
 
-PS C:\Foo> # 10. Viewing Recursion settings
+PS C:\Foo> # 10. Viewing recursion settings
 PS C:\Foo> $DNSRV |
              Select-Object -ExpandProperty ServerRecursion
 
@@ -107,7 +109,7 @@ CacheTimeout EnableProbes EnableReception
 
 
 
-# 13. Set Reskit.Org zone to be seccure only
+# 13. Set Reskit.Org zone to be secure only
 
 no output
 

@@ -1,0 +1,127 @@
+﻿# 9.5 Deploying Storage Spaces   LOG
+
+# Run on SRV1
+
+# Uses 5 disks added earlier
+
+
+PS C:\Foo> # 1. Viewing disks available for pooling
+PS C:\Foo> $Disks = Get-PhysicalDisk -CanPool $true
+PS C:\Foo> $Disks | Sort-Object -Property Number
+
+Number FriendlyName      SerialNumber MediaType   CanPool OperationalStatus HealthStatus Usage        Size
+------ ------------      ------------ ---------   ------- ----------------- ------------ -----        ----
+4      Msft Virtual Disk              Unspecified True    OK                Healthy      Auto-Select 64 GB
+5      Msft Virtual Disk              Unspecified True    OK                Healthy      Auto-Select 64 GB
+6      Msft Virtual Disk              Unspecified True    OK                Healthy      Auto-Select 64 GB
+7      Msft Virtual Disk              Unspecified True    OK                Healthy      Auto-Select 64 GB
+8      Msft Virtual Disk              Unspecified True    OK                Healthy      Auto-Select 64 GB
+
+
+
+
+
+PS C:\Foo> # 2. Creating a storage pool
+PS C:\Foo> $SPHT = @{
+             FriendlyName                 = 'RKSP' 
+             StorageSubsystemFriendlyName = "Windows Storage*" 
+             PhysicalDisks                = $Disks
+           }
+PS C:\Foo> New-StoragePool @SPHT
+
+FriendlyName OperationalStatus HealthStatus IsPrimordial IsReadOnly      Size AllocatedSize
+------------ ----------------- ------------ ------------ ----------      ---- -------------
+RKSP         OK                Healthy      False        False      317.42 GB       1.25 GB
+
+
+
+
+
+
+PS C:\Foo> # 3. Creating a mirrored hard disk named Mirror1
+PS C:\Foo> $VDHT1 = @{
+             StoragePoolFriendlyName   = 'RKSP'
+             FriendlyName              = 'Mirror1'
+             ResiliencySettingName     = 'Mirror'
+             Size                      = 8GB
+             ProvisioningType          = 'Thin'
+           }
+PS C:\Foo> New-VirtualDisk @VDHT1
+
+FriendlyName ResiliencySettingName FaultDomainRedundancy OperationalStatus HealthStatus Size FootprintOnPool StorageEfficiency
+------------ --------------------- --------------------- ----------------- ------------ ---- --------------- -----------------
+Mirror1      Mirror                1                     OK                Healthy      8 GB          1.5 GB            33.33%
+
+
+
+
+
+
+PS C:\Foo> # 4. Creating a three way mirrored disk named Mirror2
+PS C:\Foo> $VDHT2 = @{
+             StoragePoolFriendlyName    = 'RKSP'
+             FriendlyName               = 'Mirror2'
+             ResiliencySettingName      = 'Mirror'
+             NumberOfDataCopies         = 3 
+             Size                       = 8GB
+             ProvisioningType           = 'Thin'
+           }
+PS C:\Foo> New-VirtualDisk @VDHT2
+
+FriendlyName ResiliencySettingName FaultDomainRedundancy OperationalStatus HealthStatus Size FootprintOnPool StorageEfficiency
+------------ --------------------- --------------------- ----------------- ------------ ---- --------------- -----------------
+Mirror2      Mirror                2                     OK                Healthy      8 GB          1.5 GB            16.67%
+
+
+
+
+PS C:\Foo> # 5. Creating volume in Mirror1
+PS C:\Foo> Get-VirtualDisk  -FriendlyName 'Mirror1' | 
+             Get-Disk | 
+               Initialize-Disk -PassThru | 
+                 New-Partition -AssignDriveLetter -UseMaximumSize |
+                   Format-Volume
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining    Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------    ----
+E                        NTFS           Fixed     Healthy      OK                      7.95 GB 7.98 GB
+
+
+
+
+
+
+PS C:\Foo> # 6. Creating a volume in Mirror2
+PS C:\Foo> Get-VirtualDisk  -FriendlyName 'Mirror2' | 
+             Get-Disk |
+               Initialize-Disk -PassThru | 
+                 New-Partition -AssignDriveLetter -UseMaximumSize |
+                   Format-Volume
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining    Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------    ----
+H                        NTFS           Fixed     Healthy      OK                      7.95 GB 7.98 GB
+
+
+
+PS C:\Foo> # 7.  Viewing volumes on SRV2
+PS C:\Foo> Get-Volume | Sort-Object -Property DriveLetter
+
+DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------         -------------- --------- ------------ ----------------- -------------      ----
+                                 NTFS           Fixed     Healthy      OK                     80.59 MB    496 MB
+A                                Unknown        Removable Healthy      Unknown                     0 B       0 B
+C                                NTFS           Fixed     Healthy      OK                    109.91 GB 127.51 GB
+D           SSS_X64FRE_EN-US_DV9 Unknown        CD-ROM    Healthy      OK                          0 B   4.38 GB
+E                                NTFS           Fixed     Healthy      OK                      7.95 GB   7.98 GB
+F                                Unknown        Fixed     Healthy      Unknown                     0 B       0 B
+G           SRLOGS               NTFS           Fixed     Healthy      OK                     61.89 GB  63.98 GB
+H                                NTFS           Fixed     Healthy      OK                      7.95 GB   7.98 GB
+W                                Unknown        Fixed     Healthy      Unknown                     0 B       0 B
+X           x-exFAT              exFAT          Fixed     Healthy      OK                        15 GB     15 GB
+Y           Y-FAT32              FAT32          Fixed     Healthy      OK                     14.98 GB  14.98 GB
+Z           Z-ReFS               ReFS           Fixed     Healthy      OK                     17.87 GB  18.94 GB
+
+
+
+

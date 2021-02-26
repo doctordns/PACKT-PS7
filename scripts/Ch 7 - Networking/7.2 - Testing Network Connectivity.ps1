@@ -9,7 +9,7 @@ Test-Connection -ComputerName SRV2 -Count 1 -IPv4
 # 2. Testing connection to local host's WinRM port
 Test-NetConnection -ComputerName SRV2 -CommonTCPPort WinRM
 
-# 3. Testing basic bonnectivity to DC1
+# 3. Testing basic connectivity to DC1
 Test-Connection -ComputerName DC1.Reskit.Org -Count 1
 
 # 4. Checking connectivity to SMB port on DC1

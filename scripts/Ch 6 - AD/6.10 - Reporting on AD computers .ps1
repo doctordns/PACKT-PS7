@@ -111,5 +111,5 @@ foreach($Computer in $Computers) {
 }
 
 
-#10. Displaying the Report
+#10. Displaying the report
 $RKReport

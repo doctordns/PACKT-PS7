@@ -3,15 +3,15 @@
 # Run On DC1
 
 
-PS C:\Foo> # 1.Obtaining the IP Addresses of DNS servers for Packt.Com
-PS C:\Foo> $NS = Resolve-DnsName -Name Packt.Com -Type NS |
-             Where-Object Name -eq 'Packt.Com'
+PS C:\Foo> # 1.Obtaining the IP addresses of DNS servers for packt.com
+PS C:\Foo> $NS = Resolve-DnsName -Name packt.com -Type NS |
+             Where-Object Name -eq 'packt.com'
 PS C:\Foo> $NS
 
 Name       Type  TTL   Section  NameHost`
 ----       ----  ---   -------  --------
-Packt.Com  NS    86400 Answer   max.ns.cloudflare.Com
-Packt.Com  NS    86400 Answer   eva.ns.cloudflare.Com
+packt.Com  NS    86400 Answer   max.ns.cloudflare.Com
+packt.Com  NS    86400 Answer   eva.ns.cloudflare.Com
 
 
 

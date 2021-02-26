@@ -59,7 +59,7 @@ no output
 no output
 
 
-PS C:\Foo> # 7. Display the GPOs in the domain
+PS C:\Foo> # 7. Displaying the GPOs in the domain
 PS C:\Foo> Get-GPO -All -Domain Reskit.Org |
              Sort-Object -Property DisplayName |
                Format-Table -Property Displayname, Description, GpoStatus
@@ -79,7 +79,7 @@ Screen Saver Time Out                         AllSettingsEnabled
 no output but see edge output
 
 
-# 9. Getting Report in XML format
+# 9. Getting report in XML format
 
 
 NO output
