@@ -1,6 +1,7 @@
 # 6.3 - Installing a Replica DC
 
-# Run this recipe on DC2 once it has been promoted
+# Run this recipe on DC2 once DC1 has been promoted
+# Needs new DC2 VM as domain joined host in Reskit domain
 # Login as Reskit\Administrator
 
 # Run on DC2 - a domain server in the reskit domain

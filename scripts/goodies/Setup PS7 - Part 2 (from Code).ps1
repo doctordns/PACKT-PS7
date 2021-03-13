@@ -1,8 +1,19 @@
-﻿# Short cut Part 2
+﻿#requires –RunAsAdministrator
+# Short cut Part 2
 
 # Run inside Elevated VS Code
 
-
+# 0. nsure 
+$ID = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+$P = New-Object System.Security.Principal.WindowsPrincipal($ID)
+$Role = $P.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+if ($Role) { 
+  Write-Verbose "Running in elevated console"
+}
+else  { 
+  Write-Verbose "Not running in elevated console"
+  exit
+}
 
 # 1. Using VS Code, create a Sample Profile File for VS Code
 Write-Host "Creating VS Code Default profile"

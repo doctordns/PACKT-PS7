@@ -1,9 +1,9 @@
-﻿# Recipe 5.8 - Configuring DFS Replication
+﻿# Recipe 10.10 - Configuring DFS Replication
 
-# Uses VMs: DC1, DC2, FS2, FS2, SRV1, SRV2
-# Run on CL1
+# Uses VMs: DC1, DC2, SRV1, SRV2
+# Run on SRV1
 
-# 1. Install DFS-Replication feature on key servers:
+# 1. Installing DFS-Replication feature on key servers
 $SB = {
   $IHT = @{
     Name                   ='FS-DFS-Replication'
@@ -13,12 +13,12 @@ $SB = {
 }
 $ICHT = @{
   ScriptBlock     = $SB
-  ComputerName    = 'DC1', 'DC2', 'FS1', 'FS2', 'SRV1', 'SRV2'
+  ComputerName    = 'DC1', 'DC2', 'SRV1', 'SRV2'
 }
 Invoke-Command @ICHT |
   Format-Table -Property PSComputername,FeatureResult, Success
 
-# 2. Turn on administrative shares:
+# 2. Turning on administrative shares
 $SB2 = {
   $SCHT = @{
     AutoShareServer      = $true 
@@ -30,36 +30,39 @@ $SB2 = {
   Stop-Service -Name  LanManServer -Force
   Start-Service -Name  LanManServer
 }
-$CN = @('DC1','DC2','FS1','FS2','SRV1','SRV2')
+$CN = @('DC1','DC2','SRV1','SRV2')
 Invoke-Command -ScriptBlock $SB2 -ComputerName $CN
 
-# 3. View DFS cmdlets:
-Get-Module -Name DFSR -ListAvailable
+# 3. Viewing DFSR cmdlets
+Import-Module -Name DFSR -WarningAction SilentlyContinue
+Get-Module -Name DFSR 
 Get-Command -Module DFSR | Measure-Object
 
-# 4. Create replication groups:
+#  continue from here
+
+# 4. Creating replication groups
 $RGHT1 = @{
-  GroupName   = 'FSShareRG'
-  DomainName  = 'Reskit.org'
-  Description = 'Replication Group for FS1, FS2 shares'
+  GroupName   = 'SRVShareRG'  
+  DomainName  = 'Reskit.Org'
+  Description = 'Replication Group for SRV1, SRV2 shares'
 }
 $RGHT2 = @{
-  GroupName    = 'DCShareRG'
+  GroupName    = 'DCShareRG' 
   DomainName   = 'Reskit.Org'
   Description  = 'Replication Group for DC1, DC2 shares'
 }
 New-DfsReplicationGroup @RGHT1 | Out-Null
 New-DfsReplicationGroup @RGHT2 | Out-Null
 
-# 5. Get replication groups in Reskit.Org
+# 5. Getting replication groups in Reskit.Org
 Get-DfsReplicationGroup -DomainName Reskit.Org |
     Format-Table
 
-# 6. Add replication group members for FSShareRG
+# 6. Add replication group members for SRVShareRG
 $MHT1 = @{
-  GroupName    = 'FSShareRG'
-  Description  = 'ITData on FS1/2'
-  ComputerName = ('FS1','FS2')
+  GroupName    = 'SRVShareRG'
+  Description  = 'ITData on SRV1 SRV2'
+  ComputerName = ('SRV1','SRV2')
   DomainName   = 'Reskit.Org' 
 }
 Add-DfsrMember @MHT1
@@ -70,8 +73,8 @@ $RFHT1 = @{
 GroupName   = 'FSShareRG'
 FolderName  = 'ITData'
 Domain      = 'Reskit.Org'
-Description = 'ITData on FS1/2'
-DfsnPath    = '\\Reskit.Org\ShareData\IT\ITData'
+Description = 'ITData on SRV1/SRV2'
+DfsnPath    = '\\Reskit.Org\ShareData\ITData'
 }
 New-DfsReplicatedFolder @RFHT1
 

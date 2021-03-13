@@ -1,110 +1,96 @@
 ﻿# Recipe 5.2 - Creating and securing SMB shares
 #
-# Run from FS1
+# Run from SRV2
 
-# 0 Just in case
-$EAHT = @{Erroraction='SilentlyContinue'}
-New-Item -Path c:\Foo -ItemType Directory @EAHT
-
-# 1. Discover existing shares and access rights
+# 1. Discovering existing shares and access rights
 Get-SmbShare -Name * | 
   Get-SmbShareAccess |
     Format-Table -GroupBy Name
 
-# 2. Share a folder 
-New-SmbShare -Name Foo -Path C:\Foo
+# 2. Sharing a new folder 
+New-Item -Path F: -Name ITShare -ItemType Directory |
+  Out-Null
+New-SmbShare -Name ITShare -Path F:\ITShare
 
-# 3. Update the share to have a description
+# 3. Updating the share to have a description
 $CHT = @{Confirm=$False}
-Set-SmbShare -Name Foo -Description 'Foo share for IT' @CHT
+Set-SmbShare -Name ITShare -Description 'File Share for IT' @CHT
 
-# 4. Set folder enumeration mode
+# 4. Setting folder enumeration mode
 $CHT = @{Confirm = $false}
-Set-SMBShare -Name Foo -FolderEnumerationMode AccessBased @CHT
+Set-SMBShare -Name ITShare -FolderEnumerationMode AccessBased @CHT
 
-# 5. Set encryption on for Foo share
-Set-SmbShare –Name Foo -EncryptData $true @CHT
+# 5. Setting encryption on for Foo share
+Set-SmbShare –Name ITShare -EncryptData $true @CHT
 
-# 6. Remove all access to foo share
+# 6. Removing all access to ITShare share for the Everyone group
 $AHT1 = @{
-  Name        =  'foo'
+  Name        =  'ITShare'
   AccountName = 'Everyone'
   Confirm     =  $false
 }
 Revoke-SmbShareAccess @AHT1 | Out-Null
 
-# 7. Add reskit\administrators R/O
+# 7. Adding Reskit\Administrators to have read permission
 $AHT2 = @{
-    Name         = 'foo'
+    Name         = 'ITShare'
     AccessRight  = 'Read'
     AccountName  = 'Reskit\ADMINISTRATOR'
     ConFirm      =  $false 
 } 
 Grant-SmbShareAccess @AHT2 | Out-Null
 
-# 8. Add system full access
+# 8. Adding system full access
 $AHT3 = @{
-    Name          = 'foo'
+    Name          = 'ITShare'
     AccessRight   = 'Full'
     AccountName   = 'NT Authority\SYSTEM'
     Confirm       = $False 
 }
 Grant-SmbShareAccess  @AHT3 | Out-Null
 
-# 9. Set Creator/Owner to Full Access
+# 9. Setting Creator/Owner to Full Access
 $AHT4 = @{
-    Name         = 'foo'
+    Name         = 'ITShare'
     AccessRight  = 'Full'
     AccountName  = 'CREATOR OWNER'
     Confirm      = $False 
 }
 Grant-SmbShareAccess @AHT4  | Out-Null
 
-# 10. Grant Saves Team read access, SalesAdmins has Full access
+# 10. Granting Sales group read access, SalesAdmins has Full access
 $AHT5 = @{
-    Name        = 'Foo'
+    Name        = 'ITShare'
     AccessRight = 'Read'
     AccountName = 'Sales'
     Confirm     = $false 
 }
 Grant-SmbShareAccess @AHT5 | Out-Null
-$AHT6 = @{
-    Name        = 'Foo'
-    AccessRight = 'Full'
-    AccountName = 'SalesAdmins'
-    Confirm     = $false     
-}
-Grant-SmbShareAccess  @AHT6 | Out-Null
 
-# 11. Review share access
-Get-SmbShareAccess -Name Foo | 
+# 11. Reviewing share access
+Get-SmbShareAccess -Name ITShare | 
   Sort-Object AccessRight
 
 # 12. Set file ACL to be same as share acl
-Set-SmbPathAcl -ShareName 'Foo'
+Set-SmbPathAcl -ShareName 'ITShare'
 
+# 13. Creating a file in F:\ITShare
+'File Contents' | Out-File -FilePath F:\ITShare\File.Txt
 
-# 13. Create a file in c:\foo
-'foo' | Out-File -FilePath C:\Foo\Foo.Txt
+# 14. Setting file ACL to be same as share ACL
+Set-SmbPathAcl -ShareName 'ITShare'
 
-
-# 14. Set file ACL to be same as share acl
-Set-SmbPathAcl -ShareName 'Foo'
-
-# 15. View folder ACL using Get-NTFSAccess
-Get-NTFSAccess -Path C:\Foo | 
-  Format-Table -AutoSize
-
-# 16. View file ACL
-Get-NTFSAccess -Path C:\Foo\Foo.Txt |
+# 15. Viewing file ACL
+Get-NTFSAccess -Path F:\ITShare\File.Txt |
   Format-Table -AutoSize
   
 
 
 
-# reset for testing
+
+# For testing
 
 <# reset the shares 
-Get-smbshare foo | remove-smbshare -Confirm:$false
+Get-smbshare ITShare| Remove-SmbShare -Confirm:$false
 
 #>

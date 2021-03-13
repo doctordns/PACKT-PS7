@@ -1,0 +1,162 @@
+# Recipe 5.2 - Creating and securing SMB shares
+#
+# Run from SRV2
+
+
+PS C:\Foo> # 1. Discovering existing shares and access rights
+PS C:\Foo> Get-SmbShare -Name * |
+             Get-SmbShareAccess |
+               Format-Table -GroupBy Name
+
+   Name: IPC$
+
+Name ScopeName AccountName              AccessControlType AccessRight
+---- --------- -----------              ----------------- -----------
+IPC$ *         BUILTIN\Administrators   Allow             Full
+IPC$ *         BUILTIN\Backup Operators Allow             Full
+IPC$ *         NT AUTHORITY\INTERACTIVE Allow             Full
+
+
+
+
+PS C:\Foo> # 2. Sharing a new folder
+PS C:\Foo> New-Item -Path F: -Name ITShare | Out-Null
+PS C:\Foo> New-SmbShare -Name ITShare -Path C:\ITShare
+
+Name    ScopeName Path       Description
+----    --------- ----       -----------
+ITShare *         C:\ITShare 
+
+
+
+# 3. Updating the share to have a description
+
+
+
+no output
+
+
+
+
+# 4. Setting folder enumeration mode
+
+
+
+no output
+
+
+
+
+# 5. Setting encryption on for Foo share
+
+
+
+no output
+
+
+
+# 6. Removing all access to ITShare share for the Everyone group
+
+
+
+
+no output
+
+
+# 7. Adding Reskit\Administrators to have read permossions
+
+
+
+
+
+no output
+
+
+
+
+# 8. Adding system full access
+
+
+
+
+
+no output
+
+
+
+
+
+# 9. Setting Creator/Owner to Full Access
+
+
+
+
+
+no output
+
+
+
+
+
+# 10. Granting Sales group read access, SalesAdmins has Full access
+
+
+
+PS C:\Foo> # 11. Reviewing share access
+PS C:\Foo> Get-SmbShareAccess -Name ITShare |
+             Sort-Object AccessRight
+
+Name     ScopeName AccountName          AccessControlType AccessRight
+----     --------- -----------          ----------------- -----------
+ITShare  *         NT AUTHORITY\SYSTEM  Allow             Full
+ITShare  *         CREATOR OWNER        Allow             Full
+ITShare  *         RESKIT\Administrator Allow             Read
+ITShare  *         RESKIT\Sales         Allow             Read
+
+
+
+
+
+# 12. Set file ACL to be same as share acl
+
+  
+
+
+no output
+
+
+
+
+# 13. Creating a file in F:\ITShare
+  
+
+
+no output
+
+
+
+# 14. Set file ACL to be same as share ACL
+
+  
+
+
+no output
+
+
+
+
+PS C:\Foo> # 15. Viewing file ACL
+PS C:\Foo> Get-NTFSAccess -Path F:\ITShare\File.Txt |
+             Format-Table -AutoSize
+
+    Path: F:\ITShare\File.Txt (Inheritance enabled)
+
+
+Account                Access Rights               Applies to     Type  IsInherited InheritedFrom
+-------                -------------               ----------     ----  ----------- -------------
+BUILTIN\Administrators FullControl                 ThisFolderOnly Allow True        F:\ITShare
+NT AUTHORITY\SYSTEM    FullControl                 ThisFolderOnly Allow True        F:\ITShare
+RESKIT\Administrator   ReadAndExecute, Synchronize ThisFolderOnly Allow True        F:\ITShare
+RESKIT\Sales           ReadAndExecute, Synchronize ThisFolderOnly Allow True        F:\ITShare
+BUILTIN\Users          ReadAndExecute, Synchronize ThisFolderOnly Allow True        F:
+

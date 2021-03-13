@@ -1,23 +1,25 @@
-﻿# Recipe 5.1 - Securing your SMB file erver
-# Run on FS1
+﻿# Recipe 5.1 - Securing your SMB file Server
 
-# 1. - Add File Server features to FS1
-$Featuers = 'FileAndStorage-Services','File-Services',
-            'FS-FileServer','RSAT-File-Services'
-Add-WindowsFeature -Name $Featuers
+# Run on SRV2
 
+# 1. Adding File Server features to SRV2
+$Features = 'FileAndStorage-Services',
+            'File-Services',
+            'FS-FileServer',
+            'RSAT-File-Services'
+Add-WindowsFeature -Name $Features
 
-# 2. ` Retreive SMB Server settings
+# 2. Viewing the SMB Server settings
 Get-SmbServerConfiguration
 
-# 3. - Turn off SMB1 
+# 3. Turning off SMB1 
 $CHT = @{
   EnableSMB1Protocol = $false 
   Confirm            = $false
 }
 Set-SmbServerConfiguration @CHT
 
-# 4.Turn on SMB signing and encryption
+# 4. Turning on SMB signing and encryption
 $SHT1 = @{
     RequireSecuritySignature = $true
     EnableSecuritySignature  = $true
@@ -26,7 +28,7 @@ $SHT1 = @{
 }
 Set-SmbServerConfiguration @SHT1
 
-# Step 5 - Turn off default server and workstations shares 
+# 5. Turning off default server and workstations shares 
 $SHT2 = @{
     AutoShareServer       = $false
     AutoShareWorkstation  = $false
@@ -34,7 +36,7 @@ $SHT2 = @{
 }
 Set-SmbServerConfiguration @SHT2
 
-# Step 6 - turn off server announcements
+# 6. Turning off server announcements
 $SHT3 = @{
     ServerHidden   = $true
     AnnounceServer = $false
@@ -42,10 +44,13 @@ $SHT3 = @{
 }
 Set-SmbServerConfiguration @SHT3
 
-# Step 7 - restart the service with the new configuration
-Restart-Service lanmanserver
+# 7. Restarting SMB Server service with the new configuration
+Restart-Service lanManServer -Force
 
 
+
+
+# For testing
 <# undo and set back to defults
 
 Get-SMBShare foo* | remove-SMBShare -Confirm:$False

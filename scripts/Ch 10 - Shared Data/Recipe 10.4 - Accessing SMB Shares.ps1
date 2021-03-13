@@ -1,13 +1,12 @@
-# Recipe 5.3 - Acessing SMB shares
+# Recipe 5.3 - Accessing SMB shares
 #
-# run from CL1
-# Uses the foo share on FS1 created earlier
+# Run from SRV1 - Uses the ITShare share on SRV2 created earlier
+# Run in an elevated console
 
-# 1. Examine the SMB client's configuration
+# 1. Examining the SMB client's configuration on SRV2
 Get-SmbClientConfiguration
 
-# 2. You require SMB signing from the client. You must run this
-#    command from an elevated console on the client computer
+# 2. Setting Signing of SMB packets
 $CHT = @{Confirm=$false}
 Set-SmbClientConfiguration -RequireSecuritySignature $True @CHT
 
@@ -15,26 +14,17 @@ Set-SmbClientConfiguration -RequireSecuritySignature $True @CHT
 Get-SmbClientNetworkInterface |
     Format-Table
 
-#     4. Examine the shares provided by FS1
-net view \\FS1
+# 4. Examining the shares provided by SRV2
+net view \\SRV2
 
-# 5. Create a drive mapping, mapping the r: to the share on server FS1
-New-SmbMapping -LocalPath r: -RemotePath \\FS1.Reskit.Org\foo
+# 5. Creating a drive mapping, mapping the R: to the share on server SRV2
+New-SmbMapping -LocalPath R: -RemotePath \\SRV2\ITShare
 
-# 6. View the shared folder mapping
+# 6. Viewing the shared folder mapping
 Get-SmbMapping
 
 # 7. View the shared folder contents
-Get-ChildItem -Path r:
+Get-ChildItem -Path R:
 
-# 8. Run a program from the shared file
-# assumes this application is already on that share
-R:\MarsInstaller.exe
-
-# 9. View existing connections 
-# Note: you need to run this in an elevated console)
+# 8. Viewing existing connections 
 Get-SmbConnection
-
-# 10. What files are open on FS1? If any files are open you view them
-#     by doing this on FS1:
-Get-SmbOpenFile

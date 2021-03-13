@@ -1,0 +1,120 @@
+# Recipe 10.6 - Using an ISCSI Target
+#
+#  Run from SRV1
+
+# 1. Adjusting the iSCSI service to auto start, then start the service 
+
+
+no output
+
+
+
+PS C:\Foo> # 2. Seting up the portal to SS1
+PS C:\Foo> $PHT = @{
+             TargetPortalAddress     = 'SS1.Reskit.Org'
+             TargetPortalPortNumber  = 3260
+           }
+PS C:\Foo> New-IscsiTargetPortal @PHT
+
+RunspaceId             : ded5213d-8a72-4752-9cb1-b388db48edc6
+InitiatorInstanceName  :
+InitiatorPortalAddress : 
+IsDataDigest           : False
+IsHeaderDigest         : False
+TargetPortalAddress    : SS1.Reskit.Org
+TargetPortalPortNumber : 3260
+
+
+
+
+
+PS C:\Foo> # 3. Finding and viewing the ITTarget on the portal
+PS C:\Foo> $Target  = Get-IscsiTarget |
+                        Where-Object NodeAddress -Match 'ITTarget'
+PS C:\Foo> $Target
+
+RunspaceId  : ded5213d-8a72-4752-9cb1-b388db48edc6
+IsConnected : False
+NodeAddress : iqn.1991-05.com.microsoft:ss1-ittarget-target
+
+
+
+PS C:\Foo> # 4. Connecting to the target on SS1
+PS C:\Foo> $CHT = @{
+             TargetPortalAddress = 'SS1.Reskit.Org'
+             NodeAddress         = $Target.NodeAddress
+           }
+PS C:\Foo> Connect-IscsiTarget  @CHT
+RunspaceId              : ded5213d-8a72-4752-9cb1-b388db48edc6
+AuthenticationType      : NONE
+InitiatorInstanceName   : ROOT\ISCSIPRT\0000_0
+InitiatorNodeAddress    : iqn.1991-05.com.microsoft:srv1.reskit.org
+InitiatorPortalAddress  : 0.0.0.0
+InitiatorSideIdentifier : 400001370000
+IsConnected             : True
+IsDataDigest            : False
+IsDiscovered            : False
+IsHeaderDigest          : False
+IsPersistent            : False
+NumberOfConnections     : 1
+SessionIdentifier       : ffff828526afb010-4000013700000012
+TargetNodeAddress       : iqn.1991-05.com.microsoft:ss1-ittarget-target
+TargetSideIdentifier    : 0100
+
+
+
+
+PS C:\Foo> # 5. Viewing the iSCSI disk from FST on SS1
+PS C:\Foo> $ISD =  Get-Disk |
+             Where-Object BusType -eq 'iscsi'
+PS C:\Foo> $ISD | 
+             Format-Table -AutoSize
+             
+Number Friendly Name   Serial Number                        HealthStatus OperationalStatus Total Size Partition Style
+------ -------------   -------------                        ------------ ----------------- ---------- ---------------
+11     MSFT Virtual HD 9BF969AC-7228-42F9-A994-4CFDA4EBC46D Healthy      Online                500 MB RAW
+
+
+
+
+# 6. Turning disk online and making R/W
+
+
+no  output
+
+
+
+PS C:\Foo> # 7. Formating the volume on SS1
+PS C:\Foo> $NVHT = @{
+             FriendlyName = 'ITData'
+             FileSystem   = 'NTFS'
+             DriveLetter  = 'I'
+           }
+PS C:\Foo> $ISD | 
+             New-Volume @NVHT
+
+DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+I           ITData       NTFS           Fixed     Healthy      OK                    467.73 MB 483.93 MB
+
+
+
+
+
+PS C:\Foo> # 8. Using the drive as a local drive
+PS C:\Foo> Set-Location -Path I:
+PS I:\> New-Item -Path I:\  -Name ITData -ItemType Directory |
+          Out-Null
+PS I:\> 'Testing 1-2-3' |
+          Out-File -FilePath I:\ITData\Test.Txt
+PS I:\> Get-ChildItem I:\ITData
+
+    Directory: I:\ITData
+
+Mode           LastWriteTime    Length Name
+----           -------------    ------ ----
+-a---    02/03/2021    08:42        15 Test.Txt
+
+
+
+

@@ -1,60 +1,59 @@
-﻿# Recipe 5.5 - Using an ISCSI Target
+﻿# Recipe 10.6 - Using an ISCSI Target
 #
-#  Run from FS1
+#  Run from SRV1
 
-
-# 1. Adjust the iSCSI service to auto start, then start the service 
+# 1. Adjusting the iSCSI service to auto start, then start the service 
 Set-Service MSiSCSI -StartupType 'Automatic'
 Start-Service MSiSCSI
 
-# 2. Setup portal to SRV1
+# 2. Setting up the portal to SS1
 $PHT = @{
-  TargetPortalAddress     = 'SRV1.Reskit.Org'
+  TargetPortalAddress     = 'SS1.Reskit.Org'
   TargetPortalPortNumber  = 3260
 }
 New-IscsiTargetPortal @PHT
                    
-# 3. Find and view the SalesTarget on portal
+# 3. Finding and viewing the ITTarget on the portal
 $Target  = Get-IscsiTarget | 
-               Where-Object NodeAddress -Match 'SalesTarget'
+               Where-Object NodeAddress -Match 'ITTarget'
 $Target 
 
-# 4. Connect to the target on SRV1
+# 4. Connecting to the target on SRV1
 $CHT = @{
-  TargetPortalAddress = 'SRV1.Reskit.Org'
+  TargetPortalAddress = 'SS1.Reskit.Org'
   NodeAddress         = $Target.NodeAddress
 }
 Connect-IscsiTarget  @CHT
                     
 
-# 5. View ICI disk from FST on SRV1
+# 5. Viewing the ISCSI disk from FS1 on SRV1
 $ISD =  Get-Disk | 
   Where-Object BusType -eq 'iscsi'
 $ISD | 
   Format-Table -AutoSize
 
-# 6. Turn disk online and make R/W
+# 6. Turning disk online and making disk R/W
 $ISD | 
   Set-Disk -IsOffline  $False
 $ISD | 
   Set-Disk -Isreadonly $False
 
-# 7. Format the volume on FS1
+# 7. Formating the volume on SS1
 $NVHT = @{
-  FriendlyName = 'SalesData'
+  FriendlyName = 'ITData'
   FileSystem   = 'NTFS'
   DriveLetter  = 'I'
 }
 $ISD | 
   New-Volume @NVHT
 
-# 8. Use the drive as a local drive:
+# 8. Using the drive as a local drive
 Set-Location -Path I:
-New-Item -Path I:\  -Name SalesData -ItemType Directory |
+New-Item -Path I:\  -Name ITData -ItemType Directory |
   Out-Null
 'Testing 1-2-3' | 
-  Out-File -FilePath I:\SalesData\Test.Txt
-Get-ChildItem I:\SalesData
+  Out-File -FilePath I:\ITData\Test.Txt
+Get-ChildItem I:\ITData
 
 
 

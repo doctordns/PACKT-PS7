@@ -1,4 +1,5 @@
-﻿# mondo script to setup a VM - Part 1
+﻿#requires –RunAsAdministrator
+# mondo script to setup a VM - Part 1
 #
 # Run INSIDE the VM inside an elevated PowerShell 5.1 ISE Console
 
@@ -7,6 +8,7 @@ Write-Host 'Setting Execution Policy'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 # 2. Install the latest versions of Nuget and PowerShellGet
+Register-PSRepository -Default # just in case
 Write-Host 'Updating PowerShellGet and Nuget'
 Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
@@ -38,8 +40,8 @@ $EXTHT = @{
 }
 C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
-# 6. For the Adventurous - install the preview and daily builds as well
-Write-Host "Installling Pwsh 7.1 preview"
+# 6. For the Adventerous - install the preview and daily builds as well
+Write-Host "Installing Pwsh 7.1 preview"
 C:\Foo\Install-PowerShell.ps1 -Preview -Destination C:\PSPreview |
   Out-Null
 Write-Host "Installing Pwsh 7.1 Daily Build"
@@ -47,7 +49,7 @@ C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
   Out-Null
 
 # 7. Create Windows PowerShell default Profiles
-#    NB: You create PowerSHell 7 profiles in a later l
+#    NB: You create PowerShell 7 profiles in a later script
 Write-Host "Creating Default profiles"
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
        'Goodies/Microsoft.PowerShell_Profile.ps1'
@@ -64,7 +66,7 @@ $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_
 # 8. Download the VS Code installation script from PS Gallery
 Write-Host "Download VS Code Installation Script"
 $VSCPATH = 'C:\Foo'
-Set-PSRepository -Name PSGallery     # just bacause
+Register-PSRepository -default       # to make sure
 Save-Script -Name Install-VSCode -Path $VSCPATH
 Set-Location -Path $VSCPATH
 

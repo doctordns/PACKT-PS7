@@ -67,4 +67,4 @@ Import-Module -Name $DLLPath
 Get-Module SendGreeting
 
 # 12. Using the cmdlet
-Send-Greeting -Name "Jerry Garcia"
+Send-Greeting -Name 'Jerry Garcia'

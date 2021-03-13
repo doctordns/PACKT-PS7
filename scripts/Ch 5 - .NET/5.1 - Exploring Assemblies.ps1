@@ -43,7 +43,7 @@ $Assemblies2 = [System.AppDomain]::CurrentDomain.GetAssemblies()
 $Assemblies2 | Where-Object Location -match $DLL
 
 # 9. Getting details of a PowerShell command inside a module DLL
-$Commands  = $Assemblies
+$Commands  = $Assemblies |
                Where-Object Location -match Commands.Management\.dll
 $Commands.GetTypes() | 
   Where-Object Name -match "Addcontentcommand$" 

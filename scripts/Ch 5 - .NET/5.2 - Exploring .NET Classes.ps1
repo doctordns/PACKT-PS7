@@ -28,7 +28,7 @@ $BaseType = $IntType.BaseType.Name
 ".NET Class name      : $TypeName"
 ".NET Class base type : $BaseType"
 
-# 6. Looking atpProcess objects
+# 6. Looking at Process objects
 $PWSH = Get-Process -Name pwsh |
   Select-Object -First 1
 $PWSH |
@@ -36,15 +36,8 @@ $PWSH |
     Group-Object -Property MemberType |
       Sort-Object -Property Count -Descending
 
-
 # 7. Looking at static properties within a class
 $Max = [Int32]::MaxValue
 $Min = [Int32]::MinValue
 "Minimum value [$Min]"
 "Maximum value [$Max]"
-
-
-
-
-
-   
