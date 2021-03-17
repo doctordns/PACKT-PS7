@@ -16,7 +16,7 @@ $Disk | Get-Partition
 
 # 4. Initializing this disk amd creating 4 partitions
 Initialize-Disk -Number $Disk.DiskNumber -PartitionStyle GPT
-New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter W -Size 15gb
+New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter W -Size 1gb
 New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter X -Size 15gb
 New-Partition -DiskNumber $Disk.DiskNumber  -DriveLetter Y -Size 15gb
 $UMHT= @{UseMaximumSize = $true}

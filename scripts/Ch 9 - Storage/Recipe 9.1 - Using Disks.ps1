@@ -1,10 +1,10 @@
-# Recipe 9.1 - Managing physical Disks and Volumes
+# Recipe 9.1 - Managing physical disks and volumes
 #
 # Run on SRV1
 # SRV1, SRV2 has 8 extra disks that are 'bare' and just added to the VM
 
 # 0. Add new disks to the SRV1, SRV2 VMs
-# Run on VM host
+# Run this this step on VM host
 # Assumes a single C:, and SCSI bus 0 is unoccupied.
 #
 
@@ -29,13 +29,13 @@ $VMPath2 = Split-Path -Parent $Path2.Path
 
 # 0.4 Adding disks to SRV1, SRV2
 0..7 | ForEach-Object {
-  @DHT1 = @{
+  $DHT1 = @{
     VMName           = 'SRV1'
     Path             = "$VMPath1\SRV1-D$_.vhdx" 
     ControllerType   = 'SCSI'
     ControllerNumber = 0 
   }
-  @DHT2 = @{
+  $DHT2 = @{
     VMName           = 'SRV2' 
     Path             =  "$VMPath2\SRV2-D$_.vhdx"
     ControllerType   = 'SCSI' 
@@ -84,8 +84,10 @@ $NVHT1 = @{
 }
 New-Volume @NVHT1 
 
+# 6. Creating two partitions in disk 2 - first create S volume
+Initialize-Disk -Number 2 -PartitionStyle MBR
+New-Partition -DiskNumber 2  -DriveLetter S -Size 32gb
      
-
 # 7. Creating a second partition T on disk 2
 New-Partition -DiskNumber 2  -DriveLetter T -UseMaximumSize
 

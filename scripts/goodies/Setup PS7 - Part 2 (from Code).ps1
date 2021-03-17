@@ -3,19 +3,33 @@
 
 # Run inside Elevated VS Code
 
-# 0. nsure 
+# 0. Ensure we are running as admin
 $ID = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $P = New-Object System.Security.Principal.WindowsPrincipal($ID)
 $Role = $P.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 if ($Role) { 
-  Write-Verbose "Running in elevated console"
-}
-else  { 
-  Write-Verbose "Not running in elevated console"
+  Write-Host "Running in elevated console"
+}  else  { 
+  Write-Host "Not running in elevated console"
   exit
 }
 
-# 1. Using VS Code, create a Sample Profile File for VS Code
+# 1. Install Cascadia Code
+Write-Host "Installing Cascadia Code font"
+$CascadiaFont    = 'Cascadia.ttf'    # font file name
+$CascadiaRelURL  = 'https://github.com/microsoft/cascadia-code/releases'
+$CascadiaRelease = Invoke-WebRequest -Uri $CascadiaRelURL # Get all of them
+$CascadiaPath    = "https://github.com" + ($CascadiaRelease.Links.href | 
+                      Where-Object { $_ -match "($CascadiaFont)" } | 
+                        Select-Object -First 1)
+$CascadiaFile   = "C:\Foo\$CascadiaFont"
+Invoke-WebRequest -Uri $CascadiaPath -OutFile $CascadiaFile
+$FontShellApp = New-Object -Com Shell.Application
+$FontShellNamespace = $FontShellApp.Namespace(0x14)
+$FontShellNamespace.CopyHere($CascadiaFile, 0x10)
+
+
+# 2. Using VS Code, create a Sample Profile File for VS Code
 Write-Host "Creating VS Code Default profile"
 $VSCodeProfileFile = $Profile.CurrentUserCurrentHost
 New-Item $VSCodeProfileFile -Force -WarningAction SilentlyContinue | Out-Null
@@ -33,7 +47,7 @@ $ConsolePS7Sample =
   'scripts/goodies/Microsoft.PowerShell_Profile.ps1'
 Start-BitsTransfer -Source $ConsolePS7Sample -Destination $ConsoleProfile
 
-# 2. Update Local User Settings for VS Code
+# 3. Update Local User Settings for VS Code
 $JSON = @'
 {
   "workbench.colorTheme": "Visual Studio Light",
@@ -65,7 +79,7 @@ $JHT |
   ConvertTo-Json  |
     Out-File -FilePath $Settings
 
-# 3. Create a short cut to VSCode
+# 4. Create a short cut to VSCode
 $SourceFileLocation  = "$env:ProgramFiles\Microsoft VS Code\Code.exe"
 $ShortcutLocation    = "C:\foo\vscode.lnk"
 # Create a  new wscript.shell object
@@ -75,7 +89,7 @@ $Shortcut.TargetPath = $SourceFileLocation
 #Save the Shortcut to the TargetPath
 $Shortcut.Save()
 
-# 4. Create a short cuts to PowerShell 7
+# 5. Create a short cuts to PowerShell 7
 $SourceFileLocation  = "$env:ProgramFiles\PowerShell\7\pwsh.exe"
 $ShortcutLocation    = 'C:\Foo\pwsh.lnk'
 # Create a  new wscript.shell object
@@ -102,7 +116,7 @@ $ShortcutP.TargetPath  = $PSourceFileLocation
 $ShortcutP.Save()
 
 
-# 5. Build Updated Layout XML
+# 6. Build Updated Layout XML
 $XML = @'
 <?xml version="1.0" encoding="utf-8"?>
 <LayoutModificationTemplate
@@ -128,11 +142,11 @@ $XML = @'
 '@
 $XML | Out-File -FilePath C:\Foo\Layout.Xml
 
-# 6. Import the  start layout XML file
+# 7. Import the  start layout XML file
 #     You get an error if this is not run in an elevated session
 Import-StartLayout -LayoutPath C:\Foo\Layout.Xml -MountPath C:\
 
-# 7. Create VSCode Profile for PowerShell 7
+# 8. Create VSCode Profile for PowerShell 7
 Write-Host 'Creating PowerShell 7 VS Code Profile'
 $CUCHProfile   = $profile.CurrentUserCurrentHost
 $ProfileFolder = Split-Path -Path $CUCHProfile 
@@ -144,35 +158,18 @@ New-Item $VSProfile -Force -WarningAction SilentlyContinue |
    Out-Null
 Start-BitsTransfer -Source $URI  -Destination $VSProfile
 
-# 8. Create PS 7 Console profile
+# 9. Create PS 7 Console profile
 Write-Host 'Creating PowerShell 7 Console Profile'
-$ProfileFile2   = 'Microsoft.PowerShell_Profile.ps1'  
+$ProfileFile2   = 'Microsoft.PowerShell_Profile.ps1'
 $ConsoleProfile = Join-Path -Path $ProfileFolder -ChildPath $ProfileFile2
 New-Item $ConsoleProfile -Force -WarningAction SilentlyContinue |
    Out-Null
 $URI2 = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
-        "scripts/goodies/$ProfileFile2"    
+        "scripts/goodies/$ProfileFile2"
 Start-BitsTransfer -Source $URI2 -Destination $ConsoleProfile
 
 
-# 8. Install Cascadia Code
-$CascadiaFont    = 'Cascadia.ttf'    # font file name
-$CascadiaRelURL  = 'https://github.com/microsoft/cascadia-code/releases'
-$CascadiaRelease = Invoke-WebRequest -Uri $CascadiaRelURL # Get all of them
-$CascadiaPath    = "https://github.com" + ($CascadiaRelease.Links.href | 
-                      Where-Object { $_ -match "($CascadiaFont)" } | 
-                        Select-Object -First 1)
-$CascadiaFile   = "C:\Foo\$CascadiaFont"
-Invoke-WebRequest -Uri $CascadiaPath -OutFile $CascadiaFile
-$FontShellApp = New-Object -Com Shell.Application
-$FontShellNamespace = $FontShellApp.Namespace(0x14)
-$FontShellNamespace.CopyHere($CascadiaFile, 0x10)
-
-
-# 13. Now - logoff
-Pause
+# 10. Restart the host
+Write-Host 'reboot now to see updated task bar, etc'
+pause
 logoff.exe
-
-# 14. Relogin and observe the task bar
-
-

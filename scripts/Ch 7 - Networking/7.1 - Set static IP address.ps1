@@ -1,8 +1,7 @@
 # 7.1 - Configuring an IP address
 
-# Run this code on SRV2 directly
-# Ensure that SRV2 is a work group server and initially set for DHCP
-# Also ensure no DHCP server is available in the Reskit.org domain (yet)
+# Run this code on SRV2 after creation
+# assume 
 
 # 1. Discovering the adapter, adapter interface and adapter interface index
 $IPType    = 'IPv4'

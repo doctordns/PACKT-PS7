@@ -18,7 +18,7 @@ $Target  = Get-IscsiTarget |
                Where-Object NodeAddress -Match 'ITTarget'
 $Target 
 
-# 4. Connecting to the target on SRV1
+# 4. Connecting to the target on SS1
 $CHT = @{
   TargetPortalAddress = 'SS1.Reskit.Org'
   NodeAddress         = $Target.NodeAddress

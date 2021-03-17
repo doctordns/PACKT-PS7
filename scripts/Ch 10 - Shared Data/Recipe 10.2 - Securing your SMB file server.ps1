@@ -1,4 +1,4 @@
-﻿# Recipe 5.1 - Securing your SMB file Server
+﻿# Recipe 10.2 - Securing your SMB file Server
 
 # Run on SRV2
 

@@ -71,7 +71,7 @@ Get-ChildItem -Path WSMan:\localhost\Service\DefaultPorts
 Set-Item WSMan:\localhost\Client\TrustedHosts -Value '*' -Force
 
 # 20. Installing SHIPS and CimPSDrive modules
-Install-Module -Name SHiPS, CimPSDrive
+Install-Module -Name SHiPS, CimPSDrive -Force
 
 # 21. Importing the CimPSDrive module and creating a drive
 Import-Module -Name CimPSDrive

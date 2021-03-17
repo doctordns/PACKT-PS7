@@ -20,7 +20,7 @@ Set-SmbShare -Name ITShare -Description 'File Share for IT' @CHT
 $CHT = @{Confirm = $false}
 Set-SMBShare -Name ITShare -FolderEnumerationMode AccessBased @CHT
 
-# 5. Setting encryption on for Foo share
+# 5. Setting encryption on for ITShare share
 Set-SmbShare –Name ITShare -EncryptData $true @CHT
 
 # 6. Removing all access to ITShare share for the Everyone group

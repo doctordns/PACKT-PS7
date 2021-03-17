@@ -67,13 +67,3 @@ $Files = Get-ChildItem -Path $Opath
 $Count = $Files.Count
 $LenKB = (($Files | Measure-Object -Property length -Sum).Sum)/1mb
 "[{0}] decompressed files, occupying {1:n2}mb" -f $Count, $LenKB
-
-
-
-
-
-
-
-
-
-

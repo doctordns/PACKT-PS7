@@ -1,4 +1,4 @@
-# Recipe 4.2 - Managing NTFS Permissions
+# Recipe 10.1 - Managing NTFS Permissions
 # 
 # Run on SRV2 -After creating F: on Disk 1.
 

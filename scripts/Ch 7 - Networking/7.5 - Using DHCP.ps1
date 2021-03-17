@@ -20,7 +20,7 @@ Get-DhcpServerv4ScopeStatistics -ComputerName DC1
 Get-DhcpServerv4FreeIPAddress -ComputerName dc1 -ScopeId 10.10.10.42
 
 # 6. Getting SRV2 NIC Configuration
-$NIC = Get-NetIPConfiguration -InterfaceIndex 6 
+$NIC = Get-NetIPConfiguration -InterfaceAlias 'Ethernet'
 
 # 7. Getting IP interface
 $NIC | 

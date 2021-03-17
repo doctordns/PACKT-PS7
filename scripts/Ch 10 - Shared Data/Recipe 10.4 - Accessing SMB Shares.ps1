@@ -1,4 +1,4 @@
-# Recipe 5.3 - Accessing SMB shares
+# Recipe 10.43 - Accessing SMB shares
 #
 # Run from SRV1 - Uses the ITShare share on SRV2 created earlier
 # Run in an elevated console

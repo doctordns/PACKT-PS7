@@ -7,7 +7,7 @@
 
 # 1. Viewing disks available for pooling
 $Disks = Get-PhysicalDisk -CanPool $true
-$Disks | Sort-Object -Property Number
+$Disks | Sort-Object -Property Deviceid
 
 # 2. Creating a storage pool
 $SPHT = @{

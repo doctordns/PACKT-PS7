@@ -34,12 +34,11 @@ $INSTALLHT = @{
   InstallDNS                    = $false
   Credential                    = $CredRK
   Force                         = $true
-  } 
+} 
 Install-ADDSDomainController @INSTALLHT | Out-Null
 
-
 # 6. Checking the computer objects in AD
-Get-ADComputer -Filter * | 
+Get-ADComputer -Filter *  | 
   Format-Table DNSHostName, DistinguishedName
 
 # 7. Rebooting DC2 manually
@@ -50,8 +49,8 @@ Restart-Computer -Force
 
 # 8. Checking DCs in Reskit.Org
 $SB = 'OU=Domain Controllers,DC=Reskit,DC=Org'
-Get-ADComputer -Filter * -SearchBase $SB |
-  Format-Table -Property DNSHostNname, Enabled
+Get-ADComputer -Filter * -SearchBase $SB  -Properties * |
+  Format-Table -Property DNSHostName, Enabled
 
 # 9. Viewing Reskit.Org domain DCs
 Get-ADDomain |

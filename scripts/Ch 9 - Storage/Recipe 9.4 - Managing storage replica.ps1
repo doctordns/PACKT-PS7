@@ -22,7 +22,7 @@ Invoke-Command -ComputerName SRV2 -ScriptBlock $SB
 1..100 | ForEach-Object {
   $NF = "F:\CoolFolder$_"
   New-Item -Path $NF -ItemType Directory | Out-Null
-  1..100 | ForEach {
+  1..100 | ForEach-Object {
     $NF2 = "$NF\CoolFile$_"
     "Cool File" | Out-File -PSPath $NF2
   }
@@ -64,7 +64,7 @@ $SB4 = {
    FriendlyName = 'SRLOGS' 
    DriveLetter  = 'G'
   }
-  Clear-Disk -Number 2 -RemoveData -Confirm:$False
+  Clear-Disk -Number 2 -RemoveData -Confirm:$False | Out-Null
   Initialize-Disk -Number 2 | Out-Null
   New-Volume @NVHT
 }
@@ -85,11 +85,11 @@ Invoke-Command -Computer SRV2 -Scriptblock {
 # 14. Creating an SR replica group
 $SRHT =  @{
   SourceComputerName       = 'SRV1'
-  SourceRGName             = 'SRV1RG'
+  SourceRGName             = 'SRV1RG2'
   SourceVolumeName         = 'F:'
   SourceLogVolumeName      = 'G:'
   DestinationComputerName  = 'SRV2'
-  DestinationRGName        = 'SRV2RG'
+  DestinationRGName        = 'SRV2RG2'
   DestinationVolumeName    = 'F:'
   DestinationLogVolumeName = 'G:'
   LogSizeInBytes           = 2gb
@@ -108,9 +108,9 @@ Invoke-Command -ComputerName SRV2 -ScriptBlock $SB5
 # 16. Reversing the replication
 $SRHT2 = @{ 
   NewSourceComputerName   = 'SRV2'
-  SourceRGName            = 'SRV2RG' 
+  SourceRGName            = 'SRV2RG2' 
   DestinationComputerName = 'SRV1'
-  DestinationRGName       = 'SRV1RG'
+  DestinationRGName       = 'SRV1RG2'
   Confirm                 = $false
 }
 Set-SRPartnership @SRHT2
@@ -122,7 +122,7 @@ Get-SRPartnership
 # 18. Examining the files remotely on SRV2
 $SB6 = {
   Get-ChildItem -Path F:\ -Recurse |
-    Measure-Object
+    Measure-Object 
 }
 Invoke-Command -ComputerName SRV2 -ScriptBlock $SB6
 

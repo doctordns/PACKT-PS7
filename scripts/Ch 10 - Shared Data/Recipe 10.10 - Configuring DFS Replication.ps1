@@ -38,8 +38,6 @@ Import-Module -Name DFSR -WarningAction SilentlyContinue
 Get-Module -Name DFSR 
 Get-Command -Module DFSR | Measure-Object
 
-#  continue from here
-
 # 4. Creating replication groups
 $RGHT1 = @{
   GroupName   = 'SRVShareRG'  

@@ -8,7 +8,7 @@ Write-Host 'Setting Execution Policy'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 # 2. Install the latest versions of Nuget and PowerShellGet
-Register-PSRepository -Default # just in case
+Register-PSRepository -default # in case
 Write-Host 'Updating PowerShellGet and Nuget'
 Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
@@ -23,8 +23,8 @@ $LFHT = @{
 }
 New-Item -Path C:\Foo @LFHT | Out-Null
 
-# 4. Download PowerShell 7 installation script
-Write-Host "Downloading Pwsh 7 installation script"
+# 4. Download PowerShell 7.1 installation script
+Write-Host "Downloading Pwsh 7.1 installation script"
 Set-Location C:\Foo
 $URI = 'https://aka.ms/install-powershell.ps1'
 Invoke-RestMethod -Uri $URI | 
@@ -40,11 +40,11 @@ $EXTHT = @{
 }
 C:\Foo\Install-PowerShell.ps1 @EXTHT | Out-Null
 
-# 6. For the Adventerous - install the preview and daily builds as well
-Write-Host "Installing Pwsh 7.1 preview"
+# 6. For the Adventurous - install the preview and daily builds as well
+Write-Host "Installing Pwsh 7.2 preview"
 C:\Foo\Install-PowerShell.ps1 -Preview -Destination C:\PSPreview |
   Out-Null
-Write-Host "Installing Pwsh 7.1 Daily Build"
+Write-Host "Installing Pwsh 7.2 Daily Build"
 C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
   Out-Null
 
@@ -56,17 +56,16 @@ $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
 $ProfileFile = $Profile.CurrentUserCurrentHost
 New-Item $ProfileFile -Force -WarningAction SilentlyContinue |
    Out-Null
-(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
+(Invoke-WebRequest -Uri $URI).Content | 
   Out-File -FilePath  $ProfileFile
 $ProfilePath = Split-Path -Path $ProfileFile
 $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath 'Microsoft.PowerShell_profile.ps1'
-(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
+(Invoke-WebRequest -Uri $URI).Content | 
   Out-File -FilePath  $ConsoleProfile
 
 # 8. Download the VS Code installation script from PS Gallery
 Write-Host "Download VS Code Installation Script"
 $VSCPATH = 'C:\Foo'
-Register-PSRepository -default       # to make sure
 Save-Script -Name Install-VSCode -Path $VSCPATH
 Set-Location -Path $VSCPATH
 

@@ -8,6 +8,7 @@ $IHT = @{
   Name                   = 'FS-DFS-Namespace'
   IncludeManagementTools = $True
 }
+
 Install-WindowsFeature @IHT -ComputerName SRV1
 Install-WindowsFeature @IHT -ComputerName SRV2
 Install-WindowsFeature @IHT -ComputerName DC1
@@ -76,7 +77,6 @@ $SB = {
 Invoke-Command -ScriptBlock $SB -Computer DC1 | Out-Null
 Invoke-Command -ScriptBlock $SB -Computer DC2 | Out-Null
 
-
 # 10. Create DFS Namespace and set DFS targets
 $NSHT3 = @{
    Path                 = '\\Reskit\ShareData\ITManagement'
@@ -96,7 +96,7 @@ Get-ChildItem -Path \\Reskit.Org\ShareData\ -Recurse
 
 
 
-
+# clean up for testing
 $sb = {get-WindowsFeature 'FS-DFS-Namespace' | remove-windowsfeature}
 $S = 'dc1','dc2','srv1', 'srv2'
 $s | foreach {icm -ScriptBlock $SB -computername $_  }

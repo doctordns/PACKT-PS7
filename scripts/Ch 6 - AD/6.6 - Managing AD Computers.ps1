@@ -42,7 +42,7 @@ $SB = {
 }  
 
 # 6. Joining the computer to the domain
-Set-Item -Path WSMan:\localhost\Client\TrustedHosts -Value '*'
+Set-Item -Path WSMan:\localhost\Client\TrustedHosts -Value '*' -Force
 Invoke-Command -ComputerName SRV1 -Credential $CredSRV1 -ScriptBlock $SB
 
 # 7. Restarting SRV1

@@ -26,7 +26,6 @@ $SCR = Find-Script
 $MOD | 
   Where-Object Name -match NTFS
 
-
 # 6. Installling the NTFSSecurity module
 Install-Module -Name NTFSSecurity -Force
 
