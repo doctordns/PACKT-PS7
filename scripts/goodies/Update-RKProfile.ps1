@@ -6,7 +6,6 @@
 Write-Host 'Setting Execution Policy'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
-
 # 2. Ensure the C:\Foo Folder exists
 Write-Host 'Checking C:\Foo'
 If (Test-Path -Path C:\Foo ) {
@@ -21,7 +20,7 @@ Else {
   New-Item -Path C:\Foo @LFHT
 }
 
-# 3. Create PowerSHell Console Profile
+# 3. Create PowerShell Console Profile
 Write-Host "Creating Default profiles"
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
        'Goodies/Microsoft.PowerShell_Profile.ps1'

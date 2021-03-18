@@ -38,7 +38,6 @@ Invoke-Command -ComputerName DC1 -ScriptBlock $SB
 Invoke-Command -ComputerName DC1 -ScriptBlock {
                                    Get-ADGroup -Identity Sales}
 
-
 # 8. Addding explicit full control for DomainAdmins
 $AHT1 = @{
   Path         = 'F:\Secure1'
@@ -50,10 +49,9 @@ Add-NTFSAccess @AHT1
 # 9. Removing builtin\users access from secure.txt file
 $AHT2 = @{
   Path         = 'F:\Secure1\Secure.Txt'
-  Account      = 'Builtin\Users' 
+  Account      = 'Builtin\Users'
   AccessRights = 'FullControl'
-}
-
+}  
 Remove-NTFSAccess @AHT2
 
 # 10. Removing inherited rights for the folder:
@@ -78,5 +76,3 @@ Get-NTFSAccess -Path F:\Secure1 |
 # 13. Getting resulting ACL on the file
 Get-NTFSAccess -Path F:\Secure1\Secure.Txt |
   Format-Table -AutoSize
-
-

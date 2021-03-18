@@ -17,7 +17,6 @@ $SPHT = @{
 }
 New-StoragePool @SPHT
 
-
 # 3. Creating a mirrored hard disk named Mirror1
 $VDHT1 = @{
   StoragePoolFriendlyName   = 'RKSP' 
@@ -53,6 +52,5 @@ Get-VirtualDisk  -FriendlyName 'Mirror2' |
       New-Partition -AssignDriveLetter -UseMaximumSize |
         Format-Volume
         
-
 # 7.  Viewing volumes on SRV2
 Get-Volume | Sort-Object -Property DriveLetter

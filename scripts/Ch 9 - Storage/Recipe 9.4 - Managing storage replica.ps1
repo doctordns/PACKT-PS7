@@ -76,7 +76,6 @@ Invoke-Command -ComputerName SRV2 -ScriptBlock $SB4
 # 12. Viewing volumes on SRV1
 Get-Volume | Sort-Object -Property Driveletter
 
-
 # 13. Viewing volumes on SRV2
 Invoke-Command -Computer SRV2 -Scriptblock {
     Get-Volume | Sort-Object -Property Driveletter
@@ -103,7 +102,6 @@ $SB5 = {
       Format-Table   
 }
 Invoke-Command -ComputerName SRV2 -ScriptBlock $SB5
-
 
 # 16. Reversing the replication
 $SRHT2 = @{ 

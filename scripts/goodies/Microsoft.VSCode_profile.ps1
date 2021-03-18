@@ -61,7 +61,9 @@ If ($Theme -eq 'Solarized Light' -or
     Number    = "`e[34m"
     Parameter = "`e[35m"
     Variable  = "`e[33m"  
-    Member    = "`e[34m"      
+    Member    = "`e[34m"
+    Command   = 'red'
+    Operator  = "`e[35m"  
   }
 }
 

@@ -57,10 +57,6 @@ Get-ChildItem I:\ITData
 
 
 
-
-
-
-
 <#  Undo it
 
 Disconnect-IscsiTarget -NodeAddress iqn.1991-05.com.microsoft:srv1-salestarget-target -Confirm:$false
