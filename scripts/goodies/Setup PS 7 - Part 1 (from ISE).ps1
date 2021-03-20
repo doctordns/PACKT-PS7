@@ -50,7 +50,7 @@ C:\Foo\Install-PowerShell.ps1 -Daily   -Destination C:\PSDailyBuild |
 
 # 7. Create Windows PowerShell default Profiles
 #    NB: You create PowerShell 7 profiles in a later script
-Write-Host "Creating Default profiles"
+Write-Host "Creating default Windows PowerShell profiles"
 $URI = 'https://raw.githubusercontent.com/doctordns/Wiley20/master/' +
        'Goodies/Microsoft.PowerShell_Profile.ps1'
 $ProfileFile = $Profile.CurrentUserCurrentHost

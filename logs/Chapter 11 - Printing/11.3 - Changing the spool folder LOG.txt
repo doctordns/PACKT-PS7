@@ -1,0 +1,120 @@
+#  Recipe 11.3 - Changing the spool directory
+
+
+# run on PSRV
+
+
+
+
+# 1. Loading the System.Printing namespace and classes
+
+
+no output
+
+
+
+# 2. Defining the required permissions
+
+
+
+no output
+
+
+# 3. Creating a PrintServer object with the required permissions
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 4. Observing the default spool folder
+PS C:\Foo> "The default spool folder is: [{0}]" -f $PS.DefaultSpoolDirectory
+The default spool folder is: [C:\Windows\system32\spool\PRINTERS]
+
+
+
+# 5. Creating a new spool path
+
+
+
+no output
+
+
+
+# 6. Updating the default spool folder path
+
+
+
+no output
+
+
+
+# 7. Committing the change
+
+
+
+no output
+
+
+
+# 8. Restarting the Spooler to accept the new folder
+
+
+
+
+
+no output
+
+
+
+PS C:\Foo> # 9. Checking the result
+PS C:\Foo> New-Object -TypeName System.Printing.PrintServer |
+             Format-Table -Property Name,
+                           DefaultSpoolDirectory
+
+Name   DefaultSpoolDirectory
+----   ---------------------
+\\PSRV C:\SpoolPath
+
+
+
+# 10. Stopping the Spooler service
+
+
+no output
+
+
+# 11. Creating a new spool directory
+
+
+
+no output
+
+
+
+# 12. Creating the spooler folder and configuring in the registry
+
+
+no output
+
+
+
+# 13. Creating the spooler folder and configuring in the registry
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 14. Viewing the results
+PS C:\Foo> New-Object -TypeName System.Printing.PrintServer |
+             Format-Table -Property Name, DefaultSpoolDirectory
+
+Name   DefaultSpoolDirectory
+----   ---------------------
+\\PSRV C:\SpoolViaRegistry
+

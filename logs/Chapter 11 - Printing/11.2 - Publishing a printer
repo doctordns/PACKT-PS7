@@ -1,0 +1,37 @@
+# Recipe 11.2 - Publishing a printer
+#
+# Run on Psrv
+# Uses Printer added in 11.1
+
+
+# 1. Getting the printer to publish and store the returned object in $Printer
+
+
+no output
+
+
+
+
+PS C:\Foo> # 2. Viewing the printer details
+PS C:\Foo> $Printer | Format-Table -Property Name, Published
+
+Name          Published
+----          ---------
+SalesPrinter1     False
+
+
+# 3. Publishing and sharing the printer to AD
+
+
+no output
+
+
+
+PS C:\Foo> # 4. Viewing the updated publication status
+PS C:\Foo> Get-Printer -Name SalesPrinter1 |
+             Format-Table -Property Name, Location, Drivername, Published
+
+Name          Location        Drivername             Published
+----          --------        ----------             ---------
+SalesPrinter1 10th floor 10E4 Xerox Phaser 6510 PCL6      True
+

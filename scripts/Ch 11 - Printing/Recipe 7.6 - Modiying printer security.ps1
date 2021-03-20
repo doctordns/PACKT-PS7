@@ -5,7 +5,7 @@
 # 1. Download the Set-PrinterPermissions script.
 $URL = 'https://gallery.technet.microsoft.com/scriptcenter/' +
         'Modify-Printer-Permissions-149ae172/file/116651/1/' +
-        'Set-PrinterPermissions.ps1'
+        '$UR'
 $Target = 'C:\Foo\Set-PrinterPermissions.ps1'
 Start-BitsTransfer -Source $URL -Destination $Target
 

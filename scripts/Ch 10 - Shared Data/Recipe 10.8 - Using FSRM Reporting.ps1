@@ -1,6 +1,6 @@
 ﻿# Recipe 10.8 - Using FSRM Reporting
 #
-# Run on SRV1 after you run Recipe 4.4 to install FSRM
+# Run on SRV1 after you run Recipe 10.7 to install FSRM
 
 # 1. Creating a new FSRM storage report for large files on C:\ on SRV1
 $NRHT = @{
