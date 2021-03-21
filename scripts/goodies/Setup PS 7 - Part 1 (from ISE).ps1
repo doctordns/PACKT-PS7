@@ -5,10 +5,10 @@
 
 # 1. Set Execution Policy for Windows PowerShell
 Write-Host 'Setting Execution Policy'
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted  -Force
 
 # 2. Install the latest versions of Nuget and PowerShellGet
-Register-PSRepository -default # in case
+Register-PSRepository -default -ErrorAction silentlycontinue # in case
 Write-Host 'Updating PowerShellGet and Nuget'
 Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
