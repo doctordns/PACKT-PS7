@@ -1,6 +1,6 @@
-# Recipe 8.1 - Setting up a container host
+# Recipe 12.1 - Setting up a container host
 
-# Run on CH1
+# Run on CH1 after adding PowerSHell and VS Code
 
 # 1. Installling the Docker provider
 $IHT1 = @{
