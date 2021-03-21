@@ -25,7 +25,7 @@ no output
 no output
 
 
-# 4. Expanding the zip file
+# 4. Expanding the ZIP file
 
 
 no output
@@ -38,7 +38,7 @@ no output
 no output
 
 
-# 6. Add a PrinterPort for a new printer:
+# 6. Add a PrinterPort for a new printer
 
 
 no output
@@ -68,7 +68,7 @@ no output
 
 PS C:\Foo> # 9. Reviewing what you have done
 PS C:\Foo> Get-PrinterPort -Name SalesPP |
-        Format-Table -Autosize -Property Name, Description,
+             Format-Table -Autosize -Property Name, Description,
                                          PrinterHostAddress, PortNumber
 
 ----    -----------          ------------------ ----------
@@ -84,8 +84,8 @@ Xerox WorkCentre 6515 PCL6 Xerox        1581047950660861952 Windows x64
 Xerox Phaser 6510 PCL6     Xerox        1581047950660861952 Windows x64
 
 PS C:\Foo> Get-Printer -ComputerName PSRV -Name SalesPrinter1 |
-                          Format-Table -Property Name, ComputerName,
-                                                 Type, PortName, Location, Shared
+             Format-Table -Property Name, ComputerName,
+                                    Type, PortName, Location, Shared
 
 Name          ComputerName  Type PortName Location Shared
 ----          ------------  ---- -------- -------- ------

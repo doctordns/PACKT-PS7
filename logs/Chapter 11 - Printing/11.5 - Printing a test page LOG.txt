@@ -1,0 +1,57 @@
+# Recipe 7-5 - Printing a test page on a printer
+
+# Run on PSRV after installing and configuring the printer server.
+
+
+
+# 1. Getting the printer objects from WMI
+
+
+no output
+
+
+
+PS C:\Foo> # 2. Displaying the number of printers defined on PSRV
+PS C:\Foo> '{0} Printers defined on this system' -f $Printers.Count
+7 Printers defined on this system
+
+
+
+
+# 3. Getting the Sales Group printer WMI object
+
+
+
+no output
+
+
+
+PS C:\Foo> # 4. Displaying the printer's details
+PS C:\Foo> $Printer | Format-Table -AutoSize
+
+Name          ShareName     SystemName PrinterState PrinterStatus Location
+----          ---------     ---------- ------------ ------------- --------
+SalesPrinter1 SalesPrinter1 PSRV       0            3             10th floor 10E4
+
+
+
+PS C:\Foo> # 5. Printing a test page
+PS C:\Foo> Invoke-CimMethod -InputObject $Printer -MethodName PrintTestPage
+
+
+ReturnValue PSComputerName
+----------- --------------
+          0
+
+
+
+PS C:\Foo> # 6. Checking on print job
+PS C:\Foo> Get-PrintJob -PrinterName SalesPrinter1
+
+
+Id    ComputerName    PrinterName     DocumentName         SubmittedTime        JobStatus
+--    ------------    -----------     ------------         -------------        ---------
+1                     SalesPrinter1   Test Page            20/03/2021 15:44:12  Normal
+
+
+

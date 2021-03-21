@@ -1,0 +1,49 @@
+# Recipe 11.6 - Modifying printer security
+
+# Run on PSRV
+
+
+# 1. Setting up AD for this recipe
+
+no output
+
+
+# 2. Getting the group to allow access
+  
+
+
+no output
+
+
+# 3. Getting the group SIDs
+  
+
+
+no output
+
+
+
+# 4. Defining the SDDL for this printer
+  
+
+
+no output
+
+
+
+# 5. Getting the Sales group's printer object
+  
+
+
+no output
+
+
+# 6. Setting the permissions
+
+  
+
+
+no output
+
+
+

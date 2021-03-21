@@ -16,7 +16,7 @@ no output
 
 
 
-# 3. Updating the driver using the Set-Printercmdlet
+# 3. Updating the driver using the Set-Printer cmdlet
 
 
 
