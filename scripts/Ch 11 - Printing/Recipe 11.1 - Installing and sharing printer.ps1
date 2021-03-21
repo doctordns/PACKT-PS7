@@ -20,7 +20,7 @@ $URL='http://download.support.xerox.com/pub/drivers/6510/'+
 $Target='C:\Foo\Xerox\Xdrivers.zip'
 Start-BitsTransfer -Source $URL -Destination $Target
 
-# 4. Expanding the zip file
+# 4. Expanding the ZIP file
 $Drivers = 'C:\Foo\Xerox\Drivers'
 Expand-Archive -Path $Target -DestinationPath $Drivers
 
@@ -32,7 +32,7 @@ rundll32.exe printui.dll,PrintUIEntry /ia /m "$M1"  /f "$P"
 $M2 = 'Xerox WorkCentre 6515 PCL6'
 rundll32.exe printui.dll,PrintUIEntry /ia /m "$M2"  /f "$P"
 
-# 6. Adding a PrinterPort for a new printer:
+# 6. Adding a PrinterPort for a new printer
 $PPHT = @{
   Name               = 'SalesPP' 
   PrinterHostAddress = '10.10.10.61'

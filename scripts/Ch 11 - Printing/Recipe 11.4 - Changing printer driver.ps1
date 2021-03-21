@@ -6,9 +6,9 @@ Add-PrinterDriver -Name $M2
 
 # 2. Getting the Sales group printer object and store it in $Printer
 $Printern = 'SalesPrinter1'
-$Printer = Get-Printer -Name $Printern
+$Printer  = Get-Printer -Name $Printern
 
-# 3. Updating the driver using the Set-Printercmdlet
+# 3. Updating the driver using the Set-Printer cmdlet
 $Printer | Set-Printer -DriverName $M2
 
 # 4. Observing the result

@@ -1,6 +1,6 @@
 ﻿#  Recipe 11.3 - Changing the spool directory
 
-# run on PSRV
+# Run on PSRV
 
 # 1. Loading the System.Printing namespace and classes
 Add-Type -AssemblyName System.Printing
