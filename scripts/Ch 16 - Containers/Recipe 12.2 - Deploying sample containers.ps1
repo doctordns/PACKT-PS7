@@ -13,25 +13,25 @@ docker pull hello-world
 docker image ls
 
 # 4. Running the official hello-world container image
-docker run -it hello-world --isolation hyperv
+docker run --isolation=hyperv hello-world 
 
 # 5. Looking for Microsoft images on the Docker Hub
 docker search microsoft
 
-# 6. Getting nano server base image
-docker image pull mcr.microsoft.com/windows/nanoserver:1809 
+# 6. Getting server core server base image
+docker image pull mcr.microsoft.com/windows/servercore:ltsc2019
 
 # 7. Running the nanoserver base image
-docker run mcr.microsoft.com/windows/nanoserver:1809 
+docker run --isolation=hyperv mcr.microsoft.com/windows/servercore:ltsc2019
 
 # 8. Checking the images available now on CH1
 docker image ls
 
 # 9. Inspect the first image
-$Images = docker image ls
+$Images = docker image ls 
 $Rxs = '(\w+)  +(\w+)  +(\w+)  '
-$OK = $Images[1] -Match $Rxs
-$Image = $Matches[1]  # grab the image name
+$OK = $Images[3] -Match $Rxs
+$Image = $Matches[3]  # grab the image name
 docker inspect $image | ConvertFrom-Json
 
 # 10. Get another (older) image and try to run it
@@ -58,7 +58,7 @@ $T2 = ($E2-$S2).TotalMilliseconds
 
 # 13. Run a detached container
 docker image pull microsoft/iis | Out-Null
-docker run -d -p 80:80 microsoft/iis ping -t localhost |
+docker run --isolation=hyperv -d -p 80:80 microsoft/iis ping -t localhost |
   Out-Null
   
 # 14. Useing IIS

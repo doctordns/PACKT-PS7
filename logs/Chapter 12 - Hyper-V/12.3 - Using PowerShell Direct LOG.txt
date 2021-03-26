@@ -1,0 +1,54 @@
+# Recipe 12.3 - Using PS Direct with Hyper-V    LOG
+
+# Run on HV1
+
+# 1. Creating a credential object for Reskit\Administrator
+
+
+ no output
+
+
+PS C:\Foo> # 2. Viewing the PSDirect VM
+PS C:\Foo> Get-VM -Name PSDirect
+
+Name     State   CPUUsage(%) MemoryAssigned(M) Uptime           Status             Version
+----     -----   ----------- ----------------- ------           ------             -------
+PSDirect Running 0           1024              00:26:54.8550000 Operating normally 10.0
+
+
+
+
+PS C:\Foo> # 3. Invoking a command on the VM specifying VM name
+PS C:\Foo> $SBHT = @{
+             VMName      = 'PSDirect'
+             Credential  = $RKCred
+             ScriptBlock = {hostname}
+           }
+PS C:\Foo> Invoke-Command @SBHT
+WIN-0TKMU3D2DFM
+
+
+
+PS C:\Foo> # 4. Invoking a command based on VMID
+PS C:\Foo> $VMID = (Get-VM -VMName PSDirect).VMId.Guid
+PS C:\Foo> Invoke-Command -VMid $VMID -Credential $RKCred  -ScriptBlock {ipconfig}
+
+Windows IP Configuration
+
+Ethernet adapter Ethernet:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+
+
+PS C:\Foo> # 5. Entering a PS remoting session with the psdirect VM
+PS C:\Foo> Enter-PSSession -VMName PSDirect -Credential $RKCred
+[PSDirect]: PS C:\Users\Administrator\Documents> Get-CimInstance -Class Win32_ComputerSystem
+
+Name             PrimaryOwnerName  Domain     TotalPhysicalMemory  Model            Manufacturer
+----             ----------------  ------     -------------------  -----            ------------
+WIN-0TKMU3D2DFM  Windows User      WORKGROUP  1073270784           Virtual Machine  Microsoft Corporation
+
+[PSDirect]: PS C:\Users\Administrator\Documents> Exit-PSSession
+
+

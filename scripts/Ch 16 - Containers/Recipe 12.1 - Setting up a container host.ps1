@@ -1,4 +1,4 @@
-# Recipe 12.1 - Setting up a container host
+# Recipe 16.1 - Setting up a container host
 
 # Run on CH1 after adding PowerShell and VS Code
 

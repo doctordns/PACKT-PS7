@@ -1,0 +1,68 @@
+# Recipe 12.2 - Creating a VM
+
+Run on HV1
+
+
+
+# 1. Setting up the VM name and paths for this recipe
+
+
+hopefully no output
+
+
+
+
+PS C:\Foo> # 2.  Creating a new VM
+PS C:\Foo> New-VM -Name $VMname -Path $VMLocation -MemoryStartupBytes 1GB
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+PSDirect Off   0           0                 00:00:00 Operating normally 10.0
+
+
+
+
+PS C:\Foo> # 3. Creating a virtual disk file for the VM
+
+
+NO output
+
+
+
+
+# 4. Adding the virtual hard drive to the VM
+
+
+NO output
+
+
+
+
+# 5. Setting ISO image in the VM's DVD drive
+
+
+
+
+no output
+
+
+
+# 6. Starting the VM
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 7. Viewing the VM
+PS C:\Foo> Get-VM -Name $VMname
+
+Name     State   CPUUsage(%) MemoryAssigned(M) Uptime           Status             Version
+----     -----   ----------- ----------------- ------           ------             -------
+PSDirect Running 10          1024              00:00:33.0140000 Operating normally 10.0
+
+
+
+

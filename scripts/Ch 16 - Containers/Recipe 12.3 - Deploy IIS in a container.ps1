@@ -21,18 +21,18 @@ Running in a container in Windows Server 2019<p>
 $Index | Out-File -FilePath $Fn
 
 # 3. Get a server core with IIS image from the Docker registry:
-docker pull mcr.microsoft.com/windows/servercore/iis
+docker pull mcr.microsoft.com/windows/iis:latest
 
 # 4. Now run the image as a container named rkwebc:
 $image = 'mcr.microsoft.com/windows/servercore/iis'
-docker run -d -p80:80 --name rkwebc "$image"
+docker run --isolation=hyperv -d -p80:80 --name rkwebc "$image" --mount 'type=bind,source="C:/ReskitApp/",target="C:/Inetpub/wwwroot/ReskitApp"'
 
 #  5.Copy our file into the container:
 Set-Location -Path C:\Reskitapp
 docker cp .\index.htm rkwebc:c:\inetpub\wwwroot\index.htm
 
 # 6. View the page:
-Start-Process "Http://CH1.Reskit.Org/Index.htm"
+Start-Process "Http://CH1.Reskit.Org/ReskitApp/Index.htm"
 
 # 7. Clean up:
 docker rm rkwebc -f | Out-Null

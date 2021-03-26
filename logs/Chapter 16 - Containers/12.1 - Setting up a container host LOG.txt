@@ -1,0 +1,135 @@
+# Recipe 8.1 - Setting up a container host
+
+# Run on CH1
+
+
+
+# 1. Installling the Docker provider
+
+
+no output
+
+PS C:\Foo> # 2. Installing the latest version of the docker package
+PS C:\Foo> #    This also enables the continers feature in Windows Server
+PS C:\Foo> $IHT2 = @{
+             Name         = 'Docker'
+             ProviderName = 'DockerMSFTProvider'
+             Force        = $True
+           }
+PS C:\Foo> PS C:\Foo> Install-Package @IHT2
+WARNING: A restart is required to enable the containers feature. Please restart your machine.
+
+Name    Version  Source         Summary
+----    -------  ------         -------
+Docker  20.10.0  DockerDefault  Contains Docker EE for use with Windows Server.
+
+
+
+PS C:\Foo> # 3. Adding Hyper-V and related tools are added
+Add-WindowsFeature -Name Hyper-V -IncludeManagementTools |
+  Out-Null
+
+WARNING: You must restart this server to finish the installation process.
+
+
+PS C:\Foo> # 4. Removing Defender as it interferes with Docker
+PS C:\Foo> Remove-WindowsFeature -Name Windows-Defender |
+             Out-Null
+WARNING: You must restart this server to finish the removal process
+
+
+
+# 5. Restarting the computer to enable docker and containers
+
+
+no output
+
+
+PS C:\Foo> # 6. Checking Windows containers and Hyper-V features are installed on CH1
+PS C:\Foo> Get-WindowsFeature -Name Containers, Hyper-V
+
+Display Name    Name       Install State
+------------    ----       -------------
+                Hyper-V        Installed
+                Containers     Installed
+
+
+
+
+
+PS C:\Foo> # 7. Checking Docker service
+PS C:\Foo> Get-Service -Name Docker
+
+Status   Name    DisplayName
+------   ----    -----------
+Running  Docker  Docker Engine
+
+
+PS C:\Foo> # 8. Viewsing Docker version information
+PS C:\Foo> docker version
+Client: Mirantis Container Runtime
+ Version:           20.10.0
+ API version:       1.41
+ Go version:        go1.13.15
+ Git commit:        6ee42dc
+ Built:             03/11/2021 13:24:56
+ OS/Arch:           windows/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Mirantis Container Runtime
+ Engine:
+  Version:          20.10.0
+  API version:      1.41 (minimum version 1.24)
+  Go version:       go1.13.15
+  Git commit:       1e08f21e79
+  Built:            03/11/2021 13:23:32
+  OS/Arch:          windows/amd64
+  Experimental:     false
+
+
+
+PS C:\Foo> # 9. Displaying docker configuration information
+docker info
+Client:
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  app: Docker Application (Docker Inc., v0.8.0)
+  cluster: Manage Mirantis Container Cloud clusters (Mirantis Inc., v1.9.0)
+  registry: Manage Docker registries (Docker Inc., 0.1.0)
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 0
+ Server Version: 20.10.0
+ Storage Driver: windowsfilter
+  Windows:
+ Logging Driver: json-file
+ Plugins:
+  Volume: local
+  Network: ics internal l2bridge l2tunnel nat null overlay private transparent
+  Log: awslogs etwlogs fluentd gcplogs gelf json-file local logentries splunk syslog
+ Swarm: inactive
+ Default Isolation: process
+ Kernel Version: 10.0 20303 (20303.1.amd64fre.fe_release.210226-1630)
+ Operating System: Windows Server 2022 Datacenter Version 2009 (OS Build 20303.1)
+ OSType: windows
+ Architecture: x86_64
+ CPUs: 6
+ Total Memory: 4.125GiB
+ Name: CH1
+ ID: H7H2:J7CZ:5IA7:3LO5:6EQJ:U3ZA:2VW4:VH5V:MJ7Z:HENT:ZY2U:NEDY
+ Docker Root Dir: C:\ProgramData\docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+ 
