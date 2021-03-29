@@ -3,7 +3,7 @@
 # Run from CH1
 # Run inside the console, NOT the ISE
 
-# 1.  Create reskitapp folder:
+# 1.  Creating ReskitApp folder:
 $EA = @{ErrorAction='SilentlyContinue'}
 New-Item -Path C:\ReskitApp -ItemType Directory @EA
 

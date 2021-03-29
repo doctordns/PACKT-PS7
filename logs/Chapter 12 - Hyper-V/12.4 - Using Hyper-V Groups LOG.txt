@@ -1,0 +1,211 @@
+# Recipe 13.4 - Using VM Groups   LOG FILE
+#
+# Run on HV2
+
+
+
+PS C:\Foo> # 1. Creating VMs on HV2
+PS C:\Foo> $VMLocation  = 'C:\Vm\VMs'   # Created in earlier recipe
+PS C:\Foo> # Create SQLAcct1
+PS C:\Foo> $VMN1        = 'SQLAcct1'
+PS C:\Foo> New-VM -Name $VMN1 -Path "$VMLocation\$VMN1"
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+SQLAcct1 Off   0           0                 00:00:00 Operating normally 10.0
+
+PS C:\Foo> # Create SQLAcct2
+PS C:\Foo> $VMN2        = 'SQLAcct2'
+PS C:\Foo> New-VM -Name $VMN2 -Path "$VMLocation\$VMN2"
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+SQLAcct2 Off   0           0                 00:00:00 Operating normally 10.0
+
+PS C:\Foo> $VMN3        = 'SQLAcct3'
+PS C:\Foo> New-VM -Name $VMN3 -Path "$VMLocation\$VMN3"
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+SQLAcct3 Off   0           0                 00:00:00 Operating normally 10.0
+
+PS C:\Foo> # Create SQLMfg1
+PS C:\Foo> $VMN4        = 'SQLMfg1'
+PS C:\Foo> New-VM -Name $VMN4 -Path "$VMLocation\$VMN4"
+
+Name    State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----    ----- ----------- ----------------- ------   ------             -------
+SQLMfg1 Off   0           0                 00:00:00 Operating normally 10.0
+
+PS C:\Foo> # Create SQLMfg2
+PS C:\Foo> $VMN5        = 'SQLMfg2'
+PS C:\Foo> New-VM -Name $VMN5 -Path "$VMLocation\$VMN5"
+
+Name    State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----    ----- ----------- ----------------- ------   ------             -------
+SQLMfg2 Off   0           0                 00:00:00 Operating normally 10.0
+
+
+
+PS C:\Foo> # 2. Viewing SQL VMs
+PS C:\Foo> Get-VM -Name SQL*
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+SQLMfg1  Off   0           0                 00:00:00 Operating normally 10.0
+SQLMfg2  Off   0           0                 00:00:00 Operating normally 10.0
+SQLAcct1 Off   0           0                 00:00:00 Operating normally 10.0
+SQLAcct3 Off   0           0                 00:00:00 Operating normally 10.0
+SQLAcct2 Off   0           0                 00:00:00 Operating normally 10.0
+
+
+
+# 3. Creating Hyper-V VM groups
+
+
+no output
+
+
+
+
+PS C:\Foo> # 4. Displaying the VM groups on HV2
+PS C:\Foo> Get-VMGroup |
+             Format-Table -Property Name, *Members, ComputerName
+
+Name      VMMembers VMGroupMembers ComputerName
+----      --------- -------------- ------------
+SQLAccVMG {}                       HV2
+SQLMfgVMG {}                       HV2
+
+
+
+
+# 5. Creating arrays of group member VM Names
+
+
+
+
+no output
+
+
+
+# 6. Adding members to the Accounting SQL VMgroup
+
+
+No output
+
+
+
+# 7. Adding members to the Manufacturing SQL VM Group
+
+
+No output
+
+
+
+PS C:\Foo> # 8. Viewing VM Groups on HV2
+PS C:\Foo> Get-VMGroup |
+             Format-Table -Property Name, *Members, ComputerName
+
+Name      VMMembers                      VMGroupMembers ComputerName
+----      ---------                      -------------- ------------
+SQLAccVMG {SQLAcct1, SQLAcct3, SQLAcct2}                HV2
+SQLMfgVMG {SQLMfg1, SQLMfg2}                            HV2
+
+
+
+
+# 9. Creating a management collection VMGroup
+
+
+
+no output
+
+
+# 10. Adding the two VMCollectionType groups to the VMManagement group
+
+
+
+
+no output
+
+
+
+# 11. Setting FormatEnumerationLimit to 99
+
+No output
+
+
+
+
+PS C:\Foo> # 12. Viewing VM groups by type
+PS C:\Foo> Get-VMGroup | Sort-Object -Property GroupType |
+             Format-Table -Property Name, GroupType, VMGroupMembers,
+                                    VMMembers
+
+Name                     GroupType VMGroupMembers         VMMembers
+----                     --------- --------------         ---------
+SQLAccVMG         VMCollectionType                        {SQLAcct1, SQLAcct3, SQLAcct2}
+SQLMfgVMG         VMCollectionType                        {SQLMfg1, SQLMfg2}
+VMMGSQL   ManagementCollectionType {SQLAccVMG, SQLMfgVMG} 
+
+
+
+
+# 13. Stopping all the SQL VMs
+
+
+no output
+
+
+# 14. Setting CPU count in all SQL VMs to 4
+
+
+
+no output
+
+
+
+# 15. Setting Accounting SQL VMs to have 6 processors
+
+
+
+no output
+
+
+
+PS C:\Foo> # 16. Checking Processor counts for all VMs sorted by CPU Count
+PS C:\Foo> $VMS = (Get-VMGroup -Name VMMGSQL).VMGroupMembers.VMMembers
+PS C:\Foo> Get-VMProcessor -VMName $VMS.Name |
+             Sort-Object -Property Count -Descending |
+               Format-Table -Property VMName, Count
+
+VMName   Count
+------   -----
+SQLAcct1     6
+SQLAcct3     6
+SQLAcct2     6
+SQLMfg1      4
+SQLMfg2      4
+
+
+# 17. Remove VMs from VM Groups
+
+
+no output
+
+
+# 18. Removing VMGroups from VMManagementGroups
+
+
+
+
+no output
+
+
+
+
+# 19. Removing all the VMGroups
+
+
+no output

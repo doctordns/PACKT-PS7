@@ -1,11 +1,15 @@
-﻿# Recipe 11.6 - Configuring Hyper-V Networking
+﻿# Recipe 12.6 - Configuring Hyper-V Networking
 #
 # Run on HV1
 
-# 1. Get NIC details and any IP Address from the PSDirect VM
+# 1. Setting the PSDirect VM's NIC
+Get-VM PSDirect |
+  Set-VMNetworkAdapter -MacAddressSpoofing On
+  
+# 2. Getting NIC details and any IP Address from the PSDirect VM
 Get-VMNetworkAdapter -VMName PSDirect
 
-# 2. Create a credential then get VM networking details
+# 3. Creating a credential then get VM networking details
 $RKAn = 'localhost\Administrator'
 $PS = 'Pa$$w0rd'
 $RKP = ConvertTo-SecureString -String $PS -AsPlainText -Force
@@ -13,12 +17,12 @@ $T = 'System.Management.Automation.PSCredential'
 $RKCred = New-Object -TypeName $T -ArgumentList $RKAn, $RKP
 $VMHT = @{
     VMName      = 'PSDirect'
-    ScriptBlock = {Get-NetIPConfiguration }
+    ScriptBlock = {Get-NetIPConfiguration | Format-Table }
     Credential  = $RKCred
 }
 Invoke-Command @VMHT | Format-List
 
-# 3. Create a virtual switch on HV1
+# 4. Creating a virtual switch on HV1
 $VSHT = @{
     Name           = 'External'
     NetAdapterName = 'Ethernet'
@@ -26,13 +30,13 @@ $VSHT = @{
 }
 New-VMSwitch @VSHT
 
-# 4. Connect VM1 to the switch
+# 5. Connecting the PSDirect VM's NIC to the External sswitch
 Connect-VMNetworkAdapter -VMName PSDirect -SwitchName External
 
-# 5. See VM networking information:
+# 6. Viewing VM networking information
 Get-VMNetworkAdapter -VMName PSDirect
 
-# 6. With VM1 now in the network, observe the IP address in the VM
+# 7. Observing the IP address in the PSDirect VM
 $NCHT = @{
     VMName      = 'PSDirect'
     ScriptBlock = {Get-NetIPConfiguration}
@@ -40,19 +44,19 @@ $NCHT = @{
 }
 Invoke-Command @NCHT
 
-# 7. View the hostname on VM1
+# 8. Viewing the hostname on PSDirect
 #    Reuse the hash table from step 6
 $NCHT.ScriptBlock = {hostname}
 Invoke-Command @NCHT
 
-# 8. Change the name of the host in VM1
+# 9. Changing the name of the host in the PSDirect VM
 #    Reuse the hash table from steps 6,7
 $NCHT.ScriptBlock = {Rename-Computer -NewName Wolf -Force}
 Invoke-Command @NCHT
 
-# 9. Reboot and wait for the restarted VM1
+# 10. Rebooting and wait for the restarted POSDirect VM
 Restart-VM -VMName PSDirect -Wait -For IPAddress -Force
 
-# 10. Get hostname of the VM1 VM
-$NCHT.ScriptBlock = {hostname}
+# 11. Getting hostname of the PSDirect VM
+$NCHT.ScriptBlock = {HOSTNAME}
 Invoke-Command @NCHT

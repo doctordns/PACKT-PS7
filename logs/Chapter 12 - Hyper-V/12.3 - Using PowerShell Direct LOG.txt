@@ -22,7 +22,7 @@ PS C:\Foo> # 3. Invoking a command on the VM specifying VM name
 PS C:\Foo> $SBHT = @{
              VMName      = 'PSDirect'
              Credential  = $RKCred
-             ScriptBlock = {hostname}
+             ScriptBlock = {HOSTNAME.EXE}
            }
 PS C:\Foo> Invoke-Command @SBHT
 WIN-0TKMU3D2DFM
@@ -41,7 +41,7 @@ Ethernet adapter Ethernet:
    Connection-specific DNS Suffix  . : 
 
 
-PS C:\Foo> # 5. Entering a PS remoting session with the psdirect VM
+PS C:\Foo> # 5. Entering a PS remoting session with the PSDirect VM
 PS C:\Foo> Enter-PSSession -VMName PSDirect -Credential $RKCred
 [PSDirect]: PS C:\Users\Administrator\Documents> Get-CimInstance -Class Win32_ComputerSystem
 
@@ -50,5 +50,53 @@ Name             PrimaryOwnerName  Domain     TotalPhysicalMemory  Model        
 WIN-0TKMU3D2DFM  Windows User      WORKGROUP  1073270784           Virtual Machine  Microsoft Corporation
 
 [PSDirect]: PS C:\Users\Administrator\Documents> Exit-PSSession
+
+
+
+
+# 6. Creating a remoting session to HV1 (Hyper-V Host)
+
+
+
+no output
+
+
+
+
+
+PS C:\Foo> # 7. Entering an interactive session with HV1
+PS C:\Foo> Enter-PSSession -Session $PSDRS
+[hv1]: PS C:\Users\administrator\Documents> $PSDRS = New-PSSession -VMName PSDirect
+
+
+
+
+PS C:\Foo> # 8. Entering and using the remoting session inside PSDirect
+PS C:\Foo> Enter-PSSession -Session $PSDRS
+[hv1]: PS C:\Users\administrator\Documents> HOSTNAME.EXE
+HV1
+
+
+
+# 9. Creating credential for PSDirect inside HV1
+
+
+
+no output
+
+
+
+[HV1]: PS C:\Users\administrator\Documents> # 10. Using PS Direct session to the VM
+[HV1]: PS C:\Users\administrator\Documents> Enter-PSSession -VMName PSDirect -Credential $Cred
+[HV1]: [PSDirect]: PS C:\Users\Administrator\Documents> HOSTNAME.EXE
+WIN-0TKMU3D2DFM
+
+
+
+
+[HV1]: [PSDirect]: PS C:\Users\Administrator\Documents> # 11. CLosing sessions
+[HV1]: [PSDirect]: PS C:\Users\Administrator\Documents> Exit-PSSession   # Exit from PSDirect
+[HV1]: PS C:\Users\administrator\Documents> Exit-PSSession               # Exit from HV1
+PS C:\Foo>
 
 

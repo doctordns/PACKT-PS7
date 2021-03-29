@@ -1,4 +1,4 @@
-﻿# Recipe 11.9 - Configuring VM and storage movement
+﻿# Recipe 12.9 - Configuring VM and storage movement
 
 # 1. View the PSDirect VM on HV1 and verify that it is turned off and not saved
 Get-VM -Name PSDirect -Computer HV1

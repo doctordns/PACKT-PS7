@@ -1,0 +1,134 @@
+# Recipe 12.5 - Configuring VM Hardware
+#
+# Run on HV1, using PSDirect VM
+
+
+
+PS C:\Foo> # 1. Turning off the PSDirect VM
+PS C:\Foo> Stop-VM -VMName PSDirect
+PS C:\Foo> Get-VM -VMName PSDirect
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+PSDirect Off   0           0                 00:00:00 Operating normally 10.0
+
+
+
+PS C:\Foo> # 2. Setting the StartupOrder in the VM's BIOS
+PS C:\Foo> $Order = 'IDE','CD','LegacyNetworkAdapter','Floppy'
+PS C:\Foo> Set-VMBios -VmName PSDirect -StartupOrder $Order
+PS C:\Foo> Get-VMBios PSDirect
+
+VMName   StartupOrder                            NumLockEnabled
+------   ------------                            --------------
+PSDirect {IDE, CD, LegacyNetworkAdapter, Floppy} False
+
+
+
+PS C:\Foo> # 3. Setting and viewing CPU count for PSDirect
+PS C:\Foo> Set-VMProcessor -VMName PSDirect -Count 2
+PS C:\Foo> Get-VMProcessor -VMName PSDirect |
+             Format-Table VMName, Count
+
+VMName   Count
+------   -----
+PSDirect     2
+
+
+
+
+PS C:\Foo> # 4. Setting and viewing PSDirect memory
+PS C:\Foo> $VMHT = [ordered] @{
+             VMName               = 'PSDirect'
+             DynamicMemoryEnabled = $true
+             MinimumBytes         = 512MB
+             StartupBytes         = 1GB
+             MaximumBytes         = 2GB
+           }
+PS C:\Foo> Set-VMMemory @VMHT
+PS C:\Foo> Get-VMMemory -VMName PSDirect
+
+VMName   DynamicMemoryEnabled Minimum(M) Startup(M) Maximum(M)
+------   -------------------- ---------- ---------- ----------
+PSDirect True                 512        1024       2048
+
+
+
+
+PS C:\Foo> # 5. Adding and viewing a ScsiController in the PSDirect VM
+PS C:\Foo> Add-VMScsiController -VMName PSDirect
+PS C:\Foo> Get-VMScsiController -VMName PSDirect
+
+VMName   ControllerNumber Drives
+------   ---------------- ------
+PSDirect 0                {}
+PSDirect 1                {}
+
+
+
+
+# 6. Starting the PSDirect VM
+
+No output
+
+
+
+
+
+
+
+PS C:\Foo> # 7. Creating a new VHDX file for the PSDirect VM
+PS C:\Foo> $VHDPath = 'C:\Vm\Vhds\PSDirect-D.VHDX'
+PS C:\Foo> $VHDPath = 'C:\Vm\Vhds\PSDirect-D.VHDX'
+PS C:\Foo> New-VHD -Path $VHDPath -SizeBytes 8GB -Dynamic
+
+ComputerName            : HV1
+Path                    : C:\Vm\Vhds\PSDirect-D.VHDX
+VhdFormat               : VHDX
+VhdType                 : Dynamic
+FileSize                : 4194304
+Size                    : 8589934592
+MinimumSize             :
+LogicalSectorSize       : 512
+PhysicalSectorSize      : 4096
+BlockSize               : 33554432
+ParentPath              :
+DiskIdentifier          : 3959C590-8E5E-4CC0-AF19-270A68F167B5
+FragmentationPercentage : 0
+Alignment               : 1
+Attached                : False
+DiskNumber              :
+IsPMEMCompatible        : False
+AddressAbstractionType  : None
+Number  
+
+
+
+# 8. Getting Controller number of the newly added SCSI controller
+
+
+
+
+no output
+
+
+
+
+
+# 9. Adding the VHD to the ScsiController
+
+
+no output
+
+
+PS C:\Foo> # 10. Viewing drives in the PSDirect VM
+PS C:\Foo> Get-VMScsiController -VMName PSDirect |
+             Select-Object -ExpandProperty Drives
+
+VMName   ControllerType ControllerNumber ControllerLocation DiskNumber Path
+------   -------------- ---------------- ------------------ ---------- ----
+PSDirect SCSI           0                0                             C:\Vm\Vhds\PSDirect-D.VHDX
+
+
+
+

@@ -1,22 +1,22 @@
-# Recipe 11-1 - Installing and configuring Hyper-V
+# Recipe 12.1 - Installing and configuring Hyper-V
 
 # Run on HV1
 
-# 1. From HV1, install the Hyper-V feature on HV1, HV2
+# 1. Installing the Hyper-V feature on HV1, HV2
 $SB = {
   Install-WindowsFeature -Name Hyper-V -IncludeManagementTools
 }
 Invoke-Command -ComputerName HV1, HV2 -ScriptBlock $Sb
 
-# 2. Reboot the servers to complete the installation
+# 2. Rebooting the servers to complete the installation
 Restart-Computer -ComputerName HV2 -Force 
 Restart-Computer -ComputerName HV1 -Force 
 
-# 3. Create a PSSession with both HV Servers (after reboot)
+# 3. Creating a PSSession with both HV Servers (after reboot)
 $S = New-PSSession HV1, HV2
 
-# 4. Create and set the location for VMs and VHDs on HV1 and HV2
-$Sb = {
+# 4. Creating and setting the location for VMs and VHDs on HV1 and HV2
+$SB = {
     New-Item -Path C:\Vm -ItemType Directory -Force |
         Out-Null
     New-Item -Path C:\Vm\Vhds -ItemType Directory -Force |
@@ -25,7 +25,7 @@ $Sb = {
         Out-Null
 Invoke-Command -ScriptBlock $Sb -Session $S | Out-Null
 
-# 5. Set default paths for Hyper-V VM disk/config information
+# 5. Setting default paths for Hyper-V VM disk/config information
 $SB = {
   $VMs  = 'C:\Vm\Vhds'
   $VHDs = 'C:\Vm\VMsV'
@@ -34,27 +34,26 @@ $SB = {
 }
 Invoke-Command -ScriptBlock $SB -Session $S
 
-# 5. Setup NUMA spanning
+# 6. Seting NUMA spanning
 $SB = {
   Set-VMHost -NumaSpanningEnabled $true
 }
 Invoke-Command -ScriptBlock $SB -Session $S
 
-# 6. Set up EnhancedSessionMode
+# 7. Settting EnhancedSessionMode
 $SB = {
  Set-VMHost -EnableEnhancedSessionMode $true
 }
 Invoke-Command -ScriptBlock $SB -Session $S
 
-# 7. Setup host resource metering on HV1, HV2
+# 8. Setting host resource metering on HV1, HV2
 $SB = {
  $RMInterval = New-TimeSpan -Hours 0 -Minutes 15
-  Set-VMHost -ResourceMeteringSaveInterval $RMInterval
+ Set-VMHost -ResourceMeteringSaveInterval $RMInterval
 }
 Invoke-Command -ScriptBlock $SB -Session $S
 
-
-# 8. Review key VMHost settings:
+# 9. Reviewing key VMHost settings:
 $SB = {
   Get-VMHost 
 }

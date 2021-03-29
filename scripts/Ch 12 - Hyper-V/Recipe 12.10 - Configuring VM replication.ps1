@@ -1,4 +1,4 @@
-﻿# Recipe 11.10 - Configuring VM replication
+﻿# Recipe 12.10 - Configuring VM replication
 
 # 1. Configure HV1 and HV2 to be trusted for delegation in AD on DC1
 $Sb1 = {

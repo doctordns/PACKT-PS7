@@ -4,7 +4,7 @@
 
 
 
-PS C:\Foo> # 1. From HV1, install the Hyper-V feature on HV1, HV2
+PS C:\Foo> # 1. Installing the Hyper-V feature on HV1, HV2
 PS C:\Foo> $SB = {
              Install-WindowsFeature -Name Hyper-V -IncludeManagementTools
             }
@@ -54,7 +54,7 @@ NO ouTPUT
 
 
 
-# 5. Setup NUMA spanning
+# 6. Setup NUMA spanning
 
 
 
@@ -63,21 +63,8 @@ NO ouTPUT
 
 
 
-# 6. Set up EnhancedSessionMode
+# 7. Set up EnhancedSessionMode
 
-
-
-
-
-
-
-NO ouTPUT
-
-
-
-
-
-# 7. Setup host resource metering on HV1, HV2
 
 
 
@@ -90,8 +77,21 @@ NO ouTPUT
 
 
 
+# 8. Setup host resource metering on HV1, HV2
 
-PS C:\Foo> # 8. Review key VMHost settings:
+
+
+
+
+
+NO ouTPUT
+
+
+
+
+
+
+PS C:\Foo> # 9. Reviewing key VMHost settings:
 PS C:\Foo> $SB = {
              Get-VMHost
            }

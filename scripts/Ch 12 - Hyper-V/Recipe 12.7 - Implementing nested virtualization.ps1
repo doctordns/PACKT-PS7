@@ -1,27 +1,27 @@
-﻿# Recipe 11.7 - Implementing nested Hyper-V
+﻿# Recipe 12.7 - Implementing nested virtualization
 #
-# Run on PSDirect
+# Run on HV1
 
-#  1. Stop VM1 VM:
+#  1. Stopping the PSDirect VM
 Stop-VM -VMName PSDirect
 
-# 2. Change and view the VM's processor to support virtualization:
+# 2. Setting the VM's processor to support virtualization
 $VMHT = @{
   VMName                         = ‘PSDirect’ 
   ExposeVirtualizationExtensions = $true
 }
 Set-VMProcessor @VMHT
 Get-VMProcessor -VMName PSDirect |
-    Format-Table -Property Name, Count,
-                           ExposeVirtualizationExtensions
+  Format-Table -Property Name, Count,
+                         ExposeVirtualizationExtensions
 
-# 3. Start the VM1 VM:
+# 3. Starting the PSDirect VM
 Start-VM -VMName PSDirect
 Wait-VM  -VMName PSDirect -For Heartbeat
 Get-VM   -VMName PSDirect
 
-# 4. Create credentials 
-$User = 'Wolf\Administrator'
+# 4. Creating credentials for PSDirect
+$User = 'Wolf\Administrator'  
 $PHT = @{
   String      = 'Pa$$w0rd'
   AsPlainText = $true
@@ -29,31 +29,34 @@ $PHT = @{
 }
 $PSS  = ConvertTo-SecureString @PHT
 $Type = 'System.Management.Automation.PSCredential'
-$CredRK = New-Object -TypeName $Type -ArgumentList $User,$PSS
+$CredRK = New-Object -TypeName $Type -ArgumentList $User, $PSS
 
-# 5. Create a script block for remote execution
+# 5. Creating a script block for remote execution
 $SB = {
   Install-WindowsFeature -Name Hyper-V -IncludeManagementTools
 }
 
-# 6. Install Hyper-V inside the PSDirect VM
+# 6. Creating a remoting session to PSDirect
 $Session = New-PSSession -VMName PSDirect -Credential $CredRK
+
+# 7. Installing Hyper-V inside PSDirect
 $IHT = @{
   Session     = $Session
   ScriptBlock = $SB 
 }
 Invoke-Command @IHT
 
-# 7. Restart the VM to finish adding Hyper-V:
+# 8. Restarting the VM to finish adding Hyper-V to PSDirect
 Stop-VM  -VMName PSDirect
 Start-VM -VMName PSDirect
 Wait-VM  -VMName PSDirect -For IPAddress
 Get-VM   -VMName PSDirect
 
-# 8. Create a nested VM:
+# 9. Creating a nested VM inside the PSDirect VM
 $SB2 = {
         $VMname = 'NestedVM'
-        New-VM -Name $VMname -MemoryStartupBytes 1GB
+        New-VM -Name $VMname -MemoryStartupBytes 1GB | Out-Null
+        Get-VM
 }
 $IHT2 = @{
   VMName = 'PSDirect'

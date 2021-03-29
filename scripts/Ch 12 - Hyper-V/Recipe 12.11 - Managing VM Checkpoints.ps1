@@ -1,4 +1,4 @@
-﻿# Recipe 11-10 - Managing VM Checkpoints
+﻿# Recipe 12.11 - Managing VM Checkpoints
 
 # 1. Create credentials for PSDirect
 $RKAn = 'Wolf\Administrator'

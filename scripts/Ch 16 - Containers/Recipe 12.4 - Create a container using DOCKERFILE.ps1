@@ -14,33 +14,32 @@ Set-Location -Path $NIHT.Path
 
 # 2. Create a script to run in the container to create a new site in the Containe
 $SB = {
-# 2.1 create folder in the container
-$SitePath = 'C:\RKWebContainer'
-$NIHT = @{
-  Path         = $SitePath
-  ItemType     = 'Directory'
- ErrorAction  = 'SilentlyContinue'
-}
-New-Item @NIHT | Out-Null
-Set-Location -Path $NIHT.Path
-# 2.1 Create a page for the site
-$PAGE = @'
-<!DOCTYPE html>
-<html> 
-<head><title>Main Page for RKWeb.Reskit.Org</title></head>
-<body><p><center><b>
-HOME PAGE FOR RKWEBr.RESKIT.ORG</b></p>
-Containers and PowerShell Rock!
-</center/</body></html>
+  # 2.1 create folder in the container
+  $NIHT = @{
+    Path         = $SitePath
+    ItemType     = 'Directory'
+   ErrorAction  = 'SilentlyContinue'
+  }
+  New-Item @NIHT | Out-Null
+  Set-Location -Path $NIHT.Path
+  # 2.1 Create a page for the site
+  $PAGE = @'
+  <!DOCTYPE html>
+  <html> 
+  <head><title>Main Page for RKWeb.Reskit.Org</title></head>
+  <body><p><center><b>
+  HOME PAGE FOR RKWEBr.RESKIT.ORG</b></p>
+  Containers and PowerShell Rock!
+  </center/</body></html>
 '@
-$PAGE | OUT-FILE $SitePath\Index.html | Out-Null
-#2.2 Create a new web site in the container that uses Host headers
-$WSHT = @{
-  PhysicalPath = $SitePath 
-  Name         = 'RKWeb'
-  HostHeader   = 'RKWeb.Reskit.Org'
-}
-New-Website @WSHT  
+  $PAGE | OUT-FILE $SitePath\Index.html | Out-Null
+  # 2.2 Create a new web site in the container that uses Host headers
+  $WSHT = @{
+    PhysicalPath = $SitePath 
+    Name         = 'RKWeb'
+    HostHeader   = 'RKWeb.Reskit.Org'
+  }
+  New-Website @WSHT  
 } # End of script block
 # 2.5 Save script block to file
 $SB | Out-File $SitePath\Config.ps1
@@ -57,7 +56,7 @@ Invoke-Command -Computer DC1.Reskit.Org -ScriptBlock {
 
 # 4. Create Dockerfile
 $DF = @"
-FROM mcr.microsoft.com/windows/servercore:1809
+FROM mcr.microsoft.com/windows/windowsservercore-insider:10.0.20303.1
 LABEL Description="RKWEB Container" Vendor="PS Partnership" Version="1.0.0.42"
 RUN powershell -Command Add-WindowsFeature Web-Server
 RUN powershell -Command GIP
