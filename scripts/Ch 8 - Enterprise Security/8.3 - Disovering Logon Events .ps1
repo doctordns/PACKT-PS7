@@ -3,7 +3,7 @@
 # Run on DC1
 
 
-# 1. Getting security log events
+# 1. Getting Security log events
 $SecLog = Get-WinEvent -ListLog Security
 "Security Event log entries:    [{0,10:N0}]" -f $Seclog.RecordCount
 
@@ -15,7 +15,7 @@ $SecEvents = Get-WinEvent -LogName Security
 $SecEvents | 
   Get-Member
 
-# 4. Summarizing security events by event Id
+# 4. Summarizing security events by event ID
 $SecEvents | 
   Sort-Object -Property Id | 
     Group-Object -Property ID | 

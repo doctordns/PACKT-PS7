@@ -1,0 +1,148 @@
+# Recipe 13.4 -  Create an Azure SMB Share
+
+# Run from SRV1
+
+# 1.  Define Variables
+
+
+
+no output
+
+
+PS C:\Foo> # 2. Login to your Azure Account
+PS C:\Foo> $CredAZ = Get-Credential
+
+PowerShell credential request
+Enter your credentials.
+User: tfl@reskit.org
+Password for user tfl@reskit.org: *********
+PS C:\Foo> $Account
+
+Account        SubscriptionName TenantId                             Environment
+-------        ---------------- --------                             -----------
+tfl@reskit.org Reskit.Org       b7280ea2-9be9-469e-97c2-0d5d1d196d39 AzureCloud
+
+
+
+# 3. Getting storage account, accountkey and context
+
+
+no output
+
+
+
+
+PS C:\Foo> # 4. Adding credentials to the local credentials store
+PS C:\Foo> $T = "$SAName.file.core.windows.net"
+PS C:\Foo> cmdkey /add:$T /user:"AZURE\$SAName" /pass:$Key
+
+CMDKEY: Credential added successfully.
+
+
+
+
+PS C:\Foo> # 5. Creating an Azure share
+PS C:\Foo> New-AzStorageShare -Name $ShareName -Context $SACon
+
+   File End Point: https://packt42sa.file.core.windows.net/
+
+Name       QuotaGiB LastModified               IsSnapshot SnapshotTime
+----       -------- ------------               ---------- ------------
+packtshare          05/04/2021 10:29:03 +00:00 False
+
+
+
+
+
+PS C:\Foo> # 6. Checking that the share is reachable
+PS C:\Foo> $TNCHT = @{
+             ComputerName = "$SAName.file.core.windows.net"
+             Port         = 445
+           }
+PS C:\Foo> Test-NetConnection @TNCHT
+
+ComputerName     : packt42sa.file.core.windows.net
+RemoteAddress    : 51.141.128.40
+RemotePort       : 445
+InterfaceAlias   : PureVPN
+SourceAddress    : 10.2.141.212
+TcpTestSucceeded : True
+
+
+
+
+
+PS C:\Foo> # 7. Mounting the share as M:
+PS C:\Foo> $Mount = 'M:'
+PS C:\Foo> $Rshare = "\\$SaName.file.core.windows.net\$ShareName"
+PS C:\Foo> $SMHT = @{
+             LocalPath  = $Mount
+             RemotePath = $Rshare
+             UserName   = $SAName
+             Password   = $Key
+           }
+PS C:\Foo> New-SmbMapping @SMHT
+
+Status Local Path Remote Path
+------ ---------- -----------
+OK     M:         \\packt42sa.file.core.windows.net\packtshare
+
+
+
+PS C:\Foo> # 8. Viewing the share in Azure
+PS C:\Foo> Get-AzStorageShare -Context $SACon  |
+             Format-List -Property *
+
+CloudFileShare  : Microsoft.Azure.Storage.File.CloudFileShare
+SnapshotTime    : 
+IsSnapshot      : False
+LastModified    : 05/04/2021 10:29:03 +00:00
+Quota           : 5120
+ShareClient     : Azure.Storage.Files.Shares.ShareClient
+ShareProperties : Azure.Storage.Files.Shares.Models.ShareProperties
+Context         : Microsoft.WindowsAzure.Commands.Storage.AzureStorageContext
+Name            : packtshare
+
+
+
+
+PS C:\Foo> # 9. Viewing local SMB mappings
+PS C:\Foo> Get-SmbMapping -LocalPath M:
+
+Status       Local Path Remote Path
+------       ---------- -----------
+Connected    M:         \\packt42sa.file.core.windows.net\packtshare
+
+
+
+
+
+
+
+
+
+# 10. Creating a file in the share
+
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 11. Retrieving details about the share contents
+PS C:\Foo> Get-ChildItem -Path M:\ -Recurse |
+             Format-Table -Property FullName, Mode, Length
+
+FullName          Mode  Length
+--------          ----  ------
+M:\Foo            d----
+M:\Foo\Recipe.Txt -a--- 30
+
+
+
+
+PS C:\Foo> # 12. Getting the content from the file
+PS C:\Foo> Get-Content -Path M:\Foo\Recipe.txt
+Azure and PowerShell 7 Rock!!!

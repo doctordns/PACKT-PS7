@@ -5,7 +5,7 @@
 # 1. Discovering the current domain password policy
 Get-ADDefaultDomainPasswordPolicy  
 
-# 2. Discovering fine-grained password for JerryG
+# 2. Discovering if there is a fine-grained password policy for JerryG
 Get-ADFineGrainedPasswordPolicy -Identity 'JerryG'
 
 # 3. Updating the default password policy
@@ -52,11 +52,11 @@ Add-ADFineGrainedPasswordPolicySubject -Identity DNSPWP -Subjects $Jerry
 Get-ADGroup 'DNSAdmins' -Properties * | 
   Select-Object -Property msDS-PSOApplied
 
-# 9. Checking on policy application for the User
+# 9. Checking on policy application for the user
 Get-ADUser JerryG -Properties * | 
   Select-Object -Property msDS-PSOApplied
 
-# 10. Getting DNS Admins Policy
+# 10. Getting DNS Admins policy
 Get-ADFineGrainedPasswordPolicy -Identity DNSPWP
 
 # 11. Checking on JerryG's resultant password policy

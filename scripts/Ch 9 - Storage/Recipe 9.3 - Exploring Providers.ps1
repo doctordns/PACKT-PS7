@@ -28,15 +28,14 @@ Get-Item ENV:* | Measure-Object
 # 8. Displaying Windows installation folder
 "Windows installation folder is [$env:windir]"
 
-# 9. Checking on FileStore provider drives on SRV1
+# 9. Checking on FileSystem provider drives on SRV1
 Get-PSProvider -PSProvider FileSystem | 
   Select-Object -ExpandProperty Drives |
     Sort-Object -Property Name
 
-# 10. Getting home Drive for FileSystem provider
+# 10. Getting home folder for FileSystem provider
 $HF = Get-PSProvider -PSProvider FileSystem | 
   Select-Object -ExpandProperty Home    
-"Home Folder for SRV1 is [$HF]"
 
 # 11. Checking Function drive
 Get-Module | Remove-Module -WarningAction SilentlyContinue
@@ -50,18 +49,19 @@ Function Get-HelloWorld {'Hello World'}
 $Functions2 = Get-ChildItem -Path Function:
 "Functions now available [$($Functions2.Count)]"
 
-# 14. Viewing Function definition
+# 14. Viewing function definition
 Get-Item Function:\Get-HelloWorld | Format-List *
 
 # 15. Counting defined variables
 $Variables = Get-ChildItem -Path Variable:
 "Variables defined [$($Variables.count)]"
 
-# 16. Checking on variables
+# 16. Checking on on available functions 
 Get-Item Variable:Function*
 
-# 17. Getting trusted publisher certs for the current user
-Get-ChildItem -Path Cert:\CurrentUser\TrustedPublisher
+# 17. Getting trusted root certificates for the local machine
+Get-ChildItem -Path Cert:\LocalMachine\Root | 
+  Format-Table FriendlyName, Thumbprint
 
 # 18. Examining ports in use by WinRM
 Get-ChildItem -Path WSMan:\localhost\Client\DefaultPorts

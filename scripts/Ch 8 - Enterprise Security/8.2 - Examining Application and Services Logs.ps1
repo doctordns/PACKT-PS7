@@ -32,14 +32,14 @@ $LogsDC1 |
     Measure-Object |
       Select-Object -Property Count
 
-# 8. Measuring Enabled logs that have records on SRV1
+# 8. Measuring enabled logs that have records on SRV1
 $Logs | 
   Where-Object IsEnabled |
     Where-Object Recordcount -gt 0 |
       Measure-Object |
         Select-Object -Property Count
 
-# 9. Discovering PowerShell related logs      
+# 9. Discovering PowerShell-related logs      
 $Logs | 
   Where-Object LogName -match 'powershell'
 

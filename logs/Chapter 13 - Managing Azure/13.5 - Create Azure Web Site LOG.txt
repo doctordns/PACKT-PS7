@@ -1,0 +1,193 @@
+# Recipe 13.5 - Create an Azure Web App
+
+# Run on SRV1
+
+
+
+# 1.  Defining Variables
+
+
+
+no ouptut
+
+
+
+# 2. Logging in to your Azure Account
+
+
+
+
+# 3. Ensure Resource Group is create
+
+
+
+
+
+# 4.  Ensuring the Stoage Account is created
+
+
+
+
+# 5. Create application service plan
+
+
+
+PS C:\Foo> # 6. Viewing the service plan
+$PHT = @{
+  ResourceGroupName = $RGname
+  Name              = $AppSrvName
+}
+Get-AzAppServicePlan @PHT
+
+WorkerTierName            : 
+Status                    : Ready
+Subscription              : 449846ba-2d26-45cf-8818-df1aade52b7c
+HostingEnvironmentProfile :
+MaximumNumberOfWorkers    : 1
+GeoRegion                 : UK South
+PerSiteScaling            : False
+MaximumElasticWorkerCount : 1
+NumberOfSites             : 0
+IsSpot                    : False
+SpotExpirationTime        :
+FreeOfferExpirationTime   :
+ResourceGroup             : packt_rg
+Reserved                  : False
+IsXenon                   : False
+HyperV                    : False
+TargetWorkerCount         : 0
+TargetWorkerSizeId        : 0
+ProvisioningState         : Succeeded
+Sku                       : Microsoft.Azure.Management.WebSites.Models.SkuDescription
+Id                        : /subscriptions/449846ba-2d26-45cf-8818-df1aade52b7c/resourceGroups/packt_rg/providers/Microsoft.Web/serverfarms/packt42
+Name                      : packt42
+Kind                      : app
+Location                  : UK South
+Type                      : Microsoft.Web/serverfarms
+Tags                      :
+
+
+
+
+# 7. Creating the new Azure webapp
+
+
+no ouptut
+
+
+
+
+
+PS C:\Foo> # 8. Viewing application details
+PS C:\Foo> $WebApp = Get-AzWebApp -ResourceGroupName $RgName -Name $AppName
+PS C:\Foo> $WebApp |
+             Format-Table -Property Name, State, Hostnames, Location
+
+
+Name           State   HostNames                          Location
+----           -----   ---------                          --------
+packt42website Running {packt42website.azurewebsites.net} UK South
+
+
+
+
+
+# 9.  Checking the web site
+
+
+
+see IT ouptut
+
+PS C:\Foo> # 11.  Getting publishing profile XML and extract FTP upload details
+$APHT = @{
+  ResourceGroupName = $RgName
+  Name              = $AppName
+  OutputFile        = 'C:\Foo\pdata.txt'
+}
+$X = [xml] (Get-AzWebAppPublishingProfile @APHT)
+$X.publishData.publishProfile[1]
+
+profileName                 : packt42website - FTP
+publishMethod               : FTP
+publishUrl                  : ftp://waws-prod-ln1-059.ftp.azurewebsites.windows.net/site/wwwroot
+ftpPassiveMode              : True
+userName                    : packt42website\$packt42website
+userPWD                     : ABBfspe706Zu2C7G086vTfqlhRtTn0qbBcTXaFfvjpk7vjW3X2N7YMv9jePl
+destinationAppUrl           : http://packt42website.azurewebsites.net
+SQLServerDBConnectionString :
+mySQLDBConnectionString     :
+hostingProviderForumLink    :
+controlPanelLink            : http://windows.azure.com
+webSystem                   : WebSites
+
+
+
+
+
+
+
+PS C:\Foo> # 13. Setting the FTP connection
+PS C:\Foo> $FTPSN  = 'FTPtoAzure'
+PS C:\Foo> $PS     = ConvertTo-SecureString $UserPWD -AsPlainText -Force
+PS C:\Foo> $T      = 'System.Management.automation.PSCredentiaL'
+PS C:\Foo> $Cred   = New-Object -TypeName $T -ArgumentList $UserName,$PS
+PS C:\Foo> $FTPHT  = @{
+              Credentials = $Cred
+              Server      = $Site
+              Session     = $FTPSN
+              UsePassive  = $true
+           }
+PS C:\Foo> Set-FTPConnection @FTPHT
+PS C:\Foo> $Session = Get-FTPConnection -Session $FTPSN
+
+ContentLength           : -1
+Headers                 : {}
+SupportsHeaders         : True
+ResponseUri             : ftp://waws-prod-ln1-059.ftp.azurewebsites.windows.net/site/wwwroot
+StatusCode              : ClosingData
+StatusDescription       : 226 Transfer complete.
+
+LastModified            : 01/01/0001 00:00:00
+BannerMessage           : 220 Microsoft FTP Service
+
+WelcomeMessage          : 230 User logged in.
+
+ExitMessage             : 221 Goodbye.
+
+ContentType             :
+IsFromCache             : False
+IsMutuallyAuthenticated : False
+
+
+
+PS C:\Foo> # 14. Opening an FTP session
+PS C:\Foo> $Session = Get-FTPConnection -Session $FTPSN
+PS C:\Foo> $Session
+
+Session    RequestUri                                                         User            Alive Binary Passive Ssl
+-------    ----------                                                         ----            ----- ------ ------- ---
+FTPtoAzure ftp://waws-prod-ln1-005.ftp.azurewebsites.windows.net/site/wwwroot $packt42website True  False  True    False
+
+
+
+
+PS C:\Foo> # 15. Creating a web page and uploading it
+PS C:\Foo> 'My First Azure Web Site' | Out-File -FilePath C:\Foo\Index.Html
+PS C:\Foo> $Filename = 'C:\foo\index.html'
+PS C:\Foo> $IHT = @{
+             Path       = '/'
+             LocalPath  = 'C:\foo\index.html'
+             Session    = $FTPSN
+           }
+PS C:\Foo> Add-FTPItem @IHT
+
+   Parent: ftp://waws-prod-ln1-059.ftp.azurewebsites.windows.net/site/wwwroot
+
+Dir Right     Ln  User   Group  Size   ModifiedDate        Name
+--- -----     --  ----   -----  ----   ------------        ----
+-                               25B    04-06-21  04:20PM   index.html
+
+
+
+
+

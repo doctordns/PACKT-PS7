@@ -99,7 +99,7 @@ Count
 
 
 
-PS C:\Foo> # 8. Measuring Enabled logs that have records on SRV1
+PS C:\Foo> # 8. Measuring enabled logs that have records on SRV1
 PS C:\Foo> $Logs |
               Where-Object IsEnabled |
                 Where-Object Recordcount -gt 0 |
@@ -113,7 +113,7 @@ Count
 
 
 
-PS C:\Foo> # 9. Discovering PowerShell related logs
+PS C:\Foo> # 9. Discovering PowerShell-related logs
 PS C:\Foo> $Logs |
              Where-Object LogName -match 'powershell'
 

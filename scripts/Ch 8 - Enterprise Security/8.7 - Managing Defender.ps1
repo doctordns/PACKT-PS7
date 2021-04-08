@@ -2,7 +2,7 @@
 
 # Run on DC1
 
-# 1. Ensuring Defender and tools are installed
+# 1. Ensuring Defender and tools are associated installed
 $DHT = @{
   Name                   =  'Windows-Defender' 
   IncludeManagementTools = $true  
@@ -19,7 +19,7 @@ Get-Command -Module Defender
 # 3. Checking the Defender service status
 Get-Service  -Name WinDefend
 
-# 4. Checking Defender sGet-MpCOmputer tatus
+# 4. Checking the operational status of Defender on this host
 Get-MpComputerStatus 
 
 # 5. Getting and counting threat catalog
@@ -38,7 +38,7 @@ Set-MpPreference -DisableRealtimeMonitoring 0
 Set-MpPreference -SubmitSamplesConsent Always
 # Enable checking signatures before scanning
 Set-MpPreference -CheckForSignaturesBeforeRunningScan 1
-# Enable email scanning"
+# Enable email scanning
 Set-MpPreference -DisableEmailScanning 0
 
 # 8. Creating a false positive threat

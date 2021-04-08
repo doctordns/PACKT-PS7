@@ -4,7 +4,7 @@
 
 
 
-PS C:\Foo> # 1. Discovering the GPO related files
+PS C:\Foo> # 1. Discovering the GPO-related files
 PS C:\Foo> Get-ChildItem -Path $PSHOME -Filter *Core*Policy*
 
     Directory: C:\Program Files\PowerShell\7
@@ -31,7 +31,7 @@ VERBOSE: PowerShellCoreExecutionPolicy.adml was installed successfully
 
 
 
-PS C:\Foo> # 3. Creating and displaying a new GPO object for IT group
+PS C:\Foo> # 3. Creating and displaying a new GPO for IT group
 PS C:\Foo> $PshGPO = New-GPO -Name 'PowerShell GPO for IT'
 PS C:\Foo> $PshGPO
 

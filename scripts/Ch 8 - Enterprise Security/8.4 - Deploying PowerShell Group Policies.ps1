@@ -3,7 +3,7 @@
 # Run on DC1 - Login as Administrator
 
 
-# 1. Discovering the GPO related files
+# 1. Discovering the GPO-related files
 Get-ChildItem -Path $PSHOME -Filter *Core*Policy*
 
 # 2. Installing the PowerShell 7 group policy files
@@ -11,7 +11,7 @@ $LOC = 'C:\Program Files\PowerShell\7\' +         # $PSHome
        'InstallPSCorePolicyDefinitions.ps1'       # Script
 & $LOC -VERBOSE
 
-# 3. Creating and displaying a new GPO object for the IT group
+# 3. Creating and displaying a new GPO for the IT group
 $PshGPO = New-GPO -Name 'PowerShell GPO for IT'
 
 # 4. Enabling module logging

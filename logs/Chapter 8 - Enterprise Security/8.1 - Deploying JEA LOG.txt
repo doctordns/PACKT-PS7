@@ -56,15 +56,6 @@ no output
 
 
 
-# 7. Creating a JEA session configuration folder
-
-
-
-no output
-
-
-
-
 # 7. Creating a JEA session configuration file
 
 
@@ -77,6 +68,9 @@ no output
 PS C:\Foo> # 8. Testing the session configuration file
 PS C:\Foo> Test-PSSessionConfigurationFile -Path $P
 True
+
+
+
 
 
 PS C:\Foo> # 9. Enabling remoting on DC1
@@ -111,13 +105,13 @@ Container       {Name=DnsAdminsJEA}                 DnsAdminsJEA
 
 PS C:\Foo> # 11. Viewing remoting endpoints
 PS C:\Foo> Get-PSSessionConfiguration  |
-             Format-Table -Property NAME, PSVersion, Run*Account
+             Format-Table -Property Name, PSVersion, Run*Account
 
 Name             PSVersion RunAsVirtualAccount
 ----             --------- -------------------
 DnsAdminsJEA     7.1       True
 PowerShell.7     7.1       false
-PowerShell.7.1.1 7.1       false
+PowerShell.7.1.3 7.1       false
 
 
 
@@ -203,7 +197,7 @@ Function      Set-DnsServer                           2.0.0.0   DnsServer    DC1
 
 
 
-PS C:\Foo> # 16. Invoking a JEA-defined function in a JEA session As JerryG
+PS C:\Foo> # 16. Invoking a JEA-defined function in a JEA session as JerryG
 PS C:\Foo> Invoke-Command -ScriptBlock $SB2 @ICMHT
 Hello JEA World
 

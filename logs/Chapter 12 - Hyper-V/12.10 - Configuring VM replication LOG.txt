@@ -1,0 +1,199 @@
+# Recipe 12.10 - Configuring VM replication
+
+# Run on HV1, with HV2, DC1 (and DC2) online
+
+
+# 1. Configuring HV1 and HV2 to be trusted for delegation in AD on DC1
+
+
+no output
+
+
+# 2. Rebooting the HV1 and HV2
+
+
+no output
+
+
+# 3. Configuring Hyper-V replication on HV1 and HV1
+
+
+no output 
+
+
+
+# 4. Enabling PSDirect on HV1 to be a replica source
+
+
+no output
+
+
+
+
+PS C:\Foo> # 5. Viewing the replication status of HV1
+PS C:\Foo> Get-VMReplicationServer -ComputerName HV1
+
+RepEnabled AuthType KerbAuthPort CertAuthPort AllowAnyServer
+---------- -------- ------------ ------------ --------------
+True       Kerb     42000        443          True
+
+
+
+
+
+
+PS C:\Foo> # 6. Checking PSDirect on Hyper-V Hosts
+PS C:\Foo> Get-VM -ComputerName HV1 -VMName PSDirect
+
+Name     State   CPUUsage(%) MemoryAssigned(M) Uptime           Status             Version
+----     -----   ----------- ----------------- ------           ------             -------
+PSDirect Running 0           2048              00:03:41.3630000 Operating normally 10.0
+
+PS C:\Foo> Get-VM -ComputerName HV2 -VMName PSDirect
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+PSDirect Off   0           0                 00:00:00 Operating normally 10.0
+
+
+
+
+
+
+
+
+# 7. Starting the initial replication
+
+
+
+No Output
+
+
+
+
+
+PS C:\Foo> # 8. Examining the initial replication state on HV1 just after
+PS C:\Foo> #    you start the initial replication
+PS C:\Foo> Measure-VMReplication -ComputerName HV1
+
+VMName   State                        Health LReplTime PReplSize(M) AvgLatency AvgReplSize(M) Relationship
+------   -----                        ------ --------- ------------ ---------- -------------- ------------
+PSDirect InitialReplicationInProgress Normal           8,420.61                0.00           Simple
+
+
+
+
+PS C:\Foo> # 9. Examining the replication status on HV1 after replication completes
+PS C:\Foo> Measure-VMReplication -ComputerName HV1
+
+VMName   State       Health LReplTime           PReplSize(M) AvgLatency AvgReplSize(M) Relationship
+------   -----       ------ ---------           ------------ ---------- -------------- ------------
+PSDirect Replicating Normal 01/04/2021 00:39:20 0.0078       00:03:04   1,896.00       Simple
+
+
+
+
+
+# 10. Testing PSDirect failover to HV2
+
+
+no output
+
+
+
+
+PS C:\Foo> # 11. Viewing the status of PSDirect VMs on HV2
+PS C:\Foo> Get-VM -ComputerName HV2 -VMName PSDirect*
+
+Name            State   CPUUsage(%) MemoryAssigned(M) Uptime           Status             Version
+----            -----   ----------- ----------------- ------           ------             -------
+PSDirect - Test Running 0           1024              00:01:29.6580000 Operating normally 10.0
+PSDirect        Off     0           0                 00:00:00         Operating normally 10.0
+
+
+
+
+ # 12. Stopping the failover test
+
+
+
+ no output
+
+
+
+
+PS C:\Foo> # 13. Viewing the status of VMs on HV1 and HV2 after failover stopped
+PS C:\Foo> Get-VM -ComputerName HV1 -Name PSDDirect
+
+Name     State   CPUUsage(%) MemoryAssigned(M) Uptime           Status             Version
+----     -----   ----------- ----------------- ------           ------             -------
+PSDirect Running 1           1024              01:39:17.6950000 Operating normally 10.0
+
+PS C:\Foo> Get-VM -ComputerName HV2 -Name PSDDirect
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+PSDirect Off   0           0                 00:00:00 Operating normally 10.0
+
+
+
+
+# 14. Stopping VM1 on HV1 before performing a planned failover
+
+
+
+no output
+
+
+
+# 15. Starting VM failover from HV1 to HV2
+
+
+
+
+no output
+
+
+
+# 16. Completing the failover
+
+
+
+
+no output
+
+
+
+
+# 17. Starting the replicated VM on HV2
+
+
+
+NO output
+
+
+
+PS C:\Foo> # 18. Checking the PSDirect VM on HV1 and HV2 after the planned failover
+PS C:\Foo> Get-VM -ComputerName HV1 -Name PSDirect
+
+Name     State CPUUsage(%) MemoryAssigned(M) Uptime   Status             Version
+----     ----- ----------- ----------------- ------   ------             -------
+PSDirect Off   0           0                 00:00:00 Operating normally 10.0
+
+PS C:\Foo> Get-VM -ComputerName HV2 -Name PSDirect
+
+Name     State   CPUUsage(%) MemoryAssigned(M) Uptime           Status             Version
+----     -----   ----------- ----------------- ------           ------             -------
+PSDirect Running 1           2048              00:01:37.0010000 Operating normally 10.0
+
+
+
+# 19. Removing the VM replication on HV2
+
+no output
+
+
+# 20. Moving the PSDirect VM back to HV1
+
+
+run from HV2-no output

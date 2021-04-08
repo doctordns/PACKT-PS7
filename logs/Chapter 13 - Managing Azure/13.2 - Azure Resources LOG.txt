@@ -1,0 +1,212 @@
+# Recipe 13.2 - Create Azure Assets
+#
+#
+
+# 1. Setting key variables
+
+
+
+PS C:\Foo> # 2.	Logging into your Azure account
+PS C:\Foo> $CredAZ = Get-Credential     # Enter your Azure Credential details
+PowerShell credential request
+Enter your credentials.
+User: tfl@reskit.org
+Password for user tfl@reskit.org: ************************
+
+
+
+
+# 3. Creating a resource group and tagging it
+
+
+no output
+
+
+
+
+PS C:\Foo> # 4. Viewing RG with Tags
+PS C:\Foo> Get-AzResourceGroup -Name $RGName |
+             Format-List -Property *
+
+ResourceGroupName : packt_rg
+Location          : uksouth
+ProvisioningState : Succeeded
+Tags              : {Publisher, Author}
+TagsTable         : 
+                    Name       Value     
+                    =========  ==========
+                    Publisher  Packt     
+                    Author     Thomas Lee
+
+ResourceId        : /subscriptions/449846ba-2d26-45cf-8420-df1aade52b42/resourceGroups/packt_rg
+ManagedBy
+
+
+
+
+
+
+
+PS C:\Foo> # 5. Testing to see if an SA name is taken
+PS C:\Foo> Get-AzStorageAccountNameAvailability $SAName
+
+NameAvailable Reason Message
+------------- ------ -------
+         True
+
+
+
+
+
+
+
+
+PS C:\Foo> # 6. Creating a new Storage Account
+PS C:\Foo> $SAHT = @{
+             Name              = $SAName
+             SkuName           = 'Standard_LRS'     
+             ResourceGroupName = $RgName
+             Tag               = $RGTag
+             Location          = $Locname
+           }
+PS C:\Foo> New-AzStorageAccount @SAHT |
+             Format-List 
+
+
+ResourceGroupName           : packt_rg
+StorageAccountName          : packt42sa
+Id                          : /subscriptions/449846ba-2d26-45cf-8420-df1aade52b42/resourceGroups/
+                               packt_rg/providers/Microsoft.Storage/storageAccounts/packt42sa
+Location                    : uksouth
+Sku                         : Microsoft.Azure.Commands.Management.Storage.Models.PSSku
+Kind                        : StorageV2
+Encryption                  : Microsoft.Azure.Management.Storage.Models.Encryption
+AccessTier                  : Hot
+CreationTime                : 03/04/2021 10:19:11
+CustomDomain                :
+Identity                    :
+LastGeoFailoverTime         :
+PrimaryEndpoints            : Microsoft.Azure.Management.Storage.Models.Endpoints
+PrimaryLocation             : uksouth
+ProvisioningState           : Succeeded
+SecondaryEndpoints          :
+SecondaryLocation           :
+StatusOfPrimary             : Available
+StatusOfSecondary           :
+Tags                        : {[Author, Thomas Lee], [Publisher, Packt]}
+EnableHttpsTrafficOnly      : True
+AzureFilesIdentityBasedAuth :
+EnableHierarchicalNamespace : 
+FailoverInProgress          :
+LargeFileSharesState        :
+NetworkRuleSet              : Microsoft.Azure.Commands.Management.Storage.Models.PSNetworkRuleSet
+RoutingPreference           :
+BlobRestoreStatus           :
+GeoReplicationStats         :
+AllowBlobPublicAccess       :
+MinimumTlsVersion           :
+EnableNfsV3                 :
+AllowSharedKeyAccess        :
+Context                     : Microsoft.WindowsAzure.Commands.Common.Storage.LazyAzureStorageContext
+ExtendedProperties          : {}
+
+
+
+
+PS C:\Foo> # 7. Getting an overview of the SA in this Resource group
+PS C:\Foo> $SA = Get-AzStorageAccount -ResourceGroupName $RgName
+PS C:\Foo> $SA |
+             Format-List -Property *
+
+ResourceGroupName           : packt_rg
+StorageAccountName          : packt42sa
+Id                          : /subscriptions/449846ba-2d26-45cf-8420-df1aade52b42/resourceGroups/
+                               packt_rg/providers/Microsoft.Storage/storageAccounts/packt42sa
+Location                    : uksouth
+Sku                         : Microsoft.Azure.Commands.Management.Storage.Models.PSSku
+Kind                        : StorageV2
+Encryption                  : Microsoft.Azure.Management.Storage.Models.Encryption
+AccessTier                  : Hot
+CreationTime                : 03/04/2021 10:19:11
+CustomDomain                :
+Identity                    :
+LastGeoFailoverTime         :
+PrimaryEndpoints            : Microsoft.Azure.Management.Storage.Models.Endpoints
+PrimaryLocation             : uksouth
+ProvisioningState           : Succeeded
+SecondaryEndpoints          :
+SecondaryLocation           : 
+StatusOfPrimary             : Available
+StatusOfSecondary           :
+Tags                        : {[Author, Thomas Lee], [Publisher, Packt]}
+EnableHttpsTrafficOnly      : True
+AzureFilesIdentityBasedAuth :
+EnableHierarchicalNamespace : 
+FailoverInProgress          :
+LargeFileSharesState        :
+NetworkRuleSet              : Microsoft.Azure.Commands.Management.Storage.Models.PSNetworkRuleSet
+RoutingPreference           :
+BlobRestoreStatus           :
+GeoReplicationStats         :
+AllowBlobPublicAccess       : 
+MinimumTlsVersion           :
+EnableNfsV3                 :
+AllowSharedKeyAccess        :
+Context                     : Microsoft.WindowsAzure.Commands.Common.Storage.LazyAzureStorageContext
+ExtendedProperties          : {}
+
+
+
+
+
+PS C:\Foo> # 8. Getting primary endpoints for the SA
+PS C:\Foo> $SA.PrimaryEndpoints
+
+Blob               : https://packt42sa.blob.core.windows.net/
+Queue              : https://packt42sa.queue.core.windows.net/
+Table              : https://packt42sa.table.core.windows.net/
+File               : https://packt42sa.file.core.windows.net/
+Web                : https://packt42sa.z33.web.core.windows.net/
+Dfs                : https://packt42sa.dfs.core.windows.net/
+MicrosoftEndpoints : null
+
+
+
+
+PS C:\Foo> # 9. Reviewing the SKU
+PS C:\Foo> $SA.Sku
+
+Name         : Standard_LRS
+Tier         : Standard
+ResourceType :
+Kind         :
+Locations    :
+Capabilities :
+Restrictions :
+
+
+
+
+PS C:\Foo> # 10. View Storage Account's Context property
+PS C:\Foo> $SA.Context
+
+BlobEndPoint       : https://packt42sa.blob.core.windows.net/
+TableEndPoint      : https://packt42sa.table.core.windows.net/
+QueueEndPoint      : https://packt42sa.queue.core.windows.net/
+FileEndPoint       : https://packt42sa.file.core.windows.net/
+StorageAccount     : BlobEndpoint=https://packt42sa.blob.core.windows.net/;QueueEndpoint=https://packt4
+                     2sa.queue.core.windows.net/;TableEndpoint=https://packt42sa.table.core.windows.net
+                     /;FileEndpoint=https://packt42sa.file.core.windows.net/;AccountName=packt42sa;Acco
+                     untKey=[key hidden]
+StorageAccountName : packt42sa
+Context            : Microsoft.WindowsAzure.Commands.Common.Storage.LazyAzureStorageContext
+Name               : packt42sa
+EndPointSuffix     : core.windows.net/
+ConnectionString   : BlobEndpoint=https://packt42sa.blob.core.windows.net/;QueueEndpoint=https://packt4
+                     2sa.queue.core.windows.net/;TableEndpoint=https://packt42sa.table.core.windows.net
+                     /;FileEndpoint=https://packt42sa.file.core.windows.net/;AccountName=packt42sa;Acco
+                     untKey=L8H/U7DvDq420S4o9ECy2LzAI1Ekh/zaglT6A6tSj9ShJLe2EI94EaJOQzHivf3cixV4f2tQ8up
+                     cyIYFOZc9ig==
+ExtendedProperties : {}
+
+

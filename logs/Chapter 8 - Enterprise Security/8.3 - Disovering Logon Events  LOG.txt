@@ -2,14 +2,14 @@
 
 
 
-PS C:\Foo> # 1. Getting security log events
+PS C:\Foo> # 1. Getting Security log events
 PS C:\Foo> $SecLog = Get-WinEvent -ListLog Security
 PS C:\Foo> "Security Event log entries:    [{0,10:N0}]" -f $Seclog.RecordCount
 Security Event log entries:    [    29,940]
 
 
 
-PS C:\Foo> # 2. Get all Windows Security log event details
+PS C:\Foo> # 2. Getting all Windows Security log event details
 PS C:\Foo> $SecEvents = Get-WinEvent -LogName Security
 "Found $($SecEvents.count) security events"
 Found 29943 security events on DC1
@@ -57,7 +57,7 @@ TimeCreated          Property     System.Nullable[datetime] TimeCreated {get;}
 UserId               Property     System.Security.Principal.SecurityIdentifier UserId {get;}
 Version              Property     System.Nullable[byte] Version {get;}
 
-PS C:\Foo> # 4. Summarizing security events by event Id
+PS C:\Foo> # 4. Summarizing security events by event ID
 PS C:\Foo> $SecEvents |
              Sort-Object -Property Id |
                Group-Object -Property ID |
@@ -87,7 +87,7 @@ Name Count
 
 
 
-PS C:\Foo> # 5. Get all successful logon events on DC1
+PS C:\Foo> # 5. Getting all successful logon events on DC1
 PS C:\Foo> $Logons = $SecEvents | Where-Object ID -eq 4624   # logon event
 PS C:\Foo> "Found $($Logons.count) logon events"
 Found 10507 logon events

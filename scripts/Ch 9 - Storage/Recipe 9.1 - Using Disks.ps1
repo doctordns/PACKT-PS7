@@ -72,7 +72,7 @@ $Disks |
 Get-Disk |
   Format-Table -AutoSize
 
-# 4. Viewing Volumes on SRV1
+# 4. Viewing volumes on SRV1
 Get-Volume | Sort-Object -Property DriveLetter
 
 # 5. Creating a F: volume in disk 1
@@ -93,7 +93,7 @@ New-Partition -DiskNumber 2  -DriveLetter T -UseMaximumSize
 
 # 8. Formatting S: and T:
 $NVHT1 = @{
-  DriveLetter        = 's'
+  DriveLetter        = 'S'
   FileSystem         = 'NTFS' 
   NewFileSystemLabel = 'GD Shows'}
 Format-Volume @NVHT1

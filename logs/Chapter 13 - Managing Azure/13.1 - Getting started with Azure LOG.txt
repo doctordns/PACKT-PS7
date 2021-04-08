@@ -1,0 +1,292 @@
+# Recipe 13-1 Getting started with Azure
+#
+# Run on SRV1
+
+
+PS C:\Foo> #  1. Finding core Azure module on the PS Gallery
+PS C:\Foo> Find-Module -Name Az |
+             Format-Table -Wrap -Autosize
+
+Version Name Repository Description
+------- ---- ---------- -----------
+5.7.0   Az   PSGallery  Microsoft Azure PowerShell - Cmdlets to manage resources in Azure. This module is compatible with WindowsPowerShell and
+                        PowerShell Core.
+                        For more information about the Az module, please visit the following: https://docs.microsoft.com/en-us/powershell/azure/
+
+
+
+# 2. Installing AZ module
+
+
+
+no output
+
+
+
+
+
+
+PS C:\Foo> # 3. Discovering Azure modules and how many cmdlets each contains
+PS C:\Foo> $HT = @{ Label ='Cmdlets'
+                    Expression = {(Get-Command -module $_.name).count}}
+PS C:\Foo> Get-Module Az* -ListAvailable |
+             Sort-Object {(Get-command -Module $_.Name).Count} -Descending |
+               Format-Table -Property Name, Version, Author,$HT -AutoSize
+
+Name                     Version Author                Cmdlets
+----                     ------- ------                -------
+Az.Network               4.7.0   Microsoft Corporation     641
+Az.Sql                   2.17.0  Microsoft Corporation     269
+Az.Compute               4.10.0  Microsoft Corporation     203
+Az.RecoveryServices      3.5.0   Microsoft Corporation     189
+Az.Resources             3.4.0   Microsoft Corporation     147
+Az.Storage               3.5.0   Microsoft Corporation     146
+Az.ApiManagement         2.2.0   Microsoft Corporation     136
+Az.CosmosDB              1.1.0   Microsoft Corporation     105
+Az.IotHub                2.7.3   Microsoft Corporation      93
+Az.Automation            1.5.2   Microsoft Corporation      89
+Az.DataLakeStore         1.3.0   Microsoft Corporation      87
+Az.DataFactory           1.11.5  Microsoft Corporation      86
+Az.Batch                 3.1.0   Microsoft Corporation      81
+Az.KeyVault              3.4.1   Microsoft Corporation      75
+Az.Monitor               2.4.0   Microsoft Corporation      71
+Az.DataLakeAnalytics     1.0.2   Microsoft Corporation      62
+Az.Websites              2.5.0   Microsoft Corporation      62
+Az.ServiceFabric         2.3.0   Microsoft Corporation      60
+Az.OperationalInsights   2.3.0   Microsoft Corporation      55
+Az.LogicApp              1.5.0   Microsoft Corporation      51
+Az.ServiceBus            1.5.0   Microsoft Corporation      47
+Az.HDInsight             4.2.0   Microsoft Corporation      43
+Az.Cdn                   1.6.0   Microsoft Corporation      42
+Az.Accounts              2.2.7   Microsoft Corporation      41
+Az.DataBoxEdge           1.1.0   Microsoft Corporation      39
+Az.Kusto                 1.0.1   Microsoft Corporation      39
+Az.EventHub              1.7.2   Microsoft Corporation      37
+Az.DataShare             1.0.0   Microsoft Corporation      36
+Az.DesktopVirtualization 2.1.1   Microsoft Corporation      36
+Az.FrontDoor             1.7.0   Microsoft Corporation      34
+Az.NotificationHubs      1.1.1   Microsoft Corporation      32
+Az.ContainerRegistry     2.2.1   Microsoft Corporation      30
+Az.AnalysisServices      1.1.4   Microsoft Corporation      28
+Az.Migrate               1.0.0   Microsoft Corporation      27
+Az.DeploymentManager     1.1.0   Microsoft Corporation      24
+Az.RedisCache            1.4.0   Microsoft Corporation      23
+Az.TrafficManager        1.0.4   Microsoft Corporation      22
+Az.StreamAnalytics       1.0.1   Microsoft Corporation      21
+Az.StorageSync           1.4.0   Microsoft Corporation      21
+Az.Relay                 1.0.3   Microsoft Corporation      20
+Az.Aks                   2.0.2   Microsoft Corporation      19
+Az.EventGrid             1.3.0   Microsoft Corporation      19
+Az.RedisEnterpriseCache  1.0.0   Microsoft Corporation      19
+Az.ApplicationInsights   1.1.0   Microsoft Corporation      17
+Az.MachineLearning       1.1.3   Microsoft Corporation      16
+Az.Billing               2.0.0   Microsoft Corporation      16
+Az.CognitiveServices     1.8.0   Microsoft Corporation      15
+Az.PrivateDns            1.0.3   Microsoft Corporation      15
+Az.Functions             2.0.0   Microsoft Corporation      15
+Az.PowerBIEmbedded       1.1.2   Microsoft Corporation      15
+Az.SqlVirtualMachine     1.1.0   Microsoft Corporation      14
+Az.SignalR               1.2.0   Microsoft Corporation      12
+Az.Maintenance           1.1.0   Microsoft Corporation      11
+Az.Dns                   1.1.2   Microsoft Corporation      11
+Az.Media                 1.1.1   Microsoft Corporation      11
+Az.DevTestLabs           1.0.2   Microsoft Corporation      10
+Az.PolicyInsights        1.4.1   Microsoft Corporation       9
+Az.Support               1.0.0   Microsoft Corporation       8
+Az.Databricks            1.1.0   Microsoft Corporation       8
+Az.AppConfiguration      1.0.0   Microsoft Corporation       7
+Az.ManagedServices       2.0.0   Microsoft Corporation       6
+Az.Advisor               1.1.1   Microsoft Corporation       5
+Az.HealthcareApis        1.2.0   Microsoft Corporation       4
+Az.ContainerInstance     1.0.3   Microsoft Corporation       4
+Az.MarketplaceOrdering   1.0.2   Microsoft Corporation       2
+Az                       5.7.0   Microsoft Corporation       0
+
+
+
+
+
+
+PS C:\Foo> # 4. Finding Azure AD cmdlets
+PS C:\Foo> Find-Module AzureAD |
+             Format-Table -Property Name,Version,Author -AutoSize -Wrap
+
+Name    Version   Author
+----    -------   ------
+AzureAD 2.0.2.130 Microsoft Corporation
+
+
+
+
+
+
+
+
+# 5. Installing the Azure AD Module
+
+
+
+no output
+
+
+
+
+
+
+PS C:\Foo> # 6. Discovering Azure AD Module
+PS C:\Foo> $FTHT = @{
+             Property = 'Name', 'Version', 'Author', 'Description'
+             AutoSize = $true
+             Wrap     = $true
+           }
+PS C:\Foo> Get-Module -Name AzureAD -ListAvailable |
+             Format-Table @FTHT
+
+Name    Version   Author                Description
+----    -------   ------                -----------
+AzureAD 2.0.2.130 Microsoft Corporation Azure Active Directory V2 General Availability Module.
+                                        PowerShell Module. This is the General Availability 
+                                        release of Azure Active Directory V2. For detailed 
+                                        information on how to install and run this module 
+                                        from the PowerShell Gallery including prerequisites, please 
+                                        refer to https://docs.microsoft.com/en-us/powershell/scripting/gallery/overview
+
+
+
+
+PS C:\Foo> # 7. Logging into Azure
+PS C:\Foo> $CredAZ = Get-Credential     # Enter your Azure Credential details
+PowerShell credential request
+Enter your credentials.
+User: tfl@reskit.org
+Password for user tfl@reskit.org: ************************
+PS C:\Foo> $Account = Connect-AzAccount -Credential $CredAZ
+PS C:\Foo> $Account
+
+Account        SubscriptionName TenantId                             Environment
+-------        ---------------- --------                             -----------
+tfl@reskit.org Reskit.Org       b7280e42-9be9-469e-97c2-04201d196d39 AzureCloud
+
+
+
+
+
+PS C:\Foo> # 8. Getting Azure subscription details
+PS C:\Foo> $AccountN = $Account.Context.Account.Id
+PS C:\Foo> "Azure Account   : $Account"
+Azure Account   : tfl@reskit.org
+
+
+
+
+
+           
+
+
+
+
+
+PS C:\Foo> # 9. Viewing Azure subscription
+PS C:\Foo> $SubID = $Subscription.Context.Subscription.Id
+PS C:\Foo> Get-AzSubscription -SubscriptionId $SubId |
+             Format-List -Property *
+
+Id                        : 449846ba-2d26-45cf-8420-df1aade52b42
+Name                      : Free Trial
+State                     : Enabled
+SubscriptionId            : 449846ba-2d26-45cf-8420-df1aade52b42
+TenantId                  : b7280e42-9be9-469e-97c2-04201d196d39
+HomeTenantId              : b7280e42-9be9-469e-97c2-04201d196d39
+ManagedByTenantIds        : {}
+CurrentStorageAccountName :
+SubscriptionPolicies      : {
+                              "LocationPlacementId": "Public_2014-09-01",
+                              "QuotaId": "Reskit.Org_2014-09-01",
+                              "SpendingLimit": "On"
+                            }
+ExtendedProperties        : {[Tenants, b7280e42-9be9-469e-97c2-04201d196d39], [Environment, AzureCloud], 
+                             [HomeTenant, b7280e42-9be9-469e-97c2-04201d196d39], [Account, tfl@reskit.org],
+                             [SubscriptionPolices, {"locationPlacementId":"Public_2014-09-01","quotaId":
+                             "Reskit.Org_2014-09-01","spendingLimit":"On"}]}
+CurrentStorageAccount     :
+
+
+
+
+
+PS C:\Foo> # 10. Getting Azure locations
+PS C:\Foo> $AZL = Get-AzLocation
+PS C:\Foo> $LOC = $AZL | Sort-Object Location
+PS C:\Foo> "Azure locations:  [{0}]" -f $LOC.Count
+Azure locations:  [42]
+
+
+
+
+
+PS C:\Foo> # 11. Viewing Azure locations
+PS C:\Foo> $LOC |
+             Format-Table Location, DisplayName
+
+Location           DisplayName
+--------           -----------
+australiacentral   Australia Central
+australiacentral2  Australia Central 2
+australiaeast      Australia East
+australiasoutheast Australia Southeast
+brazilsouth        Brazil South
+brazilsoutheast    Brazil Southeast
+canadacentral      Canada Central
+canadaeast         Canada East
+centralindia       Central India
+centralus          Central US
+eastasia           East Asia
+eastus             East US
+eastus2            East US 2
+francecentral      France Central
+francesouth        France South
+germanynorth       Germany North
+germanywestcentral Germany West Central
+japaneast          Japan East
+japanwest          Japan West
+koreacentral       Korea Central
+koreasouth         Korea South
+northcentralus     North Central US
+northeurope        North Europe
+norwayeast         Norway East
+norwaywest         Norway West
+southafricanorth   South Africa North
+southafricawest    South Africa West
+southcentralus     South Central US
+southeastasia      Southeast Asia
+southindia         South India
+switzerlandnorth   Switzerland North
+switzerlandwest    Switzerland West
+uaecentral         UAE Central
+uaenorth           UAE North
+uksouth            UK South
+ukwest             UK West
+westcentralus      West Central US
+westeurope         West Europe
+westindia          West India
+westus             West US
+westus2            West US 2
+westus3            West US 3
+
+
+
+
+
+PS C:\Foo> # 12. Getting Azure environments
+PS C:\Foo> Get-AzEnvironment |
+             Format-Table -Property name, ManagementPortalURL
+
+Name              ManagementPortalUrl
+----              -------------------
+AzureChinaCloud   https://go.microsoft.com/fwlink/?LinkId=301902
+AzureUSGovernment https://manage.windowsazure.us
+AzureGermanCloud  https://portal.microsoftazure.de/
+AzureCloud        https://go.microsoft.com/fwlink/?LinkId=254433
+
+
+

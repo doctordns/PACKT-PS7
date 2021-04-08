@@ -1,0 +1,253 @@
+# Recipe 12.11 - Managing VM Checkpoints
+
+# Run on HV1
+
+# 1. Creating credentials for PSDirect
+
+
+no output
+
+
+
+
+PS C:\Foo> # 2. Examining the C:\ in the PSDirect VM before we start
+PS C:\Foo> $SB = { Get-ChildItem -Path C:\ | Format-Table}
+PS C:\Foo> $ICHT = @{
+             VMName      = 'PSDirect'
+             ScriptBlock = $SB
+             Credential  = $RKCred
+           }
+PS C:\Foo> Invoke-Command @ICHT
+
+    Directory: C:\
+
+Mode                LastWriteTime     Length Name
+----                -------------     ------ ----
+d-----       15/09/2018     08:19            PerfLogs
+d-r---       29/03/2021     17:52            Program Files
+d-----       25/03/2021     18:13            Program Files (x86)
+d-r---       25/03/2021     18:13            Users
+d-----       28/03/2021     12:53            Windows
+
+
+
+
+# 3. Creating a snapshot of PSDirect1 on HV
+
+
+no output
+
+
+
+
+PS C:\Foo> # 4. Examining the files created to support the checkpoints
+PS C:\Foo> $Parent = Split-Path -Parent (Get-VM -Name PSdirect |
+                       Select-Object -ExpandProperty HardDrives).Path |
+                         Select-Obhject -First 1
+PS C:\Foo> Get-ChildItem -Path $Parent
+
+    Directory: C:\Vm\Vhds\PSDirect\Virtual Hard Disks
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          02/04/2021    12:16       71303168 PSDirect_FE7F7810-A143-4593-892A-E4CDD061925A.avhdx
+-a---          02/04/2021    12:15        4194304 PSDirect-D_79D1575C-19DC-408B-B95D-59DDDE432715.avhdx
+-a---          01/04/2021    15:53        4194304 PSDirect-D.VHDX
+-a---          02/04/2021    12:15    10238296064 PSDirect.Vhdx
+
+
+
+
+PS C:\Foo> # 5. Creating some content in a file on PSDirect and displaying it
+PS C:\Foo> $SB = {
+             $FileName1 = 'C:\File_After_Checkpoint_1'
+             Get-Content -Path $FileName1
+           }
+PS C:\Foo> $ICHT = @{
+             VMName      = 'PSDirect'
+             ScriptBlock = $SB
+             Credential  = $RKCred
+           }
+PS C:\Foo> Invoke-Command @ICHT
+
+02 April 2021 12:17:31
+
+
+
+
+
+# 6. Taking a second checkpoint
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 7. Viewing the VM checkpoint details for PSDirect
+PS C:\Foo> Get-VMSnapshot -VMName PSDirect
+
+VMName   Name      SnapshotType CreationTime        ParentSnapshotName
+------   ----      ------------ ------------        ------------------
+PSDirect Snapshot1 Standard     02/04/2021 12:15:59
+PSDirect Snapshot2 Standard     02/04/2021 12:18:53 Snapshot1
+
+
+
+PS C:\Foo> # 8. Looking at the files supporting the two checkpoints
+PS C:\Foo> Get-ChildItem -Path $Parent
+
+    Directory: C:\Vm\Vhds\PSDirect\Virtual Hard Disks
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          02/04/2021    12:19       71303168 PSDirect_F4935A8F-2CE2-42C9-A198-5DC2C47F63D3.avhdx
+-a---          02/04/2021    12:18      168820736 PSDirect_FE7F7810-A143-4593-892A-E4CDD061925A.avhdx
+-a---          02/04/2021    12:18        4194304 PSDirect-D_79D1575C-19DC-408B-B95D-59DDDE432715.avhdx
+-a---          02/04/2021    12:18        4194304 PSDirect-D_8239F1DE-ACB8-4940-9FE2-5534FA154415.avhdx
+-a---          01/04/2021    15:53        4194304 PSDirect-D.VHDX
+-a---          02/04/2021    12:15    10238296064 PSDirect.Vhdx
+
+
+
+
+
+PS C:\Foo> # 9. Creating and displaying another file in PSDirect
+PS C:\Foo> #    (i.e. after you have taken Snapshot2)
+PS C:\Foo> $SB = {
+             $FileName2 = 'C:\File_After_Checkpoint_2'
+             Get-Date | Out-File -FilePath $FileName2
+             Get-ChildItem -Path C:\ -File | Format-Table
+           }
+PS C:\Foo> $ICHT = @{
+             VMName    = 'PSDirect'
+             ScriptBlock = $SB
+             Credential  = $RKCred
+           }
+PS C:\Foo> Invoke-Command @ICHT
+
+    Directory: C:\
+
+Mode           LastWriteTime   Length Name
+----           -------------   ------ ----
+-a----  02/04/2021     12:17       62 File_After_Checkpoint_1
+-a----  02/04/2021     12:21       62 File_After_Checkpoint_2
+
+
+
+
+# 10. Restoring the PSDirect VM back to the checkpoint named Snapshot1
+
+
+no output
+
+
+PS C:\Foo> # 11. Seeing what files we have now on PSDirect
+PS C:\Foo> $SB = {
+             Get-ChildItem -Path C:\ | Format-Table
+           }
+PS C:\Foo> $ICHT = @{
+             VMName    = 'PSDirect'
+             ScriptBlock = $SB
+             Credential  = $RKCred
+           }
+PS C:\Foo> Invoke-Command @ICHT
+
+    Directory: C:\
+
+Mode             LastWriteTime     Length Name
+----             -------------     ------ ----
+d-----    15/09/2018     08:19            PerfLogs
+d-r---    29/03/2021     17:52            Program Files
+d-----    25/03/2021     18:13            Program Files (x86)
+d-r---    25/03/2021     18:13            Users
+d-----    28/03/2021     12:53            Windows
+
+
+
+# 12. Rolling forward to Snapshot2
+
+
+
+no output
+
+
+
+
+PS C:\Foo> # 13. Observe the files you now have supporting PSDirect
+PS C:\Foo> $SB = {
+             Get-ChildItem -Path C:\ | Format-Table
+           }
+PS C:\Foo> $ICHT = @{
+             VMName      = 'PSDirect'
+             ScriptBlock = $SB
+             Credential  = $RKCred
+           }
+PS C:\Foo> Invoke-Command @ICHT
+
+    Directory: C:\
+
+Mode            LastWriteTime    Length Name
+----            -------------    ------ ----
+d-----   15/09/2018     08:19           PerfLogs
+d-r---   29/03/2021     17:52           Program Files
+d-----   25/03/2021     18:13           Program Files (x86)
+d-r---   25/03/2021     18:13           Users
+d-----   28/03/2021     12:53           Windows
+-a----   02/04/2021     12:17        62 File_After_Checkpoint_1
+
+
+
+# 14. Restoring to Snapshot1 again
+
+
+no output
+
+
+
+
+
+
+PS C:\Foo> # 15. Checking snapshots and VM data files again
+PS C:\Foo> Get-VMSnapshot -VMName PSDirect
+
+VMName   Name      SnapshotType CreationTime        ParentSnapshotName
+------   ----      ------------ ------------        ------------------
+PSDirect Snapshot1 Standard     02/04/2021 12:15:59
+PSDirect Snapshot2 Standard     02/04/2021 12:18:53 Snapshot1
+
+PS C:\Foo> Get-ChildItem -Path $Parent | Format-Table
+
+    Directory: C:\Vm\Vhds\PSDirect\Virtual Hard Disks
+
+Mode        LastWriteTime      Length Name
+----        -------------      ------ ----
+-a--- 02/04/2021    12:32   541065216 PSDirect_E21807D2-F3EB-4FA6-9F67-8F780AEF577A.avhdx
+-a--- 02/04/2021    12:18   168820736 PSDirect_FE7F7810-A143-4593-892A-E4CDD061925A.avhdx
+-a--- 02/04/2021    12:28     4194304 PSDirect-D_60959C86-0576-4BCC-9699-931E5CC0525C.avhdx
+-a--- 02/04/2021    12:18     4194304 PSDirect-D_79D1575C-19DC-408B-B95D-59DDDE432715.avhdx
+-a--- 01/04/2021    15:53     4194304 PSDirect-D.VHDX
+-a--- 02/04/2021    12:15 10238296064 PSDirect.Vhdx
+
+
+
+PS C:\Foo> # 16. Removing all the snapshots from HV1
+PS C:\Foo> Get-VMSnapshot -VMName PSDirect |
+             Remove-VMSnapshot
+
+
+
+
+PS C:\Foo> # 17. Checking VM data files again
+PS C:\Foo> Get-ChildItem -Path $Parent
+
+    Directory: C:\Vm\Vhds\PSDirect\Virtual Hard Disks
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          02/04/2021    12:33        4194304 PSDirect-D.VHDX
+-a---          02/04/2021    12:33    10271850496 PSDirect.Vhdx
+
+
+

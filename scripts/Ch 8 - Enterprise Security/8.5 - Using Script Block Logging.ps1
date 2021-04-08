@@ -2,7 +2,7 @@
 
 # Run on SRV1, login as admin
 
-# 1. Clear PowerShell Core operational log
+# 1. Clearing PowerShell Core operational log
 wevtutil.exe cl 'PowerShellCore/Operational'
 
 # 2. Enabling script block logging for the current user
@@ -29,7 +29,7 @@ $Before = Get-WinEvent -LogName 'PowerShellCore/Operational'
 Invoke-Command -ScriptBlock $SBtolog
 $After = Get-WinEvent -LogName 'PowerShellCore/Operational'
 
-# 6. Comparing before and after
+# 6. Comparing the events before and after you invoke the command
 "Before:  $($Before.Count) events"
 "After :  $($After.Count) events"
 

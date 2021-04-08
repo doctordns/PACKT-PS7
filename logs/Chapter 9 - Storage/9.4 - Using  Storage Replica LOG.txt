@@ -52,12 +52,12 @@ Property          :
 
 
 
-PS C:\Foo> # 5. And examine the same drives remotely on SRV2
-$SB2 = {
-  Get-ChildItem -Path F:\ -Recurse |
-    Measure-Object
-}
-Invoke-Command -ComputerName SRV2 -ScriptBlock $SB2
+PS C:\Foo> # 5. Examining the same drives remotely on SRV2
+PS C:\Foo> $SB2 = {
+             Get-ChildItem -Path F:\ -Recurse |
+               Measure-Object
+           }
+PS C:\Foo> Invoke-Command -ComputerName SRV2 -ScriptBlock $SB2
 
 Count          : 0
 Average        :
@@ -76,16 +76,7 @@ No Output
 
 
 
-
-# 7. Restarting SRV1 to finish the installation process
-
-
-no output
-
-
-
-
-PS C:\Foo> # 8. Adding the SR Feature to SRV2                                                                                                                                                    
+PS C:\Foo> # 7. Adding the SR feature to SRV2                                                                                                                                                    
 PS C:\Foo> $SB= {                                                                                                                                                                                   
              Add-WindowsFeature -Name Storage-Replica | Out-Null
            }
@@ -94,11 +85,25 @@ WARNING: You must restart this server to finish the installation process.
 
 
 
-# 9. Restarting SRV2 and waiting for the restart
+
+# 8. Restarting SRV2 and waiting for the restart
 
 
 
 no output
+
+
+
+
+
+
+# 9. Restarting SRV1 to finish the installation process
+
+
+no output
+
+
+
 
 
 
@@ -224,7 +229,7 @@ no output
 
 
 
-PS C:\Foo> # 17. Viewing the SR Partnership
+PS C:\Foo> # 17. Viewing the SR partnership
 PS C:\Foo> Get-SRPartnership
 
 RunspaceId              : 40ed48ce-142e-48bf-b2c4-f4ad19c4835f

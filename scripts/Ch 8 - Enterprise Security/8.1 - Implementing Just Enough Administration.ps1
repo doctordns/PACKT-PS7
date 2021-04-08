@@ -97,7 +97,7 @@ Register-PSSessionConfiguration @SCHT
 
 # 11. Viewing remoting endpoints
 Get-PSSessionConfiguration  |
-  Format-Table -Property NAME, PSVersion, Run*Account
+  Format-Table -Property Name, PSVersion, Run*Account
 
 # 12. Verifying what the user can do
 $SCHT = @{
@@ -127,10 +127,10 @@ Invoke-Command -ScriptBlock $SB1 @ICMHT |
   Sort-Object -Property Module |
     Select-Object -First 15
 
-# 16. Invoking a JEA-defined function in a JEA session As JerryG
+# 16. Invoking a JEA-defined function in a JEA session as JerryG
 Invoke-Command -ScriptBlock $SB2 @ICMHT
 
-# 17. Get DNSServer commands available to JerryG
+# 17. Getting DNSServer commands available to JerryG
 $C = Invoke-Command -ScriptBlock $SB3 @ICMHT 
 "$($C.Count) DNS commands available"
 

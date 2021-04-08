@@ -4,7 +4,7 @@
 
 
 
-# 1. Clear PowerShell Core operational log
+# 1. Clearing PowerShell Core operational log
 
 
 NO OUTPUT
@@ -63,7 +63,7 @@ NO OUTPUT
 
 
 
-PS C:\Foo> # 6. Comparing before and after
+PS C:\Foo> # 6. Comparing the events before and after you invoke the command
 PS C:\Foo> "Before:  $($Before.Count) events"
 PS C:\Foo> "After :  $($After.Count) events"
 Before:  1 events

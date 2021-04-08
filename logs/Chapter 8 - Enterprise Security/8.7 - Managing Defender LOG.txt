@@ -42,7 +42,7 @@ Running  WinDefend  Microsoft Defender Antivirus Service
 
 
 
-PS C:\Foo> # 4. Checking Defender status
+PS C:\Foo> # 4.Checking the operational status of Defender on this host
 PS C:\Foo> Get-MpComputerStatus
 
 AMEngineVersion                 : 1.1.17800.5

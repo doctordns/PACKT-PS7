@@ -1,5 +1,7 @@
 ﻿# Recipe 12.8 - Managing VM state
 
+# Run on HV1
+
 # 1. Getting the VM's state to check if it is off
 Stop-VM -Name PSDirect -WarningAction SilentlyContinue
 Get-VM -Name PSDirect
@@ -7,13 +9,13 @@ Get-VM -Name PSDirect
 # 2. Starting the VM
 Start-VM -VMName PSDirect
 Wait-VM -VMName PSDirect -For IPAddress
-Get-Vm -VMName PSDirect
+Get-VM -VMName PSDirect
 
 # 3. Suspending and viewing the PSDirect VM
 Suspend-VM -VMName PSDirect
 Get-VM -VMName PSDirect
 
-# 4. Resuming the VM
+# 4. Resuming the PSDirect VM
 Resume-VM -VMName PSDirect
 Get-VM -VMName PSDirect
 
@@ -23,9 +25,9 @@ Get-VM -VMName PSDirect
 
 # 6. Resuming the saved VM and viewing the status
 Start-VM -VMName PSDirect
-Get-Vm -VMName PSDirect
+Get-VM -VMName PSDirect
 
-# 7. Restarting a VM
+# 7. Restarting the PSDirect VM
 Restart-VM -VMName PSDirect -Force
 Get-VM     -VMName PSDirect
 

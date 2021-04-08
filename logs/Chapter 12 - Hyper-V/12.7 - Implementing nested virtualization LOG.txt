@@ -73,7 +73,9 @@ PSComputerName : PSDirect
 RunspaceId     : 6565ef1f-c33a-4b8b-94d5-603ed98781be
 Success        : True
 RestartNeeded  : Yes
-FeatureResult  : {Hyper-V, Hyper-V Module for Windows PowerShell, Hyper-V GUI Management Tools, Remote Server Administration Tools, Hyper-V Management Tools, Role Administration Tools}
+FeatureResult  : {Hyper-V, Hyper-V Module for Windows PowerShell, 
+                 Hyper-V GUI Management Tools, Remote Server Administration Tools, 
+                 Hyper-V Management Tools, Role Administration Tools}
 ExitCode       : SuccessRestartRequired
 
 WARNING: You must restart this server to finish the installation process
@@ -98,7 +100,7 @@ PS C:\Foo> # 9. Creating a nested VM inside the PSDirect VM
 PS C:\Foo> $SB2 = {
                    $VMname = 'NestedVM'
                    New-VM -Name $VMname -MemoryStartupBytes 1GB
-                    Get-VM
+                   Get-VM
            }
 PS C:\Foo> $IHT2 = @{
                      VMName = 'PSDirect'

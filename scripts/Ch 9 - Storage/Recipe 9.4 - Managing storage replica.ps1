@@ -41,21 +41,21 @@ Invoke-Command -ComputerName SRV2 -ScriptBlock $SB2
 # 6. Adding the storage replica feature to SRV1
 Add-WindowsFeature -Name Storage-Replica | Out-Null
 
-# 7. Restarting SRV1 to finish the installation process
-Restart-Computer
-
-# 8. Adding the Storage Replica Feature to SRV2
+# 7. Adding the Storage Replica Feature to SRV2
 $SB= {
   Add-WindowsFeature -Name Storage-Replica | Out-Null
 }
 Invoke-Command -ComputerName SRV2 -ScriptBlock $SB
 
-# 9. Restarting SRV2 and waiting for the restart
+# 8. Restarting SRV2 and waiting for the restart
 $RSHT = @{
   ComputerName = 'SRV2'
   Force        = $true
 }
 Restart-Computer @RSHT -Wait -For PowerShell
+
+# 9. Restarting SRV1 to finish the installation process
+Restart-Computer
 
 # 10. Creating a G: volume in disk 2 on SRV1
 $SB4 = {

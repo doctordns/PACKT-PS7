@@ -55,7 +55,7 @@ Number Friendly Name     Serial Number HealthStatus OperationalStatus Total Size
 
 
 
-PS C:\Foo> # 4. Viewing Volumes on SRV1
+PS C:\Foo> # 4. Viewing volumes on SRV1
 PS C:\Foo> Get-Volume | Sort-Object -Property DriveLetter
 
 DriveLetter FriendlyName         FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
