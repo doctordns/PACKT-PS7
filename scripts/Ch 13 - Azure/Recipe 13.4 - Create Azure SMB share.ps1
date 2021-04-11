@@ -9,7 +9,7 @@ $SAName    = 'packt42sa'    # storage account name
 $ShareName = 'packtshare'   # must be lower case!
 
 # 2. Logging in to your Azure account
-$CredAZ = Get-Credential
+$CredAZ  = Get-Credential     # Enter your Azure Credential details
 $Account = Connect-AzAccount -Credential $CredAZ
 $Account
 

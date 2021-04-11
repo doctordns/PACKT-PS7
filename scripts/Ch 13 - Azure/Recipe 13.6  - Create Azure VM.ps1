@@ -9,56 +9,31 @@ $SAName  = 'packt42sa'        # Storage account name
 $VNName  = 'packtvnet'        # Virtual Network Name
 $CloudSN = 'packtcloudsn'     # Cloud subnet name
 $NSGName = 'packt_nsg'        # NSG name
-$Ports   = @(80, 3389)        # ports to open in VPN
+$Ports   = @(80, 3389, 5985)  # ports to open in VPN
 $IPName  = 'Packt_IP1'        # Private IP Address name
 $User    = 'AzureAdmin'       # User Name
 $UserPS  = 'JerryRocks42!'    # User Password
 $VMName  = 'Packt42VM'        # VM Name
 
-#  2. Login to azure account
-$CredAZ = Get-Credential
-Login-AzAccount -Credential $CredAZ 
+#  2. Logging into your Azure account
+$CredAZ = Get-Credential     # Enter your Azure Credential details
+$Account = Connect-AzAccount -Credential $CredAZ 
 
-# 3. Ensuring the resource group is created
-$RG = Get-AzResourceGroup -Name $RgName -ErrorAction SilentlyContinue
-if (-not $rg) {
-    $RGTag = @{Publisher = 'Packt'}
-    $RGTag += @{Author = 'Thomas Lee'}
-    $RGHT1 = @{
-        Name     = $RgName
-        Location = $Locname
-        Tag      = $RGTag
-    }
-    $RG = New-AzResourceGroup @RGHT1
-    Write-Host  "RG $RgName created"
-}
+# 3. Getting the resource group is created
+$RG = Get-AzResourceGroup -Name $RgName 
 
-# 4. Ensure the Storage Account is created
-$SA = Get-AzStorageAccount -Name $SAName -ResourceGroupName $RgName -ErrorAction SilentlyContinue
-if (-not $SA) {
-    $SATag = [Ordered] @{Publisher = 'Packt'}
-    $SATag += @{Author = 'Thomas Lee'}
-    $SAHT - @{
-        Name              = $SAName
-        ResourceGroupName = $RgName
-        Location          = $Locname
-        Tag               = $SATag
-        $SkuName          = 'Standard_LRS'
-    }
-    $SA = New-AzStorageAccount @SAHT
-    Write-Host "SA $SAName created"
-}
-
+# 4. Getting the Storage Account
+$SA = Get-AzStorageAccount -Name $SAName -ResourceGroupName $RgName
 
 # 5.  Creating VM credentials
-$T = 'System.Management.Automation.PSCredential'
-$P = ConvertTo-SecureString -String $UserPS -AsPlainText -Force
-$VMCred = New-Object -TypeName $T -ArgumentList $User, $P
+$T      = 'System.Management.Automation.PSCredential'
+$P      = ConvertTo-SecureString -String $UserPS -AsPlainText -Force
+$VMCred = [PSCredential]::New($User, $P)
 
 # 6. Creating a simple VM using defaults
 $VMHT = @{
     ResourceGroupName   = $RgName
-    Location            = $Locname
+    Location            = $Locname 
     Name                = $VMName
     VirtualNetworkName  = $VNName
     SubnetName          = $CloudSN
@@ -69,12 +44,48 @@ $VMHT = @{
 }
 New-AzVm @VMHT 
 
-
-
-# 7. Get the VM's External IP address
+# 7. Getting the VM's External IP address
 $VMIP = Get-AzPublicIpAddress -ResourceGroupName $RGname  
 $VMIP = $VMIP.IpAddress
 "VM Public IP Address: [$VMIP]"
 
-# 8. Connect to the VM
+# 8. Connecting to the VM
 mstsc /v:"$VMIP"
+
+
+
+
+# For winrm testing
+# Remember:
+$User    = 'AzureAdmin'       # User Name
+$UserPS  = 'JerryRocks42!'    # User Password
+$VMName  = 'Packt42VM'        # VM Name
+
+$VMU = "$VMNAME\$User" # VM user name
+$PWSS = $UserPS | ConvertTo-SecureString -AsPlainText -Force
+$Cred = [pscredential]::new($VMU,$PWSS)
+$SO = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
+Enter-PSSession -ConnectionUri ("http://$VMIP" + ":5985") -Credential $cred -SessionOption $SO
+
+
+
+
+# Removing the VM
+# Remember:
+$RgName  = 'packt_rg'         # resource group name
+$VNName  = 'packtvnet'        # Virtual Network Name
+$VMName  = 'Packt42VM'        # VM Name
+$IPName  = 'Packt_IP1'        # Private IP Address name
+$NSGName = 'packt_nsg'        # NSG name
+# Remove the vm
+Remove-AZVm -Resourcegroup $RgName -Name $VMName -Force
+# the vms nic
+Remove-AzNetworkInterface -Resourcegroup $RgName -Name $VMName -Force
+# remove the private ip address
+Remove-AzPublicIpAddress -Resourcegroup $RgName -Name $IPName -Force
+# remove the disk
+Get-AzDisk | Where-Object name -match "packt42vm" | Remove-AzDisk -Force
+# remove the NSG
+Remove-AzNetworkSecurityGroup -Resourcegroup $RgName -Name $NSGName -Force
+# Remove the virtual network
+Remove-AzVirtualNetwork -name $VNName -Resourcegroup $RgName -Force

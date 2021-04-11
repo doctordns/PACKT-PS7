@@ -12,7 +12,7 @@ PowerShell credential request
 Enter your credentials.
 User: tfl@reskit.org
 Password for user tfl@reskit.org: ************************
-
+PS C:\Foo> $Account = Login-AzAccount -Credential $CredAZ
 
 
 

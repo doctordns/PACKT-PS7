@@ -33,7 +33,7 @@ Get-Module -Name AzureAD -ListAvailable |
   Format-Table @FTHT
 
 # 7. Logging into Azure 
-$CredAZ = Get-Credential     # Enter your Azure Credential details
+$CredAZ  = Get-Credential     # Enter your Azure Credential details
 $Account = Connect-AzAccount -Credential $CredAZ
 $Account
 
@@ -42,7 +42,7 @@ $AccountN = $Account.Context.account.id
 "Azure Account   : $AccountN"
 
 # 9. Viewing Azure subscription
-$SubID = $Subscription.Context.Subscription.Id
+$SubID = $Account.Context.Subscription.Id
 Get-AzSubscription -SubscriptionId $SubId |
   Format-List -Property *
 

@@ -1,6 +1,6 @@
 ﻿# Recipe 13.2 - Creating Azure Assets
 #
-#
+# Run on SRV1
 
 # 1. Setting key variables
 $Locname    = 'uksouth'     # Location name
@@ -8,8 +8,9 @@ $RgName     = 'packt_rg'    # Resource group we are using
 $SAName     = 'packt42sa'   # Storage account name
 
 # 2. Logging into your Azure Account
-$CredAZ = Get-Credential
-$Account = Login-AzAccount -Credential $CredAZ
+
+$CredAZ  = Get-Credential     # Enter your Azure Credential details
+$Account = Connect-AzAccount -Credential $CredAZ
 
 # 3. Creating a resource group and tagging it
 $RGTag  = [Ordered] @{Publisher='Packt'}

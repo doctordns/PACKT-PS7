@@ -1,4 +1,4 @@
-# Recipe 12-3 Explore Azure Storage Account  LOG
+# Recipe 13.3 - Exploring Azure Storage Account  LOG
 
 # Run from SRV1
 
@@ -10,58 +10,46 @@
 no output
 
 
-PS C:\Foo> # 2. Login to your Azure Account and ensure the RG and SA is created.
+PS C:\Foo> # 2. Login to your Azure Account 
+PS C:\Foo> $CredAZ = Get-Credential     # Enter your Azure Credential details
 PowerShell credential request
 Enter your credentials.
 User: tfl@reskit.org
 Password for user foo: ***********
-
-Account        SubscriptionName TenantId                             Environment
--------        ---------------- --------                             -----------
-tfl@reskit.org Free Trial       b7280ea2-9be9-469e-97c2-0d5d1d196d39 AzureCloud
+PS C:\Foo> $Account = Connect-AzAccount -Credential $CredAZ
 
 
 
 
 
-
-# 3. Ensure the RG and SA is created
-
-
-
-no output
-
-
-
-
-PS C:\Foo> # 4. Get and display the storage account key
+PS C:\Foo> # 3. Getting and displaying the storage account key
 PS C:\Foo> $SAKHT = @{
->>     Name              = $SAName
->>     ResourceGroupName = $RgName
->> }
+             Name              = $SAName
+             ResourceGroupName = $RgName
+           }
 PS C:\Foo> $Sak = Get-AzStorageAccountKey  @SAKHT
 PS C:\Foo> $Sak
 
 KeyName Value                                                                                   Permissions
 ------- -----
 key1    L8H/U7DvDq9uXS4o9ECy2LzAI1Ekh/ziglT6A6tSj9ShJLe2EI94EaJOQzHivf3cixV420tQ8upcyIYFOZc9ig==        Full
-key2    7cFKLhqmlRdlLsftLAG/WgJpPsFSW5uJGaXBVaQ8R8QzsD4854fKtNXzh670Cpg+KX5ad6Qkacfu8cHaC/KBNw==        Full
+key2    7cFKLhqmlRdlLsftJAG/WgJpPsFSW5uJGaXBVaQ8R8QzsD4854fKtNXzh420Cpg+KX5ad6Qkacfu8cHaC/KBNw==        Full
 
 
 
-# 5. Extract the first key's 'password'
+# 4. Extract the first key's 'password'
 
 
 no output
 
 
 
-PS C:\Foo> # 6. Get the Storage Account context which encapsulates credentials
+PS C:\Foo> # 5. Getting the Storage Account context which encapsulates credentials
 PS C:\Foo> #   for the storage account)
 PS C:\Foo> $SCHT = @{
->>     StorageAccountName = $SAName
->>     StorageAccountKey = $Key
->> }
+             StorageAccountName = $SAName
+             StorageAccountKey = $Key
+           }
 PS C:\Foo> $SACon = New-AzStorageContext @SCHT
 PS C:\Foo> $SACon
 
@@ -81,7 +69,7 @@ Track2OauthToken    :
 EndPointSuffix      : core.windows.net/
 ConnectionString    : BlobEndpoint=https://packt42sa.blob.core.windows.net/;QueueEndpoint=https://packt42sa.queue.core.windows.net/;TableEndpoint=https://p 
                       ackt42sa.table.core.windows.net/;FileEndpoint=https://packt42sa.file.core.windows.net/;AccountName=packt42sa;AccountKey=L8H/U7DvDq9uX 
-                      S4o9ECy2LzAI1Ekh/ziglT6A6tSj9ShJLe2EI94EaJOQzHivf3cixV4f2tQ8upcyIYFOZc9ig==
+                      S4o9ECy2LzAI1Ekh/ziglT6A6tSj9ShJLe2EI94EaJOQzHivf3cixV420tQ8upcyIYFOZc9ig==
 
 
 
@@ -89,11 +77,12 @@ ConnectionString    : BlobEndpoint=https://packt42sa.blob.core.windows.net/;Queu
 
 
 
-PS C:\Foo> # 7. Creating 2 blob containers
+
+PS C:\Foo> # 6. Creating 2 blob containers
 PS C:\Foo> $CHT = @{
->>   Context    = $SACon
->>   Permission = 'Blob'
->> }
+             Context    = $SACon
+             Permission = 'Blob'
+           }
 PS C:\Foo> New-AzStorageContainer -Name $CName @CHT
 
    Blob End Point: https://packt42sa.blob.core.windows.net/
@@ -113,38 +102,38 @@ packtcontainer2      Blob                 04/04/2021 20:04:15 +00:00
 
 
 
-PS C:\Foo> # 8. View blob containers
+PS C:\Foo> # 7. Viewing blob containers
 PS C:\Foo> Get-AzStorageContainer -Context $SACon |
->>     Select-Object -ExpandProperty CloudBlobContainer
+             Select-Object -ExpandProperty CloudBlobContainer
 
    Blob End Point: https://packt42sa.blob.core.windows.net/
 
-Name                 Uri                                                          LastModified
-----                 ---                                                          ------------
-packtcontainer       https://packt42sa.blob.core.windows.net/packtcontainer       2021-04-04 20:04:15Z
-packtcontainer2      https://packt42sa.blob.core.windows.net/packtcontainer2      2021-04-04 20:04:15Z
+Name             Uri                                                      LastModified
+----             ---                                                      ------------
+packtcontainer   https://packt42sa.blob.core.windows.net/packtcontainer   2021-04-04 20:04:15Z
+packtcontainer2  https://packt42sa.blob.core.windows.net/packtcontainer2  2021-04-04 20:04:15Z
 
 
 
-PS C:\Foo> # 9. Create a blob
+PS C:\Foo> # 8. Creating a blob
 PS C:\Foo> 'This is a small Azure blob!!' | Out-File .\azurefile.txt
 PS C:\Foo> $BHT = @{
->>     Context = $SACon
->>     File = '.\azurefile.txt'
->>     Container = $CName
->> }
+             Context = $SACon
+             File = '.\azurefile.txt'
+             Container = $CName
+           }
 PS C:\Foo> $Blob = Set-AzStorageBlobContent  @BHT
 PS C:\Foo> $Blob
 
    AccountName: packt42sa, ContainerName: packtcontainer
 
-Name                 BlobType  Length          ContentType                    LastModified         AccessTier SnapshotTime                 IsDeleted  VersionId
-----                 --------  ------          -----------                    ------------         ---------- ------------                 ---------  ---------
-azurefile.txt        BlockBlob 30              application/octet-stream       2021-04-04 20:05:22Z Hot                                     False
+Name           BlobType  Length  ContentType               LastModified         AccessTier SnapshotTime  IsDeleted  VersionId
+----           --------  ------  -----------               ------------         ---------- ------------  ---------  ---------
+azurefile.txt  BlockBlob 30      application/octet-stream  2021-04-04 20:05:22Z Hot                          False
 
 
 
-PS C:\Foo> # 10. Construct and display the blob name
+PS C:\Foo> # 9. Constructing and displaying the blob name
 PS C:\Foo> $BlobUrl = "$($Blob.Context.BlobEndPoint)$CName/$($Blob.name)"
 PS C:\Foo> $BlobUrl
 https://packt42sa.blob.core.windows.net/packtcontainer/azurefile.txt
@@ -152,7 +141,7 @@ https://packt42sa.blob.core.windows.net/packtcontainer/azurefile.txt
 
 
 
-PS C:\Foo>    # 11. view the URL via IE
+PS C:\Foo> # 10. Downloading and viewing the blob
 PS C:\Foo> $OutFile = 'C:\Foo\Test.Txt'
 PS C:\Foo> Start-BitsTransfer -Source $BlobUrl -Destination $OutFile
 PS C:\Foo> Get-Content -Path $OutFile

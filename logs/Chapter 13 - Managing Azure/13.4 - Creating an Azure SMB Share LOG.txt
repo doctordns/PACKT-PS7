@@ -2,20 +2,20 @@
 
 # Run from SRV1
 
-# 1.  Define Variables
+# 1.  Define variables
 
 
 
 no output
 
 
-PS C:\Foo> # 2. Login to your Azure Account
+PS C:\Foo> # 2. Login to your Azure account
 PS C:\Foo> $CredAZ = Get-Credential
-
 PowerShell credential request
 Enter your credentials.
 User: tfl@reskit.org
-Password for user tfl@reskit.org: *********
+Password for user tfl@reskit.org: ************************
+PS C:\Foo> $Account = Login-AzAccount -Credential $CredAZ
 PS C:\Foo> $Account
 
 Account        SubscriptionName TenantId                             Environment
@@ -24,7 +24,7 @@ tfl@reskit.org Reskit.Org       b7280ea2-9be9-469e-97c2-0d5d1d196d39 AzureCloud
 
 
 
-# 3. Getting storage account, accountkey and context
+# 3. Getting storage account, account key and context
 
 
 no output
@@ -144,5 +144,7 @@ M:\Foo\Recipe.Txt -a--- 30
 
 
 PS C:\Foo> # 12. Getting the content from the file
-PS C:\Foo> Get-Content -Path M:\Foo\Recipe.txt
-Azure and PowerShell 7 Rock!!!
+PS C:\Foo> Get-Content -Path M:\Foo\Recipe.tx
+
+
+

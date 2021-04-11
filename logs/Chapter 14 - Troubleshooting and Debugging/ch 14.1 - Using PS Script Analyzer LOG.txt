@@ -1,0 +1,91 @@
+# 14.1 Using PS Script Analyzer
+
+# Run on SRV1
+
+
+
+PS C:\Foo> # 1. Discover PS Script Analyzer
+PS C:\Foo> Find-Module -Name PSScriptAnalyzer |
+>>   Format-List Name, Type, Desc*, Author, Company*, *Date, *URI*
+
+Name          : PSScriptAnalyzer
+Type          : Module
+Description   : PSScriptAnalyzer provides script analysis and checks for potential 
+                code defects in the scripts by applying a group of built-in or 
+                customized rules on the scripts being analyzed.
+Author        : Microsoft Corporation
+CompanyName   : {PowerShellTeam, JamesTruher-MSFT}
+PublishedDate : 28/07/2020 16:41:52
+InstalledDate :
+UpdatedDate   :
+LicenseUri    : https://github.com/PowerShell/PSScriptAnalyzer/blob/master/LICENSE
+ProjectUri    : https://github.com/PowerShell/PSScriptAnalyzer
+IconUri       : https://raw.githubusercontent.com/powershell/psscriptanalyzer/master/logo.png
+
+
+
+
+# 2. Installing the script analyzer module
+
+
+
+no output
+
+
+
+PS C:\Foo> # 3. Discovering the commands in this module
+PS C:\Foo> G-Command -Module PSScriptAnalyzer
+
+CommandType   Name                     Version  Source
+-----------   ----                     -------  ------
+Cmdlet        Get-ScriptAnalyzerRule   1.19.1   PSScriptAnalyzer
+Cmdlet        Invoke-Formatter         1.19.1   PSScriptAnalyzer
+Cmdlet        Invoke-ScriptAnalyzer    1.19.1   PSScriptAnalyzer
+
+
+
+
+
+PS C:\Foo> # 4. Discovering analyizer rules
+PS C:\Foo> Get-ScriptAnalyzerRule |
+             Group-Object -Property Severity
+
+Count Name          Group
+----- ----          -----
+   11 Information   {PSAvoidUsingPositionalParameters, PSAvoidTrailingWhitespace, PSAvoidUsin…
+   46 Warning       {PSAlignAssignmentStatement, PSAvoidUsingCmdletAliases, PSAvoidAssignment…
+    7 Error         {PSAvoidUsingUsernameAndPasswordParams, PSAvoidUsingComputerNameHardcoded…
+
+
+
+PS C:\Foo> # 5. Examining a rule
+PS C:\Foo> Get-ScriptAnalyzerRule | 
+             Select-Object -First 1 |
+               Format-List
+
+Name        : 
+Severity    : Warning
+Description : Line up assignment statements such that the assignment operator are aligned.
+SourceName  : PS
+
+
+
+
+# 6. Creating a file with issues
+
+
+no output
+
+
+
+PS C:\Foo> # 7. Checking the file
+PS C:\Foo> Get-ChildItem C:\Foo\Bad.ps1
+
+    Directory: C:\Foo
+
+Mode            LastWriteTime   Length Name
+----            -------------   ------ ----
+-a---     11/04/2021    15:34      567 Bad.ps1
+
+
+
