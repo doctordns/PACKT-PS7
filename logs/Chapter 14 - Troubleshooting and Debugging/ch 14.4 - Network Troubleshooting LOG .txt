@@ -1,0 +1,120 @@
+# 14.4 Network Troubleshooting   LOG
+
+# Run on SRV1
+
+
+
+#
+
+# 1. Getting the DNS name of this host
+
+no output
+
+
+PS C:\Foo> # 2. Getting DNS Server address
+PS C:\Foo> $DNSHT = @{
+             InterfaceAlias = "Ethernet"
+             AddressFamily  = 'IPv4'
+           }
+PS C:\Foo> $DNServers = (Get-DnsClientServerAddress @DNSHT).ServerAddresses
+PS C:\Foo> $DNServers
+10.10.10.10
+10.10.10.11
+
+
+
+
+
+PS C:\Foo> # 3. Checking if the DNS Servers are online
+PS C:\Foo> Foreach ($DNSServer in $DNServers) {
+             $TestDNS = Test-NetConnection -Port 53 -ComputerName $DNSServer
+             $Result  = $TestDNS ? "Available" : ' Not reachable'
+             "DNS Server [$DNSServer] is $Result"
+           }
+DNS Server [10.10.10.10] is Available
+DNS Server [10.10.10.11] is Available
+
+
+
+PS C:\Foo> # 4. Defining a search for DCs in our domain
+PS C:\Foo> $DNSRRName = "_ldap._tcp." + $DNSDomain
+PS C:\Foo> $DNSRRName
+_ldap._tcp.RESKIT.ORG
+
+
+PS C:\Foo> # 5. Getting the DC SRV records
+PS C:\Foo> $DCRRS = Resolve-DnsName -Name $DNSRRName -Type all | 
+             Where-Object IP4address -ne $null
+PS C:\Foo> $DCRRS
+
+Name             Type  TTL   Section    IPAddress
+----             ----  ---   -------    ---------
+dc1.reskit.org   A     3600  Additional 10.10.10.10
+dc2.reskit.org   A     3600  Additional 10.10.10.11
+
+
+
+
+PS C:\Foo> # 6. Testing each DC for availability over LDAP
+PS C:\Foo> ForEach ($DNSRR in $DCRRS){
+             $TestDC = Test-NetConnection -Port 389 -ComputerName $DNSRR.IPAddress
+             $Result  = $TestDC ? 'DC Available' : 'DC Not reachable'
+             "DC [$($DNSRR.Name)]  at [$($DNSRR.IPAddress)]   $Result for LDAP" 
+           }
+DC [dc1.reskit.org]  at [10.10.10.10]   DC Available for LDAP
+DC [dc2.reskit.org]  at [10.10.10.11]   DC Available for LDAP
+
+
+
+
+
+PS C:\Foo> # 7. Testing DC availability for SMB
+PS C:\Foo> ForEach ($DNSRR in $DCRRS){
+             $TestDC = Test-NetConnection -Port 445 -ComputerName $DNSRR.IPAddress
+             $Result  = $TestDC ? 'DC Available' : 'DC Not reachable'
+             "DC [$($DNSRR.Name)]  at [$($DNSRR.IPAddress)]   $Result for SMB"
+           }
+DC [dc1.reskit.org]  at [10.10.10.10]   DC Available for SMB
+DC [dc2.reskit.org]  at [10.10.10.11]   DC Available for SMB
+
+
+
+
+
+PS C:\Foo> # 8. Testing default gateway
+PS C:\Foo> $NIC    = Get-NetIPConfiguration -InterfaceAlias Ethernet
+PS C:\Foo> $DG     = $NIC.IPv4DefaultGateway.NextHop
+PS C:\Foo> $TestDG = Test-NetConnection $DG
+PS C:\Foo> $Result  = $TestDG.PingSucceeded ? "Reachable" : ' NOT Reachable'
+PS C:\Foo> "Default Gateway for [$($NIC.Interfacealias) is [$DG] - $Result"
+Default Gateway for [Ethernet is [10.10.1.100] - Reachable
+
+
+
+
+PS C:\Foo> # 9. Testing a remote web site using ICMP
+PS C:\Foo> $Site = "WWW.Packt.Com"
+PS C:\Foo> $TestIP     = Test-NetConnection -ComputerName $Site
+PS C:\Foo> $ResultIP   = $TestIP ? "Ping OK" : "Ping FAILED" 
+PS C:\Foo> "ICMP to $Site - $ResultIP"
+ICMP to WWW.Packt.Com - Ping OK
+
+
+
+PS C:\Foo> # 10. Testing a remote web site using port 80
+PS C:\Foo> $TestPort80 = Test-Connection -ComputerName $Site -TcpPort 80
+PS C:\Foo> $Result80    = $TestPort80  ? 'Site Reachable' : 'Site NOT reachable'
+PS C:\Foo> "$Site over port 80   : $Result80"
+WWW.Packt.Com over port 80   : Site Reachable
+
+
+PS C:\Foo> # 11. Testing a remote web site using port 443
+PS C:\Foo> $TestPort443 = Test-Connection -ComputerName $Site -TcpPort 443
+PS C:\Foo> $Result443   = $TestPort443  ? 'Site Reachable' : 'Site NOT reachable'
+PS C:\Foo> "$Site over port 443  : $Result443"
+WWW.Packt.Com over port 443  : Site Reachable
+
+
+
+
+

@@ -14,12 +14,12 @@ $PSVersionTable
 $Host
 
 # 4. Looking at the PowerShell process
-Get-Process -Id $PID| 
+Get-Process -Id $PID |
   Format-Custom -Property MainModule -Depth 1
 
 # 5. Looking at resource usage statistics
-Get-Process -Id $PID | 
-  Format-List CPU,*Memory* 
+Get-Process -Id $PID |
+  Format-List CPU,*Memory*
 
 # 6. Update PowerShell Help
 $Before = Get-Help -Name about_*
@@ -29,5 +29,5 @@ $Delta = $After.Count - $Before.Count
 "{0} Conceptual Help Files Added" -f $Delta
 
 # 7. How many commands are available?
-Get-Command | 
+Get-Command |
   Group-Object -Property CommandType

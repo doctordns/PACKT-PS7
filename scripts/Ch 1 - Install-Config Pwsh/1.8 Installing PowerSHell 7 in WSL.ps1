@@ -36,7 +36,7 @@ wsl --update
 # goto https://docs.microsoft.com/en-us/windows/wsl/install-manual to see how to dowunoad other distros
 $Source = 'https://aka.ms/wslubuntu2004'
 $Target = 'C:\Foo\wslubuntu2004.zip'
-Start-BitsTransfer -Source $Source -Destination $Target  
+Start-BitsTransfer -Source $Source -Destination $Target
 
 # 8. Expand the download into C:\Ubuntu
 $Ubuntu = 'C:\Ubuntu'
@@ -44,7 +44,6 @@ Expand-Archive  -Path $Target -DestinationPath $Ubuntu
 Get-ChildItem -Path $Ubuntu
 
 # 9. Run the Ubuntu installation
-C:\Ubuntu\Ubuntu2004.exe 
+C:\Ubuntu\Ubuntu2004.exe
 
 # 10 Use WSL for the first time
-!

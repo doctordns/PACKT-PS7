@@ -12,7 +12,7 @@ Get-PSDrive | Where-Object Provider -match 'registry'
 $Path = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
 Get-Item -Path $Path
 
-# 4. Getting Registered Owner
+# 4. Getting registered owner
 (Get-ItemProperty -Path $Path -Name RegisteredOwner).RegisteredOwner
 
 # 5. Counting aliases in the Alias: drive

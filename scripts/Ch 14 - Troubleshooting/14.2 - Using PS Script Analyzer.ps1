@@ -1,8 +1,8 @@
-# 14.1 Using PS Script Analyzer
+# 14.2 Using PS Script Analyzer
 
 # Run on SRV1
 
-# 1. Discover PS Script Analyzer
+# 1. Discovering the PS Script Analyzer module
 Find-Module -Name PSScriptAnalyzer |
   Format-List Name, Type, Desc*, Author, Company*, *Date, *URI*
   
@@ -12,7 +12,7 @@ Install-Module -Name PSScriptAnalyzer -Force
 # 3. Discovering the commands in this module
 Get-Command -Module PSScriptAnalyzer
 
-# 4. Discovering analyizer rules
+# 4. Discovering analyzer rules
 Get-ScriptAnalyzerRule | 
   Group-Object -Property Severity 
     Sort-Object -Property Count -Descending
@@ -22,7 +22,7 @@ Get-ScriptAnalyzerRule |
   Select-Object -First 1 |
     Format-List
 
-# 6. Creating a file with issues
+# 6. Creating a script file with issues
 @'
 # Bad.ps1
 # A file to demonstrate Script Analyzer
@@ -35,18 +35,47 @@ $Services = Get-Service 'foo' 21
 Function foo {"Foo"}
 ### Function redefines a built in command
 Function Get-ChildItem {"Sorry Dave I can not do that"}
-### Command uses a hard codeed compueter name
+### Command uses a hard coded computer name
 Test-Connection -ComputerName DC1
-### A line that has trailing whiteace
+### A line that has trailing white space
 $foobar ="foobar"                                                                                       
 ### A line using a global variable
 $Global:foo
 '@ | Out-File -FilePath "C:\Foo\Bad.ps1"
 
-# 7. Checking the file
+# 7. Checking the newly created script file
 Get-ChildItem C:\Foo\Bad.ps1
 
 
 # 8. Analyzing Bad.ps1
 Invoke-ScriptAnalyzer -Path C:\Foo\Bad.ps1 |
   Sort-Object -Property Line
+
+
+# 9. Defining a function to format more nicely
+$Script1 = @'
+function foo {"hello!"
+Get-ChildItem -Path C:\FOO
+}
+'@
+
+# 10. Defining formatting settings
+$Settings = @{
+  IncludeRules = @("PSPlaceOpenBrace", "PSUseConsistentIndentation")
+  Rules = @{
+    PSPlaceOpenBrace = @{
+      Enable = $true
+      OnSameLine = $true
+    }
+    PSUseConsistentIndentation = @{
+      Enable = $true
+    }
+  }
+}
+
+# 11. Invoking formatter
+Invoke-Formatter -ScriptDefinition $Script1 -Settings $Settings
+
+# 12. Changing settings and reformatting
+$Settings.Rules.PSPlaceOpenBrace.OnSameLine = $False
+Invoke-Formatter -ScriptDefinition $Script1 -Settings $Settings

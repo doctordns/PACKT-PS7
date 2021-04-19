@@ -1,7 +1,7 @@
 # 1.1 Install PowerShell 7
 
 # Run on SRV1
-# Run using an elevated Windows PowerShell 5.1 ISE 
+# Run using an elevated Windows PowerShell 5.1 ISE
 
 # 1. Set Execution Policy for Windows PowerShell
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
@@ -9,7 +9,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 # 2. Install the latest versions of Nuget and PowerShellGet
 Install-PackageProvider Nuget -MinimumVersion 2.8.5.201 -Force |
   Out-Null
-Install-Module -Name PowerShellGet -Force -AllowClobber 
+Install-Module -Name PowerShellGet -Force -AllowClobber
 
 # 3. Ensure the C:\Foo Folder exists
 $LFHT = @{
@@ -21,7 +21,7 @@ New-Item -Path C:\Foo @LFHT | Out-Null
 # 4. Download PowerShell 7 installation script
 Set-Location C:\Foo
 $URI = 'https://aka.ms/install-powershell.ps1'
-Invoke-RestMethod -Uri $URI | 
+Invoke-RestMethod -Uri $URI |
   Out-File -FilePath C:\Foo\Install-PowerShell.ps1
 
 # 5. View Installation Script Help
@@ -30,7 +30,7 @@ Get-Help -Name C:\Foo\Install-PowerShell.ps1
 # 6. Install PowerShell 7
 $EXTHT = @{
   UseMSI                 = $true
-  Quiet                  = $true 
+  Quiet                  = $true
   AddExplorerContextMenu = $true
   EnablePSRemoting       = $true
 }
@@ -48,12 +48,12 @@ $URI = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
 $ProfileFile    = $Profile.CurrentUserCurrentHost
 New-Item $ProfileFile -Force -WarningAction SilentlyContinue |
    Out-Null
-(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
+(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content |
   Out-File -FilePath  $ProfileFile
 $ProfilePath    = Split-Path -Path $ProfileFile
 $ChildPath      = 'Microsoft.PowerShell_profile.ps1'
 $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath $ChildPath
-(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content | 
+(Invoke-WebRequest -Uri $URI -UseBasicParsing).Content |
   Out-File -FilePath  $ConsoleProfile
 
 # 9. Checking versions of PowerShell 7 loaded

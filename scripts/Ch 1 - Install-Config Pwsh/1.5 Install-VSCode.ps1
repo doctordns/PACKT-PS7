@@ -1,7 +1,7 @@
 ﻿# 1.5 Install-VSCode
-# 
+#
 # Run on SRV1 after installing PowerShell 7
-# Run in PowerShell 7 console 
+# Run in PowerShell 7 console
 
 # 1. Downloading the VS Code installation script from PS Gallery
 $VSCPATH = 'C:\Foo'
@@ -16,7 +16,7 @@ $InstallHT = @{
   BuildEdition         = 'Stable-System'
   AdditionalExtensions = $Extensions
   LaunchWhenDone       = $true
-}             
+}
 .\Install-VSCode.ps1 @InstallHT | Out-Null
 
 # 3. Exiting from VS Code
@@ -26,7 +26,7 @@ $InstallHT = @{
 # 5. Opening a VS Code Terminal and running PowerShell 7.
 
 # 6. Creating a profile file for VS Code
-$SAMPLE = 
+$SAMPLE =
   'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
   'scripts/goodies/Microsoft.VSCode_profile.ps1'
 (Invoke-WebRequest -Uri $Sample).Content |
@@ -102,14 +102,14 @@ $XML | Out-File -FilePath C:\Foo\Layout.Xml
 #     You get an error if this is not run in an elevated session
 Import-StartLayout -LayoutPath C:\Foo\Layout.Xml -MountPath C:\
 
-# 12. Creating a profile file for PWSH 7 Consoles  
-$ProfileFile2   = 'Microsoft.PowerShell_Profile.ps1'  
+# 12. Creating a profile file for PWSH 7 Consoles
+$ProfileFile2   = 'Microsoft.PowerShell_Profile.ps1'
 $ConsoleProfile = Join-Path -Path $ProfileFolder -ChildPath $ProfileFile2
 New-Item $ConsoleProfile -Force -WarningAction SilentlyContinue |
    Out-Null
 $URI2 = 'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
-        "scripts/goodies/$ProfileFile2"    
-(Invoke-WebRequest -Uri $URI2).Content | 
+        "scripts/goodies/$ProfileFile2"
+(Invoke-WebRequest -Uri $URI2).Content |
   Out-File -FilePath  $ConsoleProfile
 
 # 13. Logging off 

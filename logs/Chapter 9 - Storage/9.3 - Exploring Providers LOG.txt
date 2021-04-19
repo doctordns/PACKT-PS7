@@ -75,7 +75,7 @@ CurrentVersion   SystemRoot                : C:\WINDOWS
 
 
 
-PS C:\Foo> # 4. Getting Registered Owner
+PS C:\Foo> # 4. Getting registered owner
 PS C:\Foo> (Get-ItemProperty -Path $Path -Name RegisteredOwner).RegisteredOwner
 Packt book readers
 

@@ -6,8 +6,8 @@
 $CascadiaFont    = 'Cascadia.ttf'    # font file name
 $CascadiaRelURL  = 'https://github.com/microsoft/cascadia-code/releases'
 $CascadiaRelease = Invoke-WebRequest -Uri $CascadiaRelURL # Get all of them
-$CascadiaPath    = "https://github.com" + ($CascadiaRelease.Links.href | 
-                      Where-Object { $_ -match "($CascadiaFont)" } | 
+$CascadiaPath    = "https://github.com" + ($CascadiaRelease.Links.href |
+                      Where-Object { $_ -match "($CascadiaFont)" } |
                         Select-Object -First 1)
 $CascadiaFile   = "C:\Foo\$CascadiaFont"
 

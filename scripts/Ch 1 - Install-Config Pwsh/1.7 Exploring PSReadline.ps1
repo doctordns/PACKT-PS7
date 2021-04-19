@@ -16,14 +16,14 @@ $Unbound = (Get-PSReadLineKeyHandler -Unbound).count
 "$Unbound unbound key handlers"
 
 # 4. Getting the PSReadline options
-Get-PSReadLineOption 
+Get-PSReadLineOption
 
 # 5.	Determining the VS Code theme name
 $Path       = $Env:APPDATA
 $CP         = '\Code\User\Settings.json'
 $JsonConfig = Join-Path  $Path -ChildPath $CP
 $ConfigJSON = Get-Content $JsonConfig
-$Theme = $ConfigJson | 
+$Theme = $ConfigJson |
            ConvertFrom-Json |
              Select-Object -ExpandProperty 'workbench.colorTheme'
 
@@ -33,9 +33,6 @@ If ($Theme -eq 'Visual Studio Light') {
     Member    = "`e[33m"
     Number    = "`e[34m"
     Parameter = "`e[35m"
-    Command   = "`e[34m"      
+    Command   = "`e[34m"
   }
 }
-
-
-
