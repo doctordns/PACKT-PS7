@@ -63,7 +63,7 @@ no output
 no output
 
 
-# 7. Adding Reskit\Administrators to have read permossions
+# 7. Adding Reskit\Administrators to have read permissions
 
 
 

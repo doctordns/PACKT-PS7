@@ -1,0 +1,103 @@
+# 9.3 - Getting Local and Remote Objects
+# 
+# run on SRV1
+
+
+
+
+PS C:\Foo> # 1. Using Get-CimInstance in the default namespace
+PS C:\Foo> Get-CimInstance -ClassName Win32_Share
+
+Name   Path          Description
+----   ----          -----------
+ADMIN$ C:\Windows    Remote Admin
+C$     C:\           Default share
+E$     E:\           Default share
+H$     H:\           Default share
+IPC$                 Remote IPC
+RKRepo C:\RKRepo     Reskit Repository
+S$     S:\           Default share
+screen C:\FileScreen
+T$     T:\           Default share
+W$     W:\           Default share
+X$     X:\           Default share
+Y$     Y:\           Default share
+Z$     Z:\           Default share
+
+
+
+
+PS C:\Foo> # 2. Getting WMI objects from a non-default namespace
+PS C:\Foo> $GCIMHT1 = @{
+             Namespace = 'root\directory\LDAP'
+             ClassName = 'ds_group'
+           }
+PS C:\Foo> Get-CimInstance @GCIMHT1 |
+             Sort-Object -Property Name |
+               Select-Object -First 10 |
+                 Format-Table -Property DS_name, DS_distinguishedName
+
+DS_name                            DS_distinguishedName
+-------                            --------------------
+Administrators                     CN=Administrators,CN=Builtin,DC=Reskit,DC=Org
+Domain Guests                      CN=Domain Guests,CN=Users,DC=Reskit,DC=Org
+Group Policy Creator Owners        CN=Group Policy Creator Owners,CN=Users,DC=Reskit,DC=Org
+RAS and IAS Servers                CN=RAS and IAS Servers,CN=Users,DC=Reskit,DC=Org
+Server Operators                   CN=Server Operators,CN=Builtin,DC=Reskit,DC=Org
+Account Operators                  CN=Account Operators,CN=Builtin,DC=Reskit,DC=Org
+Pre-Windows 2000 Compatible Access CN=Pre-Windows 2000 Compatible Access,CN=Builtin,DC=Reskit,DC=Org
+Incoming Forest Trust Builders     CN=Incoming Forest Trust Builders,CN=Builtin,DC=Reskit,DC=Org
+Windows Authorization Access Group CN=Windows Authorization Access Group,CN=Builtin,DC=Reskit,DC=Org
+Terminal Server License Servers    CN=Terminal Server License Servers,CN=Builtin,DC=Reskit,DC=Org
+
+
+
+
+
+
+PS C:\Foo> # 3. Using -Filter
+PS C:\Foo> $Filter = "ds_Name LIKE '%operator%' "
+PS C:\Foo> Get-CimInstance @GCIMHT1  -Filter $Filter |
+             Format-Table -Property DS_Name
+
+DS_Name
+-------
+Print Operators
+Backup Operators
+Network Configuration Operators
+Cryptographic Operators
+Access Control Assistance Operators
+Server Operators
+Account Operators
+
+
+PS C:\Foo> # 4. Using a WMI Query
+PS C:\Foo> # 4. Using a WMI Query
+PS C:\Foo> $Q = @"
+             SELECT * from ds_group
+               WHERE ds_Name like '%operator%'
+           "@
+PS C:\Foo> Get-CimInstance -Query $q -Namespace 'root\directory\LDAP' |
+             Format-Table DS_Name
+
+DS_Name
+-------
+Print Operators
+Backup Operators
+Network Configuration Operators
+Cryptographic Operators
+Access Control Assistance Operators
+Server Operators
+Account Operators
+
+
+PS C:\Foo> # 5. Getting a WMI object from a remote system (DC1)
+PS C:\Foo> Get-CimInstance -CimSession DC1 -ClassName Win32_ComputerSystem |
+             Format-Table -AutoSize
+
+Name PrimaryOwnerName   Domain     TotalPhysicalMemory Model           Manufacturer          PSComputerName
+---- ----------------   ------     ------------------- -----           ------------          --------------
+DC1  Packt book readers Reskit.Org 4294496256          Virtual Machine Microsoft Corporation DC1
+
+
+

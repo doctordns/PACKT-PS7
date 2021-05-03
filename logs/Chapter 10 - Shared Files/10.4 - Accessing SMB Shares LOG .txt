@@ -71,12 +71,12 @@ The command completed successfully.
 
 
 
-PS C:\Foo> # 5. Creating a drive mapping, mapping the r: to the share on server SRV2
+PS C:\Foo> # 5. Creating a drive mapping, mapping R: to the share on server SRV2
 PS C:\Foo> New-SmbMapping -LocalPath r: -RemotePath \\SRV2\ITShare
 
 Status Local Path Remote Path
 ------ ---------- -----------
-OK     r:         \\SRV2\ITShare
+OK     R:         \\SRV2\ITShare
 
 
 
@@ -92,7 +92,7 @@ OK     R:         \\SRV2\ITShare
 
 
 
-PS C:\Foo> # 7. View the shared folder contents
+PS C:\Foo> # 7. Viewing the shared folder contents
 PS C:\Foo> Get-ChildItem -Path R:
 
     Directory: R:\

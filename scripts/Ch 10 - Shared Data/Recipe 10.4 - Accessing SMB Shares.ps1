@@ -17,13 +17,13 @@ Get-SmbClientNetworkInterface |
 # 4. Examining the shares provided by SRV2
 net view \\SRV2
 
-# 5. Creating a drive mapping, mapping the R: to the share on server SRV2
+# 5. Creating a drive mapping, mapping R: to the share on server SRV2
 New-SmbMapping -LocalPath R: -RemotePath \\SRV2\ITShare
 
 # 6. Viewing the shared folder mapping
 Get-SmbMapping
 
-# 7. View the shared folder contents
+# 7. Viewing the shared folder contents
 Get-ChildItem -Path R:
 
 # 8. Viewing existing connections 

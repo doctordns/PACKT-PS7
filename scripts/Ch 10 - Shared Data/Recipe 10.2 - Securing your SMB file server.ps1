@@ -9,8 +9,9 @@ $Features = 'FileAndStorage-Services',
             'RSAT-File-Services'
 Add-WindowsFeature -Name $Features
 
-# 2. Viewing the SMB Server settings
-Get-SmbServerConfiguration
+# 2. Viewing the SMB server settings
+Get-SmbServerConfigura
+tion
 
 # 3. Turning off SMB1 
 $CHT = @{

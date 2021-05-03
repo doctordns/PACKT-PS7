@@ -133,7 +133,7 @@ out-lineoutput: There is not enough space on the disk. : 'C:\Quota\Demo3.Txt'
 
 
 
-PS C:\Foo> # 12. Viewing Folder
+PS C:\Foo> # 12. Viewing the contents of the C:\Quota folder
 PS C:\Foo> Get-ChildItem -Path C:\Quota 
 
     Directory: C:\Quota

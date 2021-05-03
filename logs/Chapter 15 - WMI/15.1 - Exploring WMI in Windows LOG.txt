@@ -1,0 +1,366 @@
+# 15.1 - Exploring WMI in Windows 
+
+# Run on SRV1
+
+
+
+PS C:\Foo> # 1. Viewing the WBEM folder
+PS C:\Foo> $WBEMFOLDER = "$Env:windir\system32\wbem"
+PS C:\Foo> Get-ChildItem -Path $WBEMFOLDER |
+             Select-Object -First 20
+
+    Directory: C:\Windows\System32\wbem
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          11/04/2021    06:42                AutoRecover
+d----          27/02/2021    11:26                en
+d----          18/03/2021    13:42                en-US
+d----          27/02/2021    10:15                Logs
+d----          17/03/2021    18:15                MOF
+d----          17/04/2021    10:40                Performance
+d----          17/04/2021    10:33                Repository
+d----          27/02/2021    10:15                tmf
+d----          27/02/2021    10:15                xml
+-a---          27/02/2021    10:09           2852 aeinv.mof
+-a---          27/02/2021    11:26          17510 AgentWmi.mof
+-a---          27/02/2021    10:10            693 AgentWmiUninstall.mof
+-a---          27/02/2021    10:08            852 appbackgroundtask_uninstall.mof
+-a---          27/02/2021    10:08          65536 appbackgroundtask.dll
+-a---          27/02/2021    10:08           2902 appbackgroundtask.mof
+-a---          27/02/2021    10:10           1112 AttestationWmiProvider_Uninstall.mof
+-a---          27/02/2021    10:10           3376 AttestationWmiProvider.mof
+-a---          27/02/2021    10:09           1724 AuditRsop.mof
+-a---          27/02/2021    10:09           1092 authfwcfg.mof
+-a---          27/02/2021    10:09          12120 bcd.mof
+
+
+
+
+PS C:\Foo> # 2. Viewing the WMI repository folder
+PS C:\Foo> Get-ChildItem -Path $WBEMFOLDER\Repository
+
+    Directory: C:\Windows\System32\wbem\Repository
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          17/04/2021    10:38        5881856 INDEX.BTR
+-a---          16/04/2021    10:41         106032 MAPPING1.MAP
+-a---          19/04/2021    05:00         106032 MAPPING2.MAP
+-a---          15/04/2021    02:48         106032 MAPPING3.MAP
+-a---          17/04/2021    10:38       31891456 OBJECTS.DATA
+
+
+
+
+
+PS C:\Foo> # 3. Viewing the WMI service details
+PS C:\Foo> Get-Service -Name Winmgmt  |
+             Format-List -Property *
+
+UserName            : localSystem
+Description         : Provides a common interface and object model to access management information about operating 
+                      system, devices, applications and services. If this service is stopped, most Windows-based 
+                      software will not function properly. If this service is disabled, any services that explicitly 
+                      depend on it will fail to start.
+DelayedAutoStart    : False
+BinaryPathName      : C:\Windows\system32\svchost.exe -k netsvcs -p
+StartupType         : Automatic
+Name                : Winmgmt
+RequiredServices    : {RPCSS}
+CanPauseAndContinue : True
+CanShutdown         : True
+CanStop             : True
+DisplayName         : Windows Management Instrumentation
+DependentServices   : {UALSVC, HgClientService}
+MachineName         : .
+ServiceName         : Winmgmt
+ServicesDependedOn  : {RPCSS}
+StartType           : Automatic
+ServiceHandle       : Microsoft.Win32.SafeHandles.SafeServiceHandle
+Status              : Running
+ServiceType         : Win32OwnProcess, Win32ShareProcess
+Site                :
+Container           :
+
+
+
+PS C:\Foo> # 4. Getting process details
+PS C:\Foo> $S = tasklist.exe /svc /fi "SERVICES eq winmgmt" |
+                  Select-Object -Last 1
+PS C:\Foo> $P = [int] ($S.Substring(30,4))
+PS C:\Foo> Get-Process -Id $P 
+
+ NPM(K)    PM(M)      WS(M)     CPU(s)      Id  SI ProcessName
+ ------    -----      -----     ------      --  -- -----------
+     15     8.43      17.91      10.97    3528   0 svchost
+
+
+
+PS C:\Foo> # 5. Examining DLLs loaded by the WMI service process
+PS C:\Foo> Get-Process -Id $P | 
+             Select-Object -ExpandProperty modules |
+               Where-Object ModuleName -match 'wmi' |
+                 Format-Table -Property FileName, Description, FileVersion
+
+FileName                              Description    FileVersion
+--------                              -----------    -----------
+c:\windows\system32\wbem\wmisvc.dll   WMI            10.0.20303.1 (WinBuild.160101.0800)
+C:\Windows\SYSTEM32\WMICLNT.dll       WMI Client API 10.0.20303.1 (WinBuild.160101.0800)
+C:\Windows\system32\wbem\wmiutils.dll WMI            10.0.20303.1 (WinBuild.160101.0800)
+C:\Windows\system32\wbem\wmiprvsd.dll WMI            10.0.20303.1 (WinBuild.160101.0800)
+
+
+
+
+
+PS C:\Foo> # 6. Discovering WMI providers
+PS C:\Foo> Get-ChildItem -Path $WBEMFOLDER\*.dll | 
+             Select-Object -ExpandProperty Versioninfo |
+               Where-Object FileDescription -match 'prov' |
+                 Format-Table -Property Internalname,
+                                        FileDescription,
+                                        ProductVersion
+
+InternalName                 FileDescription                                 ProductVersion
+------------                 ---------------                                 --------------
+cimwin32.dll                 WMI Win32 Provider                              10.0.20303.1
+DhcpServerPsProvider.dll     DHCP WMIv2 Provider                             10.0.20303.1
+DMWmiBridgeProv.dll          DM WMI Bridge Provider                          10.0.20303.1
+DMWmiBridgeProv1.dll         DM WMI Bridge Provider                          10.0.20303.1
+DnsClientPsProvider.dll      DNS Client WMIv2 Provider                       10.0.20303.1
+DnsServerPsProvider.dll      DNS WMIv2 Provider                              10.0.20303.1
+dsprov.dll                   WMI DS Provider                                 10.0.20303.1
+"EventTracingManagement.dll" WMI Provider for ETW                            10.0.20303.1
+ipmiprr.dll                  IPMI Provider Resource                          10.0.20303.1
+IPMIPRV.dll                  WMI IPMI PROVIDER                               10.0.20303.1
+MDMAppProv.dll               MDM Application Provider                        10.0.20303.1
+MDMSettingsProv.dll          MDM Settings Provider                           10.0.20303.1
+mgmtprovider.dll             Server Manager Managment Provider               10.0.20303.1
+mistreamprov.dll             SIL Composable Streams Provider                 10.0.20303.1
+DtcCIMProvider.dll           DTC WMIv2 Provider                              10.0.20303.1
+msiprov.dll                  WMI MSI Provider                                10.0.20303.1
+MspsProv.exe                 Msps Prov                                       10.0.20303.1
+mttmprov.dll                 Mangement Tools Task Manager CIM Provider       10.0.20303.1
+NCObjAPI                     Non-COM WMI Event Provision APIs                10.0.20303.1
+ndisimplatwmi.DLL            NDIS IM Platform WMI Provider                   10.0.20303.1
+NetAdapter.dll               Network Adapter WMI Provider                    10.0.20303.1
+netdacim.dll                 Microsoft Direct Access WMI Provider            10.0.20303.1
+NetEventPacketCapture.dll    NetEvent Packet Capture Provider                10.0.20303.1
+NetNat.dll                   Windows NAT WMI Provider                        10.0.20303.1
+netnccim.dll                 DA Network Connectivity WMI Provider            10.0.20303.1
+NetPeerDistCim.dll           BranchCache WMI Provider                        10.0.20303.1
+netswitchteamcim.DLL         VM Switch Teaming WMI Provider                  10.0.20303.1
+NetTCPIP.dll                 TCPIP WMI Provider                              10.0.20303.1
+nlmcim.dll                   Network Connection Profiles WMI Provider        10.0.20303.1
+ntevt.dll                    WMI Event Log Provider                          10.0.20303.1
+PLATID.DLL                   WMIv2 Provider to Retrieve Platform Identifiers 10.0.20303.1
+PrintManagementProvider.DLL  Print WMI Provider                              10.0.20303.1
+RacWmiProv.dll               Reliability Metrics WMI Provider                10.0.20303.1
+RAMgmtPSProvider.dll         RAMgmtPSProvider                                10.0.20303.1
+regprov.dll                  Registry Provider                               10.0.20303.1
+schedprov.dll                Task Scheduler WMIv2 Provider                   10.0.20303.1
+SDNDiagnosticsProvider.dll   SDNDiagnosticsProvider                          10.0.20303.1
+servercompprov.dll           Windows Server Feature WMI Provider             10.0.20303.1
+sllprovider.dll              Server License Logging CIM Provider             10.0.20303.1
+vdswmi.dll                   WMI Provider for VDS                            10.0.20303.1
+viewprov.dll                 WMI View Provider                               10.0.20303.1
+VpnClientPsProvider.dll      VPN Client WMIv2 Provider                       10.0.20303.1
+VSSPROV.DLL                  WMI Provider for VSS                            10.0.20303.1
+WdacWmiProv.dll              WDAC WMI Providers                              10.0.20303.1
+Win32_EncryptableVolume.DLL  Win32_Encryptable Volume Provider               10.0.20303.1
+Win32_Tpm.DLL                TPM WMI Provider                                10.0.20303.1
+WMIPCIMA.dll                 WMI Win32Ex Provider                            10.0.20303.1
+wmipdfs.dll                  WMI DFS Provider                                10.0.20303.1
+WMIPDskQ.dll                 WMI Provider for Disk Quota Information         10.0.20303.1
+WbemPerfClass.dll            WbemPerf V2 Class Provider                      10.0.20303.1
+WbemPerfInst.dll             WbemPerf V2 Instance Provider                   10.0.20303.1
+wmipicmp.dll                 WMI ICMP Echo Provider                          10.0.20303.1
+WMIPIpRt.dll                 WBEM Provider for IP4 Routes                    10.0.20303.1
+wmipjobj.dll                 WMI Windows Job Object Provider                 10.0.20303.1
+WMIPSess.dll                 WMI Provider for Sessions and Connections       10.0.20303.1
+
+
+PS C:\Foo> # 7. Examining the WmiPrvSE process                             
+PS C:\Foo> Get-Process -Name WmiPrvSE
+
+ NPM(K)  PM(M)   WS(M)   CPU(s)     Id  SI ProcessName
+ ------  -----   -----   ------     --  -- -----------
+     18   7.29   15.71     3.45   1876   0 WmiPrvSE
+
+
+
+
+PS C:\Foo> # 8. Finding the WMI event log
+PS C:\Foo> $Log = Get-WinEvent -ListLog *wmi*
+PS C:\Foo> $Log
+
+LogMode   MaximumSizeInBytes RecordCount LogName
+-------   ------------------ ----------- -------
+Circular             1052672         982 Microsoft-Windows-WMI-Activity/Operational
+
+
+
+PS C:\Foo> # 9. Looking at the event types in the WMI log
+PS C:\Foo> $Events = Get-WinEvent -LogName $Log.LogName
+PS C:\Foo> $Events | Group-Object -Property LevelDisplayName
+
+Count Name                      Group
+----- ----                      -----
+   22 Error                     {System.Diagnostics.Eventing.Reader.EventLogRecord,System.Diagno… 
+  960 Information               {System.Diagnostics.Eventing.Reader.EventLogRecord,System.Diagno… 
+
+
+
+
+PS C:\Foo> # 10. Examining WMI event log entries
+PS C:\Foo> $Events |
+             Select-Object -First 5 |
+               Format-Table -Wrap
+
+   ProviderName: Microsoft-Windows-WMI-Activity
+
+TimeCreated           Id LevelDisplayName Message
+-----------           -- ---------------- -------
+19/04/2021 15:39:52 5857 Information      CIMWin32a provider started with result code 0x0. HostProcess =
+                                          wmiprvse.exe; ProcessID = 6716; ProviderPath =
+                                          %systemroot%\system32\wbem\wmipcima.dll
+19/04/2021 15:39:52 5857 Information      CIMWin32 provider started with result code 0x0. HostProcess =
+                                          wmiprvse.exe; ProcessID = 6716; ProviderPath =
+                                          %systemroot%\system32\wbem\cimwin32.dll
+19/04/2021 15:38:01 5857 Information      CIMWin32 provider started with result code 0x0. HostProcess =
+                                          wmiprvse.exe; ProcessID = 4932; ProviderPath =
+                                          %systemroot%\system32\wbem\cimwin32.dll
+19/04/2021 15:30:16 5857 Information      deploymentprovider provider started with result code 0x0. HostProcess
+                                          = wmiprvse.exe; ProcessID = 5764; ProviderPath =
+                                          %systemroot%\system32\wbem\ServerManager.DeploymentProvider.dll
+19/04/2021 15:30:14 5857 Information      nettcpip provider started with result code 0x0. HostProcess =
+                                          wmiprvse.exe; ProcessID = 7152; ProviderPath =
+                                          %systemroot%\system32\wbem\NetTCPIP.dll
+
+
+
+PS C:\Foo> # 11.Viewing executable programs in WBEM folder
+PS C:\Foo> $Files = Get-ChildItem -Path $WBEMFOLDER\*.exe
+PS C:\Foo> "{0,15}  {1,-40}" -f 'File Name','Description'
+PS C:\Foo> Foreach ($File in $Files){
+             $Name = $File.Name
+             $Desc = ($File |
+                      Select-Object -ExpandProperty VersionInfo).FileDescription
+            "{0,15}  {1,-40}" -f $Name,$Desc
+            }
+
+      File Name  Description
+    mofcomp.exe  The Managed Object Format (MOF) Compiler 
+    scrcons.exe  WMI Standard Event Consumer - scripting 
+   unsecapp.exe  Sink to receive asynchronous callbacks for WMI client application
+   wbemtest.exe  WMI Test Tool
+    WinMgmt.exe  WMI Service Control Utility
+    WMIADAP.exe  WMI Reverse Performance Adapter Maintenance Utility
+   WmiApSrv.exe  WMI Performance Reverse Adapter
+       WMIC.exe  WMI Commandline Utility
+   WmiPrvSE.exe  WMI Provider Host                                
+
+
+
+
+PS C:\Foo> # 12. Examining the CimCmdlets module
+PS C:\Foo> Get-Module -Name CimCmdlets |
+             Select-Object -ExcludeProperty Exported* |
+               Format-List -Property *
+
+LogPipelineExecutionDetails : False
+Name                        : CimCmdlets
+Path                        : C:\Program Files\PowerShell\7\Microsoft.Management.Infrastructure.CimCmdlets.dll
+ImplementingAssembly        : Microsoft.Management.Infrastructure.CimCmdlets, Version=7.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+Definition                  : 
+Description                 : 
+Guid                        : fb6cc51d-c096-4b38-b78d-0fed6277096a
+HelpInfoUri                 : https://aka.ms/powershell71-help
+ModuleBase                  : C:\program files\powershell\7\Modules\CimCmdlets
+PrivateData                 : 
+ExperimentalFeatures        : {}
+Tags                        : {}
+ProjectUri                  : 
+IconUri                     :
+LicenseUri                  :
+ReleaseNotes                :
+RepositorySourceLocation    :
+Version                     : 7.0.0.0
+ModuleType                  : Binary
+Author                      : PowerShell
+AccessMode                  : ReadWrite
+ClrVersion                  :
+CompanyName                 : Microsoft Corporation
+Copyright                   : Copyright (c) Microsoft Corporation.
+DotNetFrameworkVersion      :
+Prefix                      :
+FileList                    : {}
+CompatiblePSEditions        : {Core}
+ModuleList                  : {}
+NestedModules               : {}
+PowerShellHostName          :
+PowerShellHostVersion       :
+PowerShellVersion           : 3.0
+ProcessorArchitecture       : None
+Scripts                     : {}
+RequiredAssemblies          : {Microsoft.Management.Infrastructure.CimCmdlets.dll, Microsoft.Management.Infrastructure.Dll}
+RequiredModules             : {}
+RootModule                  : Microsoft.Management.Infrastructure.CimCmdlets
+SessionState                : System.Management.Automation.SessionState
+OnRemove                    :
+
+
+
+
+
+PS C:\Foo> # 13. Finding cmdlets in the CimCmdlets module
+PS C:\Foo> Get-Command -Module CimCmdlets
+
+CommandType  Name                         Version  Source
+-----------  ----                         -------  ------
+Cmdlet       Get-CimAssociatedInstance    7.0.0.0  CimCmdlets
+Cmdlet       Get-CimClass                 7.0.0.0  CimCmdlets
+Cmdlet       Get-CimInstance              7.0.0.0  CimCmdlets
+Cmdlet       Get-CimSession               7.0.0.0  CimCmdlets
+Cmdlet       Invoke-CimMethod             7.0.0.0  CimCmdlets
+Cmdlet       New-CimInstance              7.0.0.0  CimCmdlets
+Cmdlet       New-CimSession               7.0.0.0  CimCmdlets
+Cmdlet       New-CimSessionOption         7.0.0.0  CimCmdlets
+Cmdlet       Register-CimIndicationEvent  7.0.0.0  CimCmdlets
+Cmdlet       Remove-CimInstance           7.0.0.0  CimCmdlets
+Cmdlet       Remove-CimSession            7.0.0.0  CimCmdlets
+Cmdlet       Set-CimInstance              7.0.0.0  CimCmdlets
+
+
+
+
+PS C:\Foo> # 14. Examining the .NET type returned from Get-CimInstance
+PS C:\Foo> Get-CimInstance -ClassName Win32_Share | Get-Member
+
+   TypeName: Microsoft.Management.Infrastructure.CimInstance#root/cimv2/Win32_Share
+
+Name                      MemberType  Definition
+----                      ----------  ----------
+Dispose                   Method      void Dispose(), void IDisposable.Dispose()
+Equals                    Method      bool Equals(System.Object obj)
+GetCimSessionComputerName Method      string GetCimSessionComputerName()
+GetCimSessionInstanceId   Method      guid GetCimSessionInstanceId()
+GetHashCode               Method      int GetHashCode()
+GetType                   Method      type GetType()
+ToString                  Method      string ToString()
+AccessMask                Property    uint AccessMask {get;}
+AllowMaximum              Property    bool AllowMaximum {get;}
+Caption                   Property    string Caption {get;}
+Description               Property    string Description {get;}
+InstallDate               Property    CimInstance#DateTime InstallDate {get;}
+MaximumAllowed            Property    uint MaximumAllowed {get;}
+Name                      Property    string Name {get;}
+Path                      Property    string Path {get;}
+PSComputerName            Property    string PSComputerName {get;}
+Status                    Property    string Status {get;}
+Type                      Property    uint Type {get;}
+PSStatus                  PropertySet PSStatus {Status, Type, Name}
+
+
+

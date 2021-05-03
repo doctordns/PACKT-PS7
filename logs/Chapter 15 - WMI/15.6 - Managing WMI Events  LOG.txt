@@ -1,0 +1,156 @@
+# 9.5 Managing WMI EVents
+
+# Run in SRV1
+
+
+
+# 1. Registering an intrinsic event
+
+no output
+
+
+
+# 2. Running Notepad to trigger the event
+
+
+no otuptu but ...
+
+
+
+# 3. Getting the new process event
+
+
+no output
+
+
+
+
+PS C:\Foo> # 4. Displaying event details
+PS C:\Foo> $Event.SourceEventArgs.NewEvent.TargetInstance
+
+ProcessId Name        HandleCount WorkingSetSize VirtualSize
+--------- ----        ----------- -------------- -----------
+1344      notepad.exe 219         18137088       2203487641600
+
+
+
+
+# 5. Unregistering the event
+
+
+no output
+
+
+
+
+PS C:\Foo> # 6. Registering an event query based on the registry provider
+PS C:\Foo> New-Item -Path 'HKLM:\SOFTWARE\Packt' | Out-Null
+PS C:\Foo> $Query2 = "SELECT * FROM RegistryValueChangeEvent 
+                        WHERE Hive='HKEY_LOCAL_MACHINE'
+                        AND KeyPath='SOFTWARE\\Packt' AND ValueName='MOLTUAE'"
+PS C:\Foo> $Action2 = { 
+             Write-Host -Object "Registry Value Change Event Occurred"
+             $Global:RegEvent = $Event 
+           }
+PS C:\Foo> Register-CimIndicationEvent -Query $Query2 -Action $Action2 -Source RegChange
+
+Id     Name            PSJobTypeName   State         HasMoreData     Location             Command
+--     ----            -------------   -----         -----------     --------             -------
+11     RegChange                       NotStarted    False 
+
+
+
+
+
+PS C:\Foo> # 7. Creating a new registry key and setting a value entry
+PS C:\Foo> $Q2HT = [ordered] @{
+             Type  = 'DWord'
+             Name  = 'MOLTUAE'
+             Path  = 'HKLM:\Software\Packt'
+             Value = 42
+           }
+PS C:\Foo> Set-ItemProperty @Q2HT
+Registry Value Change Event Occurred
+
+PS C:\Foo> Get-ItemProperty -Path HKLM:\SOFTWARE\Packt
+MOLTUAE      : 42
+PSPath       : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Packt
+PSParentPath : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE
+PSChildName  : Packt
+PSDrive      : HKLM
+PSProvider   : Microsoft.PowerShell.Core\Registry
+
+
+
+
+# 8. Unregistering the event
+
+no output
+
+
+
+
+PS C:\Foo> # 9. Examining details
+PS C:\Foo> $RegEvent.SourceEventArgs.NewEvent
+
+SECURITY_DESCRIPTOR : 
+TIME_CREATED        : 132634791372033548
+Hive                : HKEY_LOCAL_MACHINE
+KeyPath             : SOFTWARE\Packt
+ValueName           : MOLTUAE
+PSComputerName      :
+
+
+
+
+# 10. Creating a WQL Event Query
+
+
+no output
+
+
+
+PS C:\Foo> # 11. Creating a temporary WMI event registration
+PS C:\Foo> $Event = @{
+             Namespace =  'root\directory\LDAP'
+             SourceID  = 'DSGroupChange'
+             Query     = $Query1
+             Action    = {
+               $Global:ADEvent = $Event
+               Write-Host 'We have a group change'
+             }
+           }
+PS C:\Foo> Register-CimIndicationEvent @Event
+
+Id  Name           PSJobTypeName  State      HasMoreData  Location  Command
+--  ----           -------------  -----      -----------  --------  -------
+12  DSGroupChange                 NotStarted  False 
+
+
+
+
+# 12. Adding a user to the enterprise admin group
+
+PS C:\Foo> # 12. Adding a user to the enterprise admin group
+PS C:\Foo> Add-ADGroupMember -Identity 'Enterprise Admins' -Members Malcolm
+PS C:\Foo> We have a group change
+
+
+
+
+PS C:\Foo> # 13. Viewing the newly added user
+PS C:\Foo> $ADEvent.SourceEventArgs.NewEvent.TargetInstance | 
+             Format-Table -Property DS_sAMAccountName,DS_Member
+
+DS_sAMAccountName DS_Member
+----------------- ---------
+Enterprise Admins {CN=Malcolm,OU=IT,DC=Reskit,DC=Org, 
+                   CN=Jerry Garcia,OU=IT,DC=Reskit,DC=Org, 
+                   CN=Administrator,CN=Users,DC=Reskit,DC=Org}
+
+
+
+# 14. Unregistering the event
+
+
+no output

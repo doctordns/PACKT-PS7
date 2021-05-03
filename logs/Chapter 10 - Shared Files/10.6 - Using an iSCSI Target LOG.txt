@@ -9,7 +9,7 @@ no output
 
 
 
-PS C:\Foo> # 2. Seting up the portal to SS1
+PS C:\Foo> # 2. Setting up the portal to SS1
 PS C:\Foo> $PHT = @{
              TargetPortalAddress     = 'SS1.Reskit.Org'
              TargetPortalPortNumber  = 3260
@@ -64,7 +64,7 @@ TargetSideIdentifier    : 0100
 
 
 
-PS C:\Foo> # 5. Viewing the iSCSI disk from FST on SS1
+PS C:\Foo> # 5. Viewing the iSCSI disk 
 PS C:\Foo> $ISD =  Get-Disk |
              Where-Object BusType -eq 'iscsi'
 PS C:\Foo> $ISD | 
@@ -84,7 +84,7 @@ no  output
 
 
 
-PS C:\Foo> # 7. Formating the volume on SS1
+PS C:\Foo> # 7. Formatting the volume on SS1
 PS C:\Foo> $NVHT = @{
              FriendlyName = 'ITData'
              FileSystem   = 'NTFS'

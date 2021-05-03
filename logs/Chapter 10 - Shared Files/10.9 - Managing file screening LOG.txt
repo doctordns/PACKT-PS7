@@ -34,7 +34,7 @@ Temporary Files       {*.temp, *.tmp, ~*}
 
 
 
-PS C:\Foo> # 2. Examining existing File Screen templates
+PS C:\Foo> # 2. Examining the existing File Screen templates
 PS C:\Foo> Get-FsrmFileScreenTemplate |
              Format-Table -Property Name, IncludeGroup, Active
 
@@ -86,7 +86,7 @@ Line |
 
 
 
-# 6. Seting up Active Email Notification
+# 6. Seting up an active email notification
 
 no output
 

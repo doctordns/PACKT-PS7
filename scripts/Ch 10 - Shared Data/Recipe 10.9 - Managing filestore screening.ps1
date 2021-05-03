@@ -6,7 +6,7 @@
 Get-FsrmFileGroup |
   Format-Table -Property Name, IncludePattern
 
-# 2. Examining existing File Screen templates
+# 2. Examining the existing file screening templates
 Get-FsrmFileScreenTemplate |
   Format-Table -Property Name, IncludeGroup, Active
 
@@ -25,14 +25,14 @@ $FSHT =  @{
 }
 New-FsrmFileScreen @FSHT
 
-# 5. Tesingt file screen by copying notepad.exe
+# 5. Testing file screen by copying notepad.exe
 $FSTHT = @{
   Path        = "$Env:windir\notepad.exe"
   Destination = 'C:\FileScreen\notepad.exe'
 }
 Copy-Item  @FSTHT
 
-# 6. Setting up active email notification
+# 6. Setting up an active email notification
 $Body = 
 "[Source Io Owner] attempted to save an executable program to 
 [File Screen Path].

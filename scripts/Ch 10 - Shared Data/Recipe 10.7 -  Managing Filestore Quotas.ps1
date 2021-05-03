@@ -84,5 +84,5 @@ $S2 | Out-File -FilePath C:\Quota\Demo2.Txt
 # 11. Testing hard limit quota
 $S | Out-File -FilePath C:\Quota\Demo3.Txt    
 
-# 12. Viewing Folder
+# 12. Viewing the contents of the C:\Quota folder
 Get-ChildItem -Path C:\Quota 

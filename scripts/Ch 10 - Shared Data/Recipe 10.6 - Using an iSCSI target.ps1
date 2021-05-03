@@ -26,7 +26,7 @@ $CHT = @{
 Connect-IscsiTarget  @CHT
                     
 
-# 5. Viewing the ISCSI disk from FS1 on SRV1
+# 5. Viewing the iSCSI disk from FS1 on SRV1
 $ISD =  Get-Disk | 
   Where-Object BusType -eq 'iscsi'
 $ISD | 
@@ -38,7 +38,7 @@ $ISD |
 $ISD | 
   Set-Disk -Isreadonly $False
 
-# 7. Formating the volume on SS1
+# 7. Formatting the volume on SS1
 $NVHT = @{
   FriendlyName = 'ITData'
   FileSystem   = 'NTFS'

@@ -16,7 +16,7 @@ True    No             Success    {File and iSCSI Services, File Server, File â€
 
 
 
-PS C:\Foo> # 2. Viewing the SMB Server settings
+PS C:\Foo> # 2. Viewing the SMB server settings
 PS C:\Foo> Get-SmbServerConfiguration
 
 AnnounceComment                        : 

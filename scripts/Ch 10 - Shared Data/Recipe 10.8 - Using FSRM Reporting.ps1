@@ -57,7 +57,7 @@ Get-ScheduledTask |
   Where-Object TaskName -Match 'Monthly' |
     Format-Table -AutoSize
 
-# 8. Runing the task now
+# 8. Running the task now
 Get-ScheduledTask -TaskName '*Monthly*' | 
   Start-ScheduledTask
 Get-ScheduledTask -TaskName '*Monthly*'
