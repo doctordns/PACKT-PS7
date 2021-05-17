@@ -4,7 +4,7 @@
 # Uses the ITShare share on SRV2 created earlier
 
 
-PS C:\Foo> # 1. Examining the SMB client's configuration on SRV2
+PS C:\Foo> # 1. Examining the SMB client's configuration on SRV1
 PS C:\Foo> Get-SmbClientConfiguration
 
 SkipCertificateCheck                  : False
@@ -47,13 +47,13 @@ no output
 
 
 
-PS C:\Foo> # 3. Examine SMB client's network interface
+PS C:\Foo> # 3. Examining the SMB client's network interface
 PS C:\Foo> Get-SmbClientNetworkInterface |
              Format-Table
 
-Interface Index RSS Capable RDMA Capable Speed   IpAddresses                                                                   Friendly Name
---------------- ----------- ------------ -----   -----------                                                                   -------------
-14              True        False        10 Gbps {fe80::71a9:bdb8:2ad4:410b, 10.10.10.50}                                      Ethernet
+Interface Index RSS Capable RDMA Capable Speed   IpAddresses                               Friendly Name
+--------------- ----------- ------------ -----   -----------                               -------------
+14              True        False        10 Gbps {fe80::71a9:bdb8:2ad4:410b, 10.10.10.50}  Ethernet
 
 
 

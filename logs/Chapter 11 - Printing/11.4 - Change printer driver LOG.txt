@@ -25,7 +25,7 @@ no output
 
 
 
-PS C:\Foo> # 4. Observing the result
+PS C:\Foo> # 4. Observing the updated printer driver
 PS C:\Foo> Get-Printer -Name $Printern |
              Format-Table -Property Name, DriverName, PortName,
                                     Published, Shared

@@ -9,12 +9,8 @@ $SAName     = 'packt42sa'       # storage account name
 $CName      = 'packtcontainer'  # a blob container name
 $CName2     = 'packtcontainer2' # a second blob container name
 
-# 2. Login to your Azure Account and ensure the RG and SA is created.
-$CredAZ  = Get-Credential     # Enter your Azure Credential details
-$Account = Connect-AzAccount -Credential $CredAZ
-
-
-}
+# 2. Connecting to your Azure Account and ensure the RG and SA is created.
+$Account = Connect-AzAccount 
 
 # 3. Getting and displaying the storage account key
 $SAKHT = @{

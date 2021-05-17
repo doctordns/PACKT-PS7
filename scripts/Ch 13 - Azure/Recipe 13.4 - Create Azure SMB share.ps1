@@ -9,9 +9,7 @@ $SAName    = 'packt42sa'    # storage account name
 $ShareName = 'packtshare'   # must be lower case!
 
 # 2. Logging in to your Azure account
-$CredAZ  = Get-Credential     # Enter your Azure Credential details
-$Account = Connect-AzAccount -Credential $CredAZ
-$Account
+$Account = Connect-AzAccount 
 
 # 3. Getting storage account, account key and context
 $SA = Get-AzStorageAccount -ResourceGroupName $Rgname 
@@ -43,7 +41,7 @@ Test-NetConnection @TNCHT
 
 # 7. Mounting the share as M:
 $Mount = 'M:'
-$Rshare = "\\$SaName.file.core.windows.net\$ShareName"
+$Rshare = "\\$SAName.file.core.windows.net\$ShareName"
 $SMHT = @{
     LocalPath  = $Mount 
     RemotePath = $Rshare 
@@ -70,3 +68,14 @@ Get-ChildItem -Path M:\ -Recurse |
 
 # 12. Getting the content from the file
 Get-Content -Path M:\Foo\Recipe.txt
+
+# 13. Cleaning up - removing data from the share
+Remove-Item -Path M: -Force -Recurse -ErrorAction SilentlyContinue
+
+# 14. Cleaning up - removing SMB mapping
+Get-SmbMapping -LocalPath M: | 
+  Remove-SmbMapping -Force
+
+# 15. Removing the Azure share 
+Get-AzStorageShare -Name $ShareName -Context $SACon | 
+  Remove-AzStorageShare 

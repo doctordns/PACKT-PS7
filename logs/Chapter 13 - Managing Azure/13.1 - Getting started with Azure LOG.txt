@@ -9,9 +9,10 @@ PS C:\Foo> Find-Module -Name Az |
 
 Version Name Repository Description
 ------- ---- ---------- -----------
-5.7.0   Az   PSGallery  Microsoft Azure PowerShell - Cmdlets to manage resources in Azure. This module is compatible with WindowsPowerShell and
-                        PowerShell Core.
-                        For more information about the Az module, please visit the following: https://docs.microsoft.com/en-us/powershell/azure/
+5.7.0   Az   PSGallery  Microsoft Azure PowerShell - Cmdlets to manage resources in Azure. This
+                        module is compatible with WindowsPowerShell and PowerShell Core.
+                        For more information about the Az module, please visit the 
+                        following: https://docs.microsoft.com/en-us/powershell/azure/
 
 
 

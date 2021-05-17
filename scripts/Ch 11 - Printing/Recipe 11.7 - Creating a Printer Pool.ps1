@@ -10,9 +10,9 @@ Add-PrinterPort -Name $P -PrinterHostAddress 10.10.10.62
 $Printer = 'SalesPrinter1'
 $P1      = 'SalesPP'   # First printer port
 $P2      = 'SalesPP2'  # Second printer port
-rundll32.exe printui.dll,PrintUIEntry /Xs /n $Printer Portname ($P1, $P2)
+rundll32.exe printui.dll,PrintUIEntry /Xs /n $Printer Portname '$P1,$P2'
 
-# 3. Viewing resultant details
+# 3. Viewing the printer pool
 Get-Printer $Printer |
    Format-Table -Property Name, Type, DriverName, PortName -AutoSize
 

@@ -3,7 +3,6 @@
 # Run on SRV1
 
 
-
 # 1.  Defining Variables
 $Locname    = 'uksouth'     # location name
 $RgName     = 'packt_rg'    # resource group we are using
@@ -11,18 +10,17 @@ $SAName     = 'packt42sa'   # storage account name
 $AppSrvName = 'packt42'
 $AppName    = 'packt42website'
 
-# 2. Logging in to your Azure Account
-$CredAZ = Get-Credential     # Enter your Azure Credential details
-$Account = Connect-AzAccount -Credential $CredAZ
+# 2. Logging in to your Azure account
+$Account = Connect-AzAccount
 
-# 3. Getting the Resource Group
+# 3. Getting the resource group
 $RGHT1 = @{
   Name        = $RgName
   ErrorAction = 'Silentlycontinue'
 }
 $RG = Get-AzResourceGroup @RGHT1
 
-# 4. Getting the Storage Account
+# 4. Getting the storage account
 $SAHT = @{
   Name              = $SAName
   ResourceGroupName = $RgName 
@@ -109,7 +107,13 @@ $IHT = @{
 }
 Add-FTPItem @IHT
 
-
 # 16. Now look at the site using your default browser 
 $SiteUrl = "https://$($WebApp.DefaultHostName)"
 Start-Process -FilePath $SiteUrl
+
+# 17. Tidying up - removing the webapp
+$WebApp | Remove-AzWebApp  -Force
+
+# 18. Tidying up - removing the service plan
+Get-AzAppServicePlan @PHT | 
+  Remove-AzAppServicePlan -Force

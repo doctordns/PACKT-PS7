@@ -16,8 +16,7 @@ $UserPS  = 'JerryRocks42!'    # User Password
 $VMName  = 'Packt42VM'        # VM Name
 
 #  2. Logging into your Azure account
-$CredAZ = Get-Credential     # Enter your Azure Credential details
-$Account = Connect-AzAccount -Credential $CredAZ 
+$Account = Connect-AzAccount
 
 # 3. Getting the resource group is created
 $RG = Get-AzResourceGroup -Name $RgName 
@@ -52,6 +51,36 @@ $VMIP = $VMIP.IpAddress
 # 8. Connecting to the VM
 mstsc /v:"$VMIP"
 
+# 9. Tidying up - stopping and removing the Azure VM
+Stop-AzVm -Name $VMName -Resourcegroup $RgName -Force |
+  Out-Null
+Remove-AZVm -Resourcegroup $RgName -Name $VMName -Force |
+  Out-Null
+
+# 10. Tidying up - Removing VM's networking artifacts
+Remove-AzNetworkInterface -Resourcegroup $RgName -Name $VMName -Force
+Remove-AzPublicIpAddress -Resourcegroup $RgName -Name $IPName -Force
+Remove-AzNetworkSecurityGroup -Resourcegroup $RgName -Name $NSGName -Force
+Remove-AzVirtualNetwork -Name $VNName -Resourcegroup $RgName -Force
+Get-AzNetworkWatcher | Remove-AzNetworkWatcher
+Get-AzResourceGroup -Name NetworkWatcherRG  | 
+  Remove-AzResourceGroup -Force |
+    Out-Null
+
+# 11. Tidying up - Removing the VM's disk
+Get-AzDisk | Where-Object name -match "packt42vm" | 
+  Remove-AzDisk -Force |
+    Out-Null
+
+# 12. Tidying Up - Removing the storage account and resource group
+Get-AzStorageAccount -StorageAccountName $SAName -ResourceGroupName $RgName |
+  Remove-AzStorageAccount -Force
+Get-AzResourceGroup -Name $RgName |
+  Remove-AzResourceGroup -Force
+    Out-Null
+
+
+
 
 
 
@@ -67,25 +96,3 @@ $Cred = [pscredential]::new($VMU,$PWSS)
 $SO = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
 Enter-PSSession -ConnectionUri ("http://$VMIP" + ":5985") -Credential $cred -SessionOption $SO
 
-
-
-
-# Removing the VM
-# Remember:
-$RgName  = 'packt_rg'         # resource group name
-$VNName  = 'packtvnet'        # Virtual Network Name
-$VMName  = 'Packt42VM'        # VM Name
-$IPName  = 'Packt_IP1'        # Private IP Address name
-$NSGName = 'packt_nsg'        # NSG name
-# Remove the vm
-Remove-AZVm -Resourcegroup $RgName -Name $VMName -Force
-# the vms nic
-Remove-AzNetworkInterface -Resourcegroup $RgName -Name $VMName -Force
-# remove the private ip address
-Remove-AzPublicIpAddress -Resourcegroup $RgName -Name $IPName -Force
-# remove the disk
-Get-AzDisk | Where-Object name -match "packt42vm" | Remove-AzDisk -Force
-# remove the NSG
-Remove-AzNetworkSecurityGroup -Resourcegroup $RgName -Name $NSGName -Force
-# Remove the virtual network
-Remove-AzVirtualNetwork -name $VNName -Resourcegroup $RgName -Force

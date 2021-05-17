@@ -1,16 +1,16 @@
-# Recipe 10.43 - Accessing SMB shares
+# Recipe 10.4 - Accessing SMB shares
 #
 # Run from SRV1 - Uses the ITShare share on SRV2 created earlier
 # Run in an elevated console
 
-# 1. Examining the SMB client's configuration on SRV2
+# 1. Examining the SMB client's configuration on SRV1
 Get-SmbClientConfiguration
 
 # 2. Setting Signing of SMB packets
 $CHT = @{Confirm=$false}
 Set-SmbClientConfiguration -RequireSecuritySignature $True @CHT
 
-# 3. Examine SMB client's network interface
+# 3. Examining SMB client's network interface
 Get-SmbClientNetworkInterface |
     Format-Table
 

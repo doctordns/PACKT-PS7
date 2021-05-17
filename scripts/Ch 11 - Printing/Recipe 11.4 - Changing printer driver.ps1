@@ -11,7 +11,7 @@ $Printer  = Get-Printer -Name $Printern
 # 3. Updating the driver using the Set-Printer cmdlet
 $Printer | Set-Printer -DriverName $M2
 
-# 4. Observing the result
+# 4. Observing the updated printer driver
 Get-Printer -Name $Printern | 
   Format-Table -Property Name, DriverName, PortName, 
                 Published, Shared

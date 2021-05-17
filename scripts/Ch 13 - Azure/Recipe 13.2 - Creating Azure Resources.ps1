@@ -5,16 +5,14 @@
 # 1. Setting key variables
 $Locname    = 'uksouth'     # Location name
 $RgName     = 'packt_rg'    # Resource group we are using
-$SAName     = 'packt42sa'   # Storage account name
+$SAName     = 'packt42sa'   # A unique storage account name
 
-# 2. Logging into your Azure Account
-
-$CredAZ  = Get-Credential     # Enter your Azure Credential details
-$Account = Connect-AzAccount -Credential $CredAZ
+# 2. Logging into your Azure Account with the GUI
+$Account = Connect-AzAccount
 
 # 3. Creating a resource group and tagging it
-$RGTag  = [Ordered] @{Publisher='Packt'}
-$RGTag +=           @{Author='Thomas Lee'}
+$RGTag  = [Ordered] @{Publisher='Packt'
+                      Author='Thomas Lee'}
 $RGHT = @{
     Name     = $RgName
     Location = $Locname
@@ -22,14 +20,14 @@ $RGHT = @{
 }
 $RG = New-AzResourceGroup @RGHT
 
-# 4. Viewing RG with Tags
+# 4. Viewing the resource group with tags
 Get-AzResourceGroup -Name $RGName |
     Format-List -Property *
 
-# 5. Testing to see if an SA name is taken
+# 5. Testing to see if the storage account name is taken
 Get-AzStorageAccountNameAvailability $SAName
 
-# 6. Creating a new Storage Account
+# 6. Creating a new storage account
 $SAHT = @{
   Name              = $SAName
   SkuName           = 'Standard_LRS'
@@ -40,17 +38,18 @@ $SAHT = @{
 }
 New-AzStorageAccount @SAHT | Format-List
 
-# 7. Getting an overview of the SA in this Resource group
+# 7. Getting an overview of the storage account in this resource group
 $SA = Get-AzStorageAccount -ResourceGroupName $RgName
 $SA |
   Format-List -Property *
 
 
-# 8. Getting primary endpoints for the SA
+# 8. Getting primary endpoints for the storage account
 $SA.PrimaryEndpoints
 
 # 9. Reviewing the SKU
 $SA.Sku
 
-# 10. View Storage Account's Context property
+# 10. Viewing the storage account's context property
 $SA.Context
+

@@ -11,14 +11,8 @@ no output
 
 
 PS C:\Foo> # 2. Login to your Azure Account 
-PS C:\Foo> $CredAZ = Get-Credential     # Enter your Azure Credential details
-PowerShell credential request
-Enter your credentials.
-User: tfl@reskit.org
-Password for user foo: ***********
-PS C:\Foo> $Account = Connect-AzAccount -Credential $CredAZ
 
-
+Just the GUI output.
 
 
 
@@ -60,16 +54,23 @@ QueueEndPoint       : https://packt42sa.queue.core.windows.net/
 FileEndPoint        : https://packt42sa.file.core.windows.net/
 Context             : Microsoft.WindowsAzure.Commands.Storage.AzureStorageContext
 Name                :
-StorageAccount      : BlobEndpoint=https://packt42sa.blob.core.windows.net/;QueueEndpoint=https://packt42sa.queue.core.windows.net/;TableEndpoint=https://p 
-                      ackt42sa.table.core.windows.net/;FileEndpoint=https://packt42sa.file.core.windows.net/;AccountName=packt42sa;AccountKey=[key hidden]  
-TableStorageAccount : BlobEndpoint=https://packt42sa.blob.core.windows.net/;QueueEndpoint=https://packt42sa.queue.core.windows.net/;TableEndpoint=https://p
-                      ackt42sa.table.core.windows.net/;FileEndpoint=https://packt42sa.file.core.windows.net/;DefaultEndpointsProtocol=https;AccountName=pac 
-                      kt42sa;AccountKey=[key hidden]
+StorageAccount      : BlobEndpoint=https://packt42sa.blob.core.windows.net/;
+                      QueueEndpoint=https://packt42sa.queue.core.windows.net/;
+                      TableEndpoint=https://packt42sa.table.core.windows.net/;
+                     FileEndpoint=https://packt42sa.file.core.windows.net/;
+                      AccountName=packt42sa;AccountKey=[key hidden]  
+TableStorageAccount : BlobEndpoint=https://packt42sa.blob.core.windows.net/;
+                      QueueEndpoint=https://packt42sa.queue.core.windows.net/;
+                      TableEndpoint=https://packt42sa.table.core.windows.net/;
+                      FileEndpoint=https://packt42sa.file.core.windows.net/;
+                      DefaultEndpointsProtocol=https;AccountName=packt42sa;AccountKey=[key hidden]
 Track2OauthToken    :
 EndPointSuffix      : core.windows.net/
-ConnectionString    : BlobEndpoint=https://packt42sa.blob.core.windows.net/;QueueEndpoint=https://packt42sa.queue.core.windows.net/;TableEndpoint=https://p 
-                      ackt42sa.table.core.windows.net/;FileEndpoint=https://packt42sa.file.core.windows.net/;AccountName=packt42sa;AccountKey=L8H/U7DvDq9uX 
-                      S4o9ECy2LzAI1Ekh/ziglT6A6tSj9ShJLe2EI94EaJOQzHivf3cixV420tQ8upcyIYFOZc9ig==
+ConnectionString    : BlobEndpoint=https://packt42sa.blob.core.windows.net/;
+                      QueueEndpoint=https://packt42sa.queue.core.windows.net/;
+                      TableEndpoint=https://packt42sa.table.core.windows.net/;
+                      FileEndpoint=https://packt42sa.file.core.windows.net/;
+                      AccountName=packt42sa;AccountKey=[key hidden]]
 
 
 

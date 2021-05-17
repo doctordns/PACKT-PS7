@@ -2,6 +2,8 @@
 #  
 #  Run on Psrv.Reskit.Org - domain joined host
 
+
+
 # 1. Installing the Print-Server feature on PSRV
 Install-WindowsFeature -Name Print-Server, RSAT-Print-Services
 

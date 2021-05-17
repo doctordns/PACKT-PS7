@@ -46,7 +46,7 @@ PSComputerName           :
 
 
 
-PS C:\Foo> # 2. Getting exisiting FSRM reports
+PS C:\Foo> # 2. Getting existing FSRM reports
 PS C:\Foo> Get-FsrmStorageReport * |
              Format-Table -Property Name, NameSpace, 
                                     ReportType, ReportFormat

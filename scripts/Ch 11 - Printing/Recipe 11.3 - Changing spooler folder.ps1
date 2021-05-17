@@ -1,4 +1,4 @@
-﻿#  Recipe 11.3 - Changing the spool directory
+﻿#  Recipe 11.3 - Changing the spooler directory
 
 # Run on PSRV
 
@@ -19,7 +19,7 @@ $PS = New-Object @NOHT
 # 4. Observing the default spool folder
 "The default spool folder is: [{0}]" -f $PS.DefaultSpoolDirectory
 
-# 5. Creating a new spool path
+# 5. Creating a new spool folder
 $NIHT = @{
   Path        = 'C:\SpoolPath'
   ItemType    = 'Directory'
@@ -38,7 +38,7 @@ $Ps.Commit()
 # 8. Restarting the Spooler to accept the new folder
 Restart-Service -Name Spooler
 
-# 9. Checking the result
+# 9. Verifying the new spooler folder
 New-Object -TypeName System.Printing.PrintServer |
   Format-Table -Property Name,
                 DefaultSpoolDirectory
@@ -57,7 +57,7 @@ $NIHT2 = @{
 }
 New-Item  @NIHT2 | Out-Null
 
-# 12. Creating the spooler folder and configuring in the registry
+# 12. Creating the spooler folder and configuring it in the registry
 $RPath = 'HKLM:\SYSTEM\CurrentControlSet\Control\' +
          'Print\Printers'
 $IP = @{
@@ -67,7 +67,7 @@ $IP = @{
 }
 Set-ItemProperty @IP
 
-# 13. Creating the spooler folder and configuring in the registry
+# 13. Creating the spooler folder and configuring it in the registry
 Start-Service -Name Spooler
 
 # 14. Viewing the results

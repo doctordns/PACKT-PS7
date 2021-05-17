@@ -1,4 +1,4 @@
-﻿# Recipe 13-1 Getting started with Azure
+﻿# Recipe 13.1 Getting started with Azure with PowerShell
 #
 # Run on SRV1
 

@@ -17,7 +17,7 @@ no output
 
 
 
-PS C:\Foo> # 3. Viewing resultant details
+PS C:\Foo> # 3. Viewing the printer pool
 PS C:\Foo> Get-Printer $Printer |
              Format-Table -Property Name, Type, DriverName, PortName -AutoSize
 

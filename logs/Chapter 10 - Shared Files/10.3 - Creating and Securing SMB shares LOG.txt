@@ -20,7 +20,7 @@ IPC$ *         NT AUTHORITY\INTERACTIVE Allow             Full
 
 
 PS C:\Foo> # 2. Sharing a new folder
-PS C:\Foo> New-Item -Path F: -Name ITShare | Out-Null
+PS C:\Foo> New-Item -Path C: -Name ITShare | Out-Null
 PS C:\Foo> New-SmbShare -Name ITShare -Path C:\ITShare
 
 Name    ScopeName Path       Description
@@ -146,7 +146,7 @@ no output
 
 
 PS C:\Foo> # 15. Viewing file ACL
-PS C:\Foo> Get-NTFSAccess -Path F:\ITShare\File.Txt |
+PS C:\Foo> Get-NTFSAccess -Path C:\ITShare\File.Txt |
              Format-Table -AutoSize
 
     Path: F:\ITShare\File.Txt (Inheritance enabled)

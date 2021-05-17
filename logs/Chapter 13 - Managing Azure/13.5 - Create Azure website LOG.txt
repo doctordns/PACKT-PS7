@@ -1,4 +1,4 @@
-# Recipe 13.5 - Create an Azure Web App
+# Recipe 13.5 - Create an Azure site
 
 # Run on SRV1
 

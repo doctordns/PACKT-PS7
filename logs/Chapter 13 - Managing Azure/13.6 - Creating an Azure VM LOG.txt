@@ -98,3 +98,32 @@ VM Public IP Address: [51.140.116.221]
 
 
 See console output
+
+
+# 9. Tidying up - stopping and removing the Azure VM
+
+
+no output
+
+
+
+# 10. Tidying up - Removing VM's networking artifacts
+
+
+no output
+
+
+
+# 11. Tidying up - Removing the VM's disk
+
+
+no output
+
+
+
+# 12. Tidying Up - Removing the storage account and resource group
+
+
+no output
+
+

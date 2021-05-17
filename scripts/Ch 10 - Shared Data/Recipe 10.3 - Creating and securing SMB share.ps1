@@ -8,9 +8,9 @@ Get-SmbShare -Name * |
     Format-Table -GroupBy Name
 
 # 2. Sharing a new folder 
-New-Item -Path F: -Name ITShare -ItemType Directory |
+New-Item -Path C: -Name ITShare -ItemType Directory |
   Out-Null
-New-SmbShare -Name ITShare -Path F:\ITShare
+New-SmbShare -Name ITShare -Path C:\ITShare
 
 # 3. Updating the share to have a description
 $CHT = @{Confirm=$False}
@@ -74,14 +74,14 @@ Get-SmbShareAccess -Name ITShare |
 # 12. Set file ACL to be same as share acl
 Set-SmbPathAcl -ShareName 'ITShare'
 
-# 13. Creating a file in F:\ITShare
-'File Contents' | Out-File -FilePath F:\ITShare\File.Txt
+# 13. Creating a file in C:\ITShare
+'File Contents' | Out-File -FilePath C:\ITShare\File.Txt
 
 # 14. Setting file ACL to be same as share ACL
 Set-SmbPathAcl -ShareName 'ITShare'
 
 # 15. Viewing file ACL
-Get-NTFSAccess -Path F:\ITShare\File.Txt |
+Get-NTFSAccess -Path C:\ITShare\File.Txt |
   Format-Table -AutoSize
   
 

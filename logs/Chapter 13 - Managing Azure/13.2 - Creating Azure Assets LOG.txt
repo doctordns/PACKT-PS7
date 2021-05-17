@@ -1,9 +1,11 @@
-# Recipe 13.2 - Create Azure Assets
+# Recipe 13.2 - Creating Azure Assets
 #
 #
 
 # 1. Setting key variables
 
+
+no output
 
 
 PS C:\Foo> # 2.	Logging into your Azure account
@@ -24,7 +26,7 @@ no output
 
 
 
-PS C:\Foo> # 4. Viewing RG with Tags
+PS C:\Foo> # 4. Viewing the resource group with tags
 PS C:\Foo> Get-AzResourceGroup -Name $RGName |
              Format-List -Property *
 
@@ -47,7 +49,7 @@ ManagedBy
 
 
 
-PS C:\Foo> # 5. Testing to see if an SA name is taken
+PS C:\Foo> # 5. Testing to see if the storage account name is taken
 PS C:\Foo> Get-AzStorageAccountNameAvailability $SAName
 
 NameAvailable Reason Message
@@ -61,28 +63,26 @@ NameAvailable Reason Message
 
 
 
-PS C:\Foo> # 6. Creating a new Storage Account
+PS C:\Foo> # 6. Creating a new storage account
 PS C:\Foo> $SAHT = @{
              Name              = $SAName
-             SkuName           = 'Standard_LRS'     
+             SkuName           = 'Standard_LRS'
              ResourceGroupName = $RgName
              Tag               = $RGTag
              Location          = $Locname
-           }
-PS C:\Foo> New-AzStorageAccount @SAHT |
-             Format-List 
-
+           }            
+PS C:\Foo> New-AzStorageAccount @SAHT | Format-List
 
 ResourceGroupName           : packt_rg
 StorageAccountName          : packt42sa
 Id                          : /subscriptions/449846ba-2d26-45cf-8420-df1aade52b42/resourceGroups/
-                               packt_rg/providers/Microsoft.Storage/storageAccounts/packt42sa
+                              packt_rg/providers/Microsoft.Storage/storageAccounts/packt42sa
 Location                    : uksouth
 Sku                         : Microsoft.Azure.Commands.Management.Storage.Models.PSSku
 Kind                        : StorageV2
 Encryption                  : Microsoft.Azure.Management.Storage.Models.Encryption
 AccessTier                  : Hot
-CreationTime                : 03/04/2021 10:19:11
+CreationTime                : 04/20/2021 09:57:52
 CustomDomain                :
 Identity                    :
 LastGeoFailoverTime         :
@@ -96,7 +96,7 @@ StatusOfSecondary           :
 Tags                        : {[Author, Thomas Lee], [Publisher, Packt]}
 EnableHttpsTrafficOnly      : True
 AzureFilesIdentityBasedAuth :
-EnableHierarchicalNamespace : 
+EnableHierarchicalNamespace :
 FailoverInProgress          :
 LargeFileSharesState        :
 NetworkRuleSet              : Microsoft.Azure.Commands.Management.Storage.Models.PSNetworkRuleSet
@@ -112,8 +112,7 @@ ExtendedProperties          : {}
 
 
 
-
-PS C:\Foo> # 7. Getting an overview of the SA in this Resource group
+PS C:\Foo> # 7. Getting an overview of the storage account in this resource group
 PS C:\Foo> $SA = Get-AzStorageAccount -ResourceGroupName $RgName
 PS C:\Foo> $SA |
              Format-List -Property *
@@ -159,7 +158,7 @@ ExtendedProperties          : {}
 
 
 
-PS C:\Foo> # 8. Getting primary endpoints for the SA
+PS C:\Foo> # 8. Getting primary endpoints for the storage account
 PS C:\Foo> $SA.PrimaryEndpoints
 
 Blob               : https://packt42sa.blob.core.windows.net/
@@ -187,7 +186,7 @@ Restrictions :
 
 
 
-PS C:\Foo> # 10. View Storage Account's Context property
+PS C:\Foo> # 10. Viewing the storage account's context property
 PS C:\Foo> $SA.Context
 
 BlobEndPoint       : https://packt42sa.blob.core.windows.net/
