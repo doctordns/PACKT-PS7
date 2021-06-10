@@ -7,7 +7,7 @@
 PS C:\Foo> # 1. Installing the Hyper-V feature on HV1, HV2
 PS C:\Foo> $SB = {
              Install-WindowsFeature -Name Hyper-V -IncludeManagementTools
-            }
+           }
 PS C:\Foo> Invoke-Command -ComputerName HV1, HV2 -ScriptBlock $SB
 
 
@@ -28,7 +28,7 @@ no ouTPUT AS SUCH
 # 3. Create a PSSession with both HV Servers (after reboot)
 
 
-NO ouTPUT
+No output
 
 
 # 4. Create and set the location for VMs and VHDs on HV1 and HV2
@@ -37,7 +37,7 @@ NO ouTPUT
 
 
 
-NO ouTPUT
+No output
 
 
 
@@ -47,7 +47,7 @@ NO ouTPUT
 
 
 
-NO ouTPUT
+No output
 
 
 
@@ -59,7 +59,7 @@ NO ouTPUT
 
 
 
-NO ouTPUT
+No output
 
 
 
@@ -71,7 +71,7 @@ NO ouTPUT
 
 
 
-NO ouTPUT
+No output
 
 
 
@@ -84,14 +84,14 @@ NO ouTPUT
 
 
 
-NO ouTPUT
+No output
 
 
 
 
 
 
-PS C:\Foo> # 9. Reviewing key VMHost settings:
+PS C:\Foo> # 9. Reviewing key VM host settings
 PS C:\Foo> $SB = {
              Get-VMHost
            }
@@ -101,8 +101,8 @@ PS C:\Foo> Invoke-Command -Scriptblock $SB -Session $S |
 
 Name VirtualHardDiskPath VirtualMachinePath NumaSpanningEnabled EnableEnhancedSessionMode ResourceMeteringSaveInterval
 ---- ------------------- ------------------ ------------------- ------------------------- ----------------------------
-HV1  C:\Vm\Vhds          C:\Vm\VMsV                        True                      True 01:00:00
-HV2  C:\Vm\Vhds          C:\Vm\VMsV                        True                      True 01:00:00
+HV1  C:\VM\VHDS          C:\VM\VMS                         True                      True 01:00:00
+HV2  C:\VM\VHDS          C:\VM\VMS                         True                      True 01:00:00
 
 
 

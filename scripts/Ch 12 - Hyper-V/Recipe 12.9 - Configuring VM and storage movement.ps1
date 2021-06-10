@@ -42,7 +42,7 @@ Invoke-Command -ScriptBlock $SB -ComputerName HV2
 # 8. Enabling VM migration from both HV1 and HV2
 Enable-VMMigration -ComputerName HV1, HV2
 
-# 9. Configuring VM Migration on both hosts:
+# 9. Configuring VM Migration on both hosts
 $SVHT = @{
   UseAnyNetworkForMigration                 = $true
   ComputerName                              = 'HV1', 'HV2'
@@ -80,16 +80,11 @@ Get-VMHardDiskDrive -VMName PSDirect -Computer HV2  |
 
 
 
-
-#  move back - not part of publication
-#  Run form HV2
-
-
 #  run on HV2 
 
 # 15.  Moving the PSDirect VM back to HV1
 $Start2 = Get-Date
-$VMHT2 = @{
+$VMHT2  = @{
     Name                  = 'PSDirect'
     ComputerName           = 'HV2'
     DestinationHost        = 'HV1'
@@ -97,9 +92,8 @@ $VMHT2 = @{
     DestinationStoragePath = 'C:\vm\vhds\PSDirect' # on HV1
 }
 Move-VM @VMHT2
-$Finish2 = Get-Date
-($Finish2 - $Start2)
+$Finish2  = Get-Date
 
 # 15. Displaying the time taken to migrate back to HV1
 $OS = "Migration back to HV1 took: [{0:n2}] minutes"
-($os -f ($($finish-$start).TotalMinutes))
+($OS -f ($($ffinish-$sStart).TotalMinutes))

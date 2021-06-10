@@ -17,30 +17,31 @@ $S = New-PSSession HV1, HV2
 
 # 4. Creating and setting the location for VMs and VHDs on HV1 and HV2
 $SB = {
-    New-Item -Path C:\Vm -ItemType Directory -Force |
+    New-Item -Path C:\VM -ItemType Directory -Force |
         Out-Null
-    New-Item -Path C:\Vm\Vhds -ItemType Directory -Force |
+    New-Item -Path C:\VM\VHDS -ItemType Directory -Force |
         Out-Null
-    New-Item -Path C:\Vm\VMs -ItemType Directory -force |
+    New-Item -Path C:\VM\VMS -ItemType Directory -force |
         Out-Null
-Invoke-Command -ScriptBlock $Sb -Session $S | Out-Null
+}        
+Invoke-Command -ScriptBlock $SB -Session $S | Out-Null
 
 # 5. Setting default paths for Hyper-V VM disk/config information
 $SB = {
-  $VMs  = 'C:\Vm\Vhds'
-  $VHDs = 'C:\Vm\VMsV'
-  Set-VMHost -ComputerName Localhost -VirtualHardDiskPath $VMs
-  Set-VMHost -ComputerName Localhost -VirtualMachinePath $VHDs
+  $VHDS = 'C:\VM\VHDS'
+  $VMS  = 'C:\VM\VMS'
+  Set-VMHost -ComputerName Localhost -VirtualHardDiskPath $VHDS
+  Set-VMHost -ComputerName Localhost -VirtualMachinePath $VMS
 }
 Invoke-Command -ScriptBlock $SB -Session $S
 
-# 6. Seting NUMA spanning
+# 6. Setting NUMA spanning
 $SB = {
   Set-VMHost -NumaSpanningEnabled $true
 }
 Invoke-Command -ScriptBlock $SB -Session $S
 
-# 7. Settting EnhancedSessionMode
+# 7. Setting EnhancedSessionMode
 $SB = {
  Set-VMHost -EnableEnhancedSessionMode $true
 }
@@ -53,7 +54,7 @@ $SB = {
 }
 Invoke-Command -ScriptBlock $SB -Session $S
 
-# 9. Reviewing key VMHost settings:
+# 9. Reviewing key VM host settings
 $SB = {
   Get-VMHost 
 }

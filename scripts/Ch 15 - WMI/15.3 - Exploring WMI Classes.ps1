@@ -12,7 +12,7 @@ Get-CimClass -ClassName Win32_Share |
     Sort-Object -Property Name |
       Format-Table -Property Name, CimType
 
-# 3. Getting methods of Win32_Class
+# 3. Getting methods of Win32_Share class
 Get-CimClass -ClassName Win32_Share |
   Select-Object -ExpandProperty CimClassMethods
 
@@ -21,7 +21,7 @@ Get-CimClass -Namespace root\directory\LDAP |
   Where-Object CimClassName -match '^ds_group'
 
 
-# 5. Viewing the instances of the ds_group class.
+# 5. Viewing the instances of the ds_group class
 Get-CimInstance -Namespace root\directory\LDAP -Classname 'DS_Group' |
   Select -First 10 |
     Format-Table -Property DS_name, DS_Member

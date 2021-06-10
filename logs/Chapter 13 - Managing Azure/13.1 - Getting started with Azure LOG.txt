@@ -174,7 +174,7 @@ tfl@reskit.org Reskit.Org       b7280e42-9be9-469e-97c2-04201d196d39 AzureCloud
 
 PS C:\Foo> # 8. Getting Azure subscription details
 PS C:\Foo> $AccountN = $Account.Context.Account.Id
-PS C:\Foo> "Azure Account   : $Account"
+PS C:\Foo> "Azure Account   : $AccountN"
 Azure Account   : tfl@reskit.org
 
 

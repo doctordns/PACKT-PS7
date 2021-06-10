@@ -11,7 +11,7 @@ no output
 
 
 
-PS C:\Foo> # 2. Getting NIC details and any IP Address from the PSDirect VM
+PS C:\Foo> # 2. Getting NIC details and any IP addresses from the PSDirect VM
 PS C:\Foo> Get-VMNetworkAdapter -VMName PSDirect
 
 Name            IsManagementOs VMName   SwitchName MacAddress   Status IPAddresses
@@ -22,7 +22,7 @@ Network Adapter False          PSDirect            00155D0AC900 {Ok}   {169.254.
 
 
 
-PS C:\Foo> # 3. Creating a credential then get VM networking details
+PS C:\Foo> # 3. Creating a credential then getting VM networking details
 PS C:\Foo> $RKAn = 'localhost\Administrator'
 PS C:\Foo> $PS = 'Pa$$w0rd'
 PS C:\Foo> $RKP = ConvertTo-SecureString -String $PS -AsPlainText -Force
@@ -42,7 +42,7 @@ WIN-0TKMU3D2DFM Ethernet                    5 Microsoft Hyper-V Network Adapter 
 
 
 
-PS C:\Foo> # 4. Create a virtual switch on HV1
+PS C:\Foo> # 4. Creating a virtual switch on HV1
 PS C:\Foo> $VSHT = @{
              Name           = 'External'
              NetAdapterName = 'Ethernet'

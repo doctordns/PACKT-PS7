@@ -36,7 +36,7 @@ Start-VM -VMName PSDirect
 Wait-VM -VMName PSDirect -For IPAddress
 
 # 7. Creating a new VHDX file for the PSDirect VM
-$VHDPath = 'C:\Vm\Vhds\PSDirect-D.VHDX'
+$VHDPath = 'C:\VM\VHDs\PSDirect-D.VHDX'
 New-VHD -Path $VHDPath -SizeBytes 8GB -Dynamic
 
 # 8. Getting Controller number of the newly added SCSI controller

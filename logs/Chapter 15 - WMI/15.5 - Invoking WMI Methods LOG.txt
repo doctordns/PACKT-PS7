@@ -10,12 +10,13 @@ PS C:\Foo> # 1. Reviewing methods of Win32_Share class on SRV1
 PS C:\Foo> Get-CimClass -ClassName Win32_Share | 
              Select-Object -ExpandProperty CimClassMethods
 
-Name          ReturnType Parameters                                                        Qualifiers
-----          ---------- ----------                                                        ----------
-Create            UInt32 {Access, Description, MaximumAllowed, Name, Password, Path, Type} {Constructor, Implemented, MappingStrings, Static}
-SetShareInfo      UInt32 {Access, Description, MaximumAllowed}                             {Implemented, MappingStrings}
-GetAccessMask     UInt32 {}                                                                {Implemented, MappingStrings}
-Delete            UInt32 {}                                                                {Destructor, Implemented, MappingStrings}
+Name          ReturnType Parameters                               Qualifiers
+----          ---------- ----------                               ----------
+Create            UInt32 {Access, Description, MaximumAllowed,    {Constructor, Implemented, MappingStrings, Static}
+                          Name, Password, Path, Type} 
+SetShareInfo      UInt32 {Access, Description, MaximumAllowed}    {Implemented, MappingStrings}
+GetAccessMask     UInt32 {}                                       {Implemented, MappingStrings}
+Delete            UInt32 {}                                       {Destructor, Implemented, MappingStrings}
 
 
 
@@ -58,7 +59,7 @@ ReturnValue PSComputerName
 
 
 
-PS C:\Foo> # 4. Viewing the new SMB Share
+PS C:\Foo> # 4. Viewing the new SMB share
 PS C:\Foo> Get-SMBShare -Name 'TestShare1'
 
 Name       ScopeName Path   Description
@@ -68,7 +69,7 @@ TestShare1 *         C:\Foo Test Share
 
 
 
-PS C:\Foo> # 5. Viewing the new SMB Share using Get-CimInstance
+PS C:\Foo> # 5. Viewing the new SMB share using Get-CimInstance
 PS C:\Foo> Get-CimInstance -Class Win32_Share -Filter "Name = 'TestShare1'"
 
 Name       Path   Description

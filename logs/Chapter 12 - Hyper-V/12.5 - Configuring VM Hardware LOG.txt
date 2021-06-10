@@ -78,12 +78,11 @@ No output
 
 
 PS C:\Foo> # 7. Creating a new VHDX file for the PSDirect VM
-PS C:\Foo> $VHDPath = 'C:\Vm\Vhds\PSDirect-D.VHDX'
-PS C:\Foo> $VHDPath = 'C:\Vm\Vhds\PSDirect-D.VHDX'
+PS C:\Foo> $VHDPath = 'C:\VM\VHDs\PSDirect-D.VHDX'
 PS C:\Foo> New-VHD -Path $VHDPath -SizeBytes 8GB -Dynamic
 
 ComputerName            : HV1
-Path                    : C:\Vm\Vhds\PSDirect-D.VHDX
+Path                    : C:\VM\VHDs\PSDirect-D.VHDX
 VhdFormat               : VHDX
 VhdType                 : Dynamic
 FileSize                : 4194304

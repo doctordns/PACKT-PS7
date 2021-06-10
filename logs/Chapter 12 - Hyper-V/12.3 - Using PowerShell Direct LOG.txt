@@ -21,7 +21,7 @@ PSDirect Running 0           1024              00:26:54.8550000 Operating normal
 PS C:\Foo> # 3. Invoking a command on the VM specifying VM name
 PS C:\Foo> $SBHT = @{
              VMName      = 'PSDirect'
-             Credential  = $RKCred
+             Credential  = $Cred
              ScriptBlock = {HOSTNAME.EXE}
            }
 PS C:\Foo> Invoke-Command @SBHT
@@ -31,7 +31,7 @@ WIN-0TKMU3D2DFM
 
 PS C:\Foo> # 4. Invoking a command based on VMID
 PS C:\Foo> $VMID = (Get-VM -VMName PSDirect).VMId.Guid
-PS C:\Foo> Invoke-Command -VMid $VMID -Credential $RKCred  -ScriptBlock {ipconfig}
+PS C:\Foo> Invoke-Command -VMid $VMID -Credential $Cred  -ScriptBlock {ipconfig}
 
 Windows IP Configuration
 
@@ -66,14 +66,14 @@ no output
 
 PS C:\Foo> # 7. Entering an interactive session with HV1
 PS C:\Foo> Enter-PSSession -Session $PSDRS
-[hv1]: PS C:\Users\administrator\Documents> $PSDRS = New-PSSession -VMName PSDirect
+[HV1]: PS C:\Users\administrator\Documents> $PSDRS = New-PSSession -VMName PSDirect
 
 
 
 
 PS C:\Foo> # 8. Entering and using the remoting session inside PSDirect
 PS C:\Foo> Enter-PSSession -Session $PSDRS
-[hv1]: PS C:\Users\administrator\Documents> HOSTNAME.EXE
+[HV1]: PS C:\Users\administrator\Documents> HOSTNAME.EXE
 HV1
 
 
@@ -86,7 +86,7 @@ no output
 
 
 
-[HV1]: PS C:\Users\administrator\Documents> # 10. Using PS Direct session to the VM
+[HV1]: PS C:\Users\administrator\Documents> # 10. Using PSDirect session to the VM
 [HV1]: PS C:\Users\administrator\Documents> Enter-PSSession -VMName PSDirect -Credential $Cred
 [HV1]: [PSDirect]: PS C:\Users\Administrator\Documents> HOSTNAME.EXE
 WIN-0TKMU3D2DFM

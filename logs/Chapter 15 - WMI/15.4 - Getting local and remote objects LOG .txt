@@ -55,7 +55,7 @@ Terminal Server License Servers    CN=Terminal Server License Servers,CN=Builtin
 
 
 
-PS C:\Foo> # 3. Using -Filter
+PS C:\Foo> # 3. Using a WMI filter
 PS C:\Foo> $Filter = "ds_Name LIKE '%operator%' "
 PS C:\Foo> Get-CimInstance @GCIMHT1  -Filter $Filter |
              Format-Table -Property DS_Name
@@ -71,8 +71,8 @@ Server Operators
 Account Operators
 
 
-PS C:\Foo> # 4. Using a WMI Query
-PS C:\Foo> # 4. Using a WMI Query
+
+PS C:\Foo> # 4. Using a WMI query
 PS C:\Foo> $Q = @"
              SELECT * from ds_group
                WHERE ds_Name like '%operator%'

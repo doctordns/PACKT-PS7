@@ -35,6 +35,6 @@ Get-VM     -VMName PSDirect
 Wait-VM    -VMName PSDirect -For IPaddress
 Get-VM     -VMName PSDirect
 
-# 9. Performing a hard power off on the PSDirct VM
+# 9. Performing a hard power off on the PSDirect VM
 Stop-VM -VMName PSDirect -TurnOff
 Get-VM  -VMname PSDirect

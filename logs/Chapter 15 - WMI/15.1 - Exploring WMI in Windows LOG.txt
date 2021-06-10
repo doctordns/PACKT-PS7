@@ -272,7 +272,8 @@ PS C:\Foo> Get-Module -Name CimCmdlets |
 LogPipelineExecutionDetails : False
 Name                        : CimCmdlets
 Path                        : C:\Program Files\PowerShell\7\Microsoft.Management.Infrastructure.CimCmdlets.dll
-ImplementingAssembly        : Microsoft.Management.Infrastructure.CimCmdlets, Version=7.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+ImplementingAssembly        : Microsoft.Management.Infrastructure.CimCmdlets, Version=7.1.3.0, Culture=neutral, 
+                              PublicKeyToken=31bf3856ad364e35
 Definition                  : 
 Description                 : 
 Guid                        : fb6cc51d-c096-4b38-b78d-0fed6277096a
@@ -304,7 +305,8 @@ PowerShellHostVersion       :
 PowerShellVersion           : 3.0
 ProcessorArchitecture       : None
 Scripts                     : {}
-RequiredAssemblies          : {Microsoft.Management.Infrastructure.CimCmdlets.dll, Microsoft.Management.Infrastructure.Dll}
+RequiredAssemblies          : {Microsoft.Management.Infrastructure.CimCmdlets.dll, 
+                               Microsoft.Management.Infrastructure.Dll}
 RequiredModules             : {}
 RootModule                  : Microsoft.Management.Infrastructure.CimCmdlets
 SessionState                : System.Management.Automation.SessionState

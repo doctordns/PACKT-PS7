@@ -40,26 +40,26 @@ $VMGroupMFG = New-VMGroup @VHGHT2
 Get-VMGroup | 
   Format-Table -Property Name, *Members, ComputerName 
 
-# 5. Creating arrays of group member VM Names
+# 5. Creating arrays of group member VM names
 $ACCVMs = 'SQLAcct1', 'SQLAcct2','SQLAcct3'
 $MFGVms = 'SQLMfg1', 'SQLMfg2'
 
-# 6. Adding members to the Accounting SQL VMgroup
+# 6. Adding members to the Accounting SQL VM group
 Foreach ($Server in $ACCVMs) {
     $VM = Get-VM -Name $Server
     Add-VMGroupMember -Name SQLAccVMG -VM $VM
 }
 
-# 7. Adding members to the Manufacturing SQL VM Group
+# 7. Adding members to the Manufacturing SQL VM group
 Foreach ($Server in $MfgVMs) {
     $VM = Get-VM -Name $Server
     Add-VMGroupMember -Name SQLMfgVMG -VM $VM
 }
-# 8. Viewing VM Groups on HV2
+# 8. Viewing VM groups on HV2
 Get-VMGroup |                                     
  Format-Table -Property Name, *Members, ComputerName
 
-# 9. Creating a management collection VMGroup
+# 9. Creating a management collection VMG group
 $VMGHT = @{
   Name      = 'VMMGSQL'
   GroupType = 'ManagementCollectionType'
@@ -93,13 +93,13 @@ Foreach ($VM in ((Get-VMGroup SQLAccVMG).VMMembers)) {
   Set-VMProcessor -VMName $VM.name -Count 6
 }
 
-# 16. Checking Processor counts for all VMs sorted by CPU Count
+# 16. Checking processor counts for all VMs sorted by CPU count
 $VMS = (Get-VMGroup -Name VMMGSQL).VMGroupMembers.VMMembers
 Get-VMProcessor -VMName $VMS.Name | 
   Sort-Object -Property Count -Descending |
     Format-Table -Property VMName, Count
 
-# 17. Remove VMs from VM Groups
+# 17. Remove VMs from VM groups
 $VMs = (Get-VMGroup -Name SQLAccVMG).VMMEMBERS
 Foreach ($VM in $VMS)  {
   $X = Get-VM -vmname $VM.name

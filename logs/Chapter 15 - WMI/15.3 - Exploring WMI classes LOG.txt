@@ -40,16 +40,17 @@ Type             UInt32
 
 
 
-PS C:\Foo> # 3. Getting methods of Win32_Class
+PS C:\Foo> # 3. Getting methods of Win32_Share class
 PS C:\Foo> Get-CimClass -ClassName Win32_Share |
              Select-Object -ExpandProperty CimClassMethods
 
-Name          ReturnType Parameters                                                        Qualifiers
-----          ---------- ----------                                                        ----------
-Create            UInt32 {Access, Description, MaximumAllowed, Name, Password, Path, Type} {Constructor, Implemented, MappingStrings, Static}
-SetShareInfo      UInt32 {Access, Description, MaximumAllowed}                             {Implemented, MappingStrings}
-GetAccessMask     UInt32 {}                                                                {Implemented, MappingStrings}
-Delete            UInt32 {}                                                                {Destructor, Implemented, MappingStrings}
+Name          ReturnType Parameters                               Qualifiers
+----          ---------- ----------                               ----------
+Create            UInt32 {Access, Description, MaximumAllowed,    {Constructor, Implemented, MappingStrings, Static}
+                          Name, Password, Path, Type}  
+SetShareInfo      UInt32 {Access, Description, MaximumAllowed}    {Implemented, MappingStrings}
+GetAccessMask     UInt32 {}                                       {Implemented, MappingStrings}
+Delete            UInt32 {}                                       {Destructor, Implemented, MappingStrings}
 
 
 
@@ -71,7 +72,7 @@ ds_groupofuniquenames      {}                {ADSIPath, DS_adminDescription, DS_
 
 
 
-PS C:\Foo> # 5. Viewing the instances of the ds_group class.
+PS C:\Foo> # 5. Viewing the instances of the ds_group class
 PS C:\Foo> Get-CimInstance -Namespace root\directory\LDAP -Classname 'ds_group' |
              Format-Table -Property DS_name, DS_Member
 

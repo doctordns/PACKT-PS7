@@ -52,7 +52,6 @@ ID Script         Line Command         Variable Action
 
 
 
-
 PS C:\Foo> # 8. Running the script - until the first breakpoint is hit
 PS C:\Foo> & $ScrFile
 In Breakpoint.ps1
@@ -67,8 +66,15 @@ At C:\Foo\Breakpoint.ps1:4 char:3
 
 
 
-# 9. Continuing script execution from the DBG prompt until the next breakpoint
+[DBG]: PS C:\Foo>> # 9. Viewing the value of $J from the debug console
+[DBG]: PS C:\Foo>> $j
+21
 
+[DBG]: PS C:\Foo>> # 10. Viewing the value of $K from the debug console
+[DBG]: PS C:\Foo>> $K
+[DBG]: PS C:\Foo>>
+
+[DBG]: PS C:\Foo>> # 11. Continuing script execution from the DBG prompt until the next breakpoint
 [DBG]: PS C:\Foo>> continue
 Hit Variable breakpoint on 'C:\Foo\Breakpoint.ps1:$M' (Write access)
 
@@ -78,9 +84,7 @@ At C:\Foo\Breakpoint.ps1:5 char:3
 [DBG]: PS C:\Foo>>
 
 
-
-# 10. Continuing script execution from the DBG prompt until the next breakpoint
-
+[DBG]: PS C:\Foo>> # 12. Continuing script execution from the DBG prompt until the execution of Get-CimInstance
 [DBG]: PS C:\Foo>> continue
 Hit Command breakpoint on 'C:\Foo\Breakpoint.ps1:Get-CimInstance'
 
@@ -90,8 +94,10 @@ At C:\Foo\Breakpoint.ps1:7 char:3
 [DBG]: PS C:\Foo>>
 
 
-# 11. Continuing script execution from the DBG prompt until the end
-
+[DBG]: PS C:\Foo>> # 13. Continuing script execution from the DBG prompt until the end
 [DBG]: PS C:\Foo>> continue
 Calculating Bar as [42]
 PS C:\Foo> 
+
+
+

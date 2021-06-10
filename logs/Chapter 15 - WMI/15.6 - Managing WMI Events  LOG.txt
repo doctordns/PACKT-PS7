@@ -90,7 +90,7 @@ no output
 
 
 
-PS C:\Foo> # 9. Examining details
+PS C:\Foo> # 9. Examining event details
 PS C:\Foo> $RegEvent.SourceEventArgs.NewEvent
 
 SECURITY_DESCRIPTOR : 
@@ -131,7 +131,7 @@ Id  Name           PSJobTypeName  State      HasMoreData  Location  Command
 
 # 12. Adding a user to the enterprise admin group
 
-PS C:\Foo> # 12. Adding a user to the enterprise admin group
+PS C:\Foo> # 12. Adding a user to the Enterprise Admins group
 PS C:\Foo> Add-ADGroupMember -Identity 'Enterprise Admins' -Members Malcolm
 PS C:\Foo> We have a group change
 

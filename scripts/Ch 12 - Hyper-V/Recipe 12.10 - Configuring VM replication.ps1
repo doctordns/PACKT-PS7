@@ -13,7 +13,7 @@ Invoke-Command -ComputerName DC1 -ScriptBlock $SB
 Restart-Computer -ComputerName HV2 -Force
 Restart-Computer -ComputerName HV1 -Force
 
-# 3. Configuring Hyper-V replication on HV1 and HV1
+# 3. Configuring Hyper-V replication on HV1 and HV2
 $VMRHT = @{
   ReplicationEnabled              = $true
   AllowedAuthenticationType       = 'Kerberos'
@@ -40,7 +40,7 @@ Enable-VMReplication  @VMRHT
 # 5. Viewing the replication status of HV1
 Get-VMReplicationServer -ComputerName HV1
 
-# 6. Checking PSDirect on Hyper-V Hosts
+# 6. Checking PSDirect on Hyper-V hosts
 Get-VM -ComputerName HV1 -VMName PSDirect
 Get-VM -ComputerName HV2 -VMName PSDirect
 
@@ -104,13 +104,13 @@ Remove-VM -Name PSDirect -ComputerName HV1 -Confirm:$false -Force
 
 # Run remainder of this recipe on HV2
 
-# 20. Moving the PSDirect VM back to HV1
+# 21. Moving the PSDirect VM back to HV1
 $VMHT2 = @{
     Name                  = 'PSDirect'
     ComputerName           = 'HV2'
     DestinationHost        = 'HV1'
     IncludeStorage         =  $true
-    DestinationStoragePath = 'C:\Vm\Vhds\PSDirect' # on HV1
+    DestinationStoragePath = 'C:\VM\VHDS\PSDirect' # on HV1
 }
 Move-VM @VMHT2
 

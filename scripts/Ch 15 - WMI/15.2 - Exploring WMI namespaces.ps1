@@ -40,23 +40,23 @@ $SB = {
      $NS
     ) 
    Write-Output $NS
-   $EAHT = @{ErrorAction = SilentlyContinue}
+   $EAHT = @{ErrorAction = 'SilentlyContinue'}
    Get-CimInstance "__Namespace" -Namespace $NS @EAHT | 
-     ForEach-Object { Get-WMINamespaceEnum "$ns\$($_.name)"   }
+     ForEach-Object { Get-WMINamespaceEnum "$NS\$($_.Name)"   }
    }  # End of function
    $Namespaces = Get-WMINamespaceEnum 'ROOT' | Sort-Object
    $WMIClasses = @()
    Foreach ($Namespace in $Namespaces) {
    $WMIClasses += Get-CimClass -Namespace $Namespace
   }
- "There are $($Namespaces.count) WMI namespaces on $(hostname)"
- "There are $($WMIClasses.count) classes on $(hostname)"
+ "There are $($Namespaces.Count) WMI namespaces on $(hostname)"
+ "There are $($WMIClasses.Count) classes on $(hostname)"
 }
 
 # 7. Running the script block locally on SRV1
 Invoke-Command -ComputerName SRV1 -ScriptBlock $SB
 
-# 8. Running the script block  the script block on SRV2
+# 8. Running the script block on SRV2
 Invoke-Command -ComputerName SRV2 -ScriptBlock $SB
 
 # 9. Running the script block on DC1

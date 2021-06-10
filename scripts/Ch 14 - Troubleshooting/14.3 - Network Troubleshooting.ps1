@@ -7,16 +7,16 @@
 $DNSDomain = $Env:USERDNSDOMAIN
 $FQDN      = "$Env:COMPUTERNAME.$DNSDomain"
 
-# 2. Getting DNS Server address
+# 2. Getting DNS server address
 $DNSHT = @{
   InterfaceAlias = "Ethernet"
   AddressFamily  = 'IPv4'
 }
-$DNServers = (Get-DnsClientServerAddress @DNSHT).ServerAddresses
-$DNServers
+$DNSServers = (Get-DnsClientServerAddress @DNSHT).ServerAddresses
+$DNSServers
 
-# 3. Checking if the DNS Servers are online
-Foreach ($DNSServer in $DNServers) {
+# 3. Checking if the DNS servers are online
+Foreach ($DNSServer in $DNSServers) {
   $TestDNS = Test-NetConnection -Port 53 -ComputerName $DNSServer   
   $Result  = $TestDNS ? "Available" : ' Not reachable'
   "DNS Server [$DNSServer] is $Result"

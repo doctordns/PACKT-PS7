@@ -18,7 +18,7 @@ $ICHT = @{
 }
 Invoke-Command @ICHT
 
-# 3. Creating a snapshot of PSDirect1 on HV
+# 3. Creating a checkpoint of PSDirect on HV
 $CPHT = @{
   VMName       = 'PSDirect'
   ComputerName = 'HV1'
@@ -113,11 +113,11 @@ Restore-VMSnapshot -VMSnapshot $Snap1 -Confirm:$false
 Start-VM -Name PSDirect
 Wait-VM -For IPAddress -Name PSDirect
 
-# 15. Checking snapshots and VM data files again
+# 15. Checking checkpoints and VM data files again
 Get-VMSnapshot -VMName PSDirect
 Get-ChildItem -Path $Parent | Format-Table
 
-# 16. Removing all the snapshots from HV1
+# 16. Removing all the checkpoints from HV1
 Get-VMSnapshot -VMName PSDirect |
   Remove-VMSnapshot
 

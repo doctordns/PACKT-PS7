@@ -105,7 +105,7 @@ no output
 
 
 
-# 9. Configuring VM Migration on both hosts:
+# 9. Configuring VM Migration on both hosts
 
 
 
@@ -177,34 +177,22 @@ PSDirect C:\PSDirect\Virtual Hard Disks\PSDirect-D.VHDX
 
 PS C:\Foo> # 15.  Moving the PSDirect VM back to HV1
 PS C:\Foo> $Start2 = Get-Date
-$VMHT2 = @{
-    Name                  = 'PSDirect'
-    ComputerName           = 'HV2'
-    DestinationHost        = 'HV1'
-    IncludeStorage         =  $true
-    DestinationStoragePath = 'C:\vm\vhds\PSDirect' # on HV1
-}
-Move-VM @VMHT2
-$Finish2 = Get-Date
-($Finish2 - $Start2)
-
-Days              : 0
-Hours             : 0
-Minutes           : 2
-Seconds           : 45
-Milliseconds      : 944
-Ticks             : 1659441252
-TotalDays         : 0.00192064959722222
-TotalHours        : 0.0460955903333333
-TotalMinutes      : 2.76573542
-TotalSeconds      : 165.9441252
-TotalMilliseconds : 165944.1252
+PS C:\Foo> $VMHT2  = @{
+             Name                  = 'PSDirect'
+             ComputerName           = 'HV2'
+             DestinationHost        = 'HV1'
+             IncludeStorage         =  $true
+             DestinationStoragePath = 'C:\vm\vhds\PSDirect' # on HV1
+           }
+PS C:\Foo> Move-VM @VMHT2
+PS C:\Foo> $Finish2 = Get-Date
 
 
 
 
 
-PS C:\Foo> # 15. Displaying the time taken to migrate back to HV1
+
+PS C:\Foo> # 16. Displaying the time taken to migrate back to HV1
 PS C:\Foo> $OS = "Migration back to HV1 took: [{0:n2}] minutes"
 PS C:\Foo> ($OS -f ($($Finish-$Start).TotalMinutes))
 Migration back to HV1 took: [2.76] minutes

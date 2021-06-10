@@ -38,7 +38,7 @@ no output
 
 
 
-PS C:\Foo> # 5. Getting the Storage Account context which encapsulates credentials
+PS C:\Foo> # 5. Getting the storage account context which encapsulates credentials
 PS C:\Foo> #   for the storage account)
 PS C:\Foo> $SCHT = @{
              StorageAccountName = $SAName

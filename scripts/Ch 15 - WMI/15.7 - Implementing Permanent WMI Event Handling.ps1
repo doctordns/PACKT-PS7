@@ -62,7 +62,7 @@ $IHT = @{
 }        
 $InstanceFilter = New-CimInstance @IHT
 
-# 5. Creating Monitor.ps1
+# 5. 5.	Creating the Monitor.ps1 script run when the WMI event occurs
 $MONITOR = @'
 $LogFile   = 'C:\Foo\Grouplog.Txt'
 $Group     = 'Enterprise Admins'

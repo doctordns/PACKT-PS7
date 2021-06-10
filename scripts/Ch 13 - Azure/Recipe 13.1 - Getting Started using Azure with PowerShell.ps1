@@ -9,7 +9,7 @@ Find-Module -Name Az |
 # 2. Installing AZ module
 Install-Module -Name Az -Force
 
-# 3. Discovering Azure modules and how many cmdlets each contains
+# 3. Discovering Azure modules and how many cmdlets each containss
 $HT = @{ Label ='Cmdlets'
          Expression = {(Get-Command -module $_.name).count}}
 Get-Module Az* -ListAvailable | 

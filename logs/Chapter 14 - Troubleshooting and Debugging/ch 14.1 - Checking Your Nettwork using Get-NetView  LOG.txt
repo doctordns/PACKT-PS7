@@ -23,8 +23,8 @@ Version        Name          Repository   Description
 
 
 
-PS C:\Foo> # 3. Checking installed verson of Get-NetView
-PS C:\Foo> Get-Module -Name Get-NetView
+PS C:\Foo> # 3. Checking installed version of Get-NetView
+PS C:\Foo> Get-Module -Name Get-NetView -ListAvailable
 
 ModuleType Version       PreRelease Name          ExportedCommands
 ---------- -------       ---------- ----          ----------------
@@ -59,7 +59,7 @@ no output
 
 
 PS C:\Foo> # 6. Running Get-NetView
-PS C:\Foo> Get-NetView
+PS C:\Foo> Get-NetView -OutputDirectory $OF
 Transcript started, output file is C:\NetViewOutput\msdbg.SRV1\Get-NetView.log
 (   669 ms) Get-Service "*" | Sort-Object Name | Format-Table -AutoSize
 (   850 ms) Get-Service "*" | Sort-Object Name | Format-Table -Property * -AutoSize 
@@ -90,7 +90,7 @@ Size:    36.87 MB
 
 
 
-PS C:\Foo> # 7. Viewing the output folder
+PS C:\Foo> # 7. Viewing the output folder using Get-ChildItem
 PS C:\Foo> $OFF = Get-ChildItem $OF
 PS C:\Foo> $OFF
 
@@ -104,8 +104,9 @@ d----   13/04/2021    16:24            msdbg.SRV1
 
 
 
-PS C:\Foo> # 8. Viewing the output folder contents
-PS C:\Foo> Get-ChildItem -Path ($OFF | Select-Object -First 1)
+PS C:\Foo> # 8. Viewing the output folder contents using Get-ChildItem
+PS C:\Foo> $Results = $OFF | Select-Object -First 1
+PS C:\Foo> Get-ChildItem -Path $Results
 
     Directory: C:\NetViewOutput\msdbg.SRV1
 

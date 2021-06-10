@@ -8,19 +8,19 @@ $SCR = @'
 Function Get-Foo1 {
   param ($J)
   $K = $J*2           # NB: line 4
-  $M = $K             # NB: $m written to
+  $M = $K             # NB: $M written to
   $M
-  $bios = Get-CimInstance -Class Win32_Bios
+  $BIOS = Get-CimInstance -Class Win32_Bios
 }
 Function Get-Foo {
-  param ($i)
-  (Get-Foo1 $i)      # Uses Get-Foo1
+  param ($I)
+  (Get-Foo1 $I)      # Uses Get-Foo1
 }
 Function Get-Bar { 
   Get-Foo (21)}
 # Start of ACTUAL script
-"In Breakpoint.ps1"
-"Calculating Bar as [{0}]" -f (Get-Bar)
+  "In Breakpoint.ps1"
+  "Calculating Bar as [{0}]" -f (Get-Bar)
 '@
 
 # 2. Saving the script
@@ -48,8 +48,17 @@ Get-PSBreakpoint | Format-Table -AutoSize
 # 8. Running the script - until the first breakpoint is hit
 & $ScrFile
 
-# 9. Continuing script execution from the DBG prompt until the next breakpoint
+# 9. Viewing the value of $J from the debug console
+$J
+
+# 10. Viewing the value of $K from the debug console
+$K
+
+# 11. Continuing script execution from the DBG prompt until the next breakpoint
 continue
 
-# 10. Continuing script execution from until the end of the script
+# 12. Continuine script executiont until the execution of Get-CimInstance
+continue
+
+# 13. Continuing script execution from until the end of the script
 continue

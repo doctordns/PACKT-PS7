@@ -80,7 +80,7 @@ SQLMfgVMG {}                       HV2
 
 
 
-# 5. Creating arrays of group member VM Names
+# 5. Creating arrays of group member VM names
 
 
 
@@ -96,14 +96,14 @@ No output
 
 
 
-# 7. Adding members to the Manufacturing SQL VM Group
+# 7. Adding members to the Manufacturing SQL VM group
 
 
 No output
 
 
 
-PS C:\Foo> # 8. Viewing VM Groups on HV2
+PS C:\Foo> # 8. Viewing VM groups on HV2
 PS C:\Foo> Get-VMGroup |
              Format-Table -Property Name, *Members, ComputerName
 
@@ -115,7 +115,7 @@ SQLMfgVMG {SQLMfg1, SQLMfg2}                            HV2
 
 
 
-# 9. Creating a management collection VMGroup
+# 9. Creating a management collection VM group
 
 
 
@@ -174,7 +174,7 @@ no output
 
 
 
-PS C:\Foo> # 16. Checking Processor counts for all VMs sorted by CPU Count
+PS C:\Foo> # 16. Checking processor counts for all VMs sorted by CPU count
 PS C:\Foo> $VMS = (Get-VMGroup -Name VMMGSQL).VMGroupMembers.VMMembers
 PS C:\Foo> Get-VMProcessor -VMName $VMS.Name |
              Sort-Object -Property Count -Descending |
@@ -189,7 +189,7 @@ SQLMfg1      4
 SQLMfg2      4
 
 
-# 17. Remove VMs from VM Groups
+# 17. Remove VMs from VM groups
 
 
 no output

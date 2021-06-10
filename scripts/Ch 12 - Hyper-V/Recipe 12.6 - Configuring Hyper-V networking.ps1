@@ -6,10 +6,10 @@
 Get-VM PSDirect |
   Set-VMNetworkAdapter -MacAddressSpoofing On
   
-# 2. Getting NIC details and any IP Address from the PSDirect VM
+# 2. Getting NIC details and any IP addresses from the PSDirect VM
 Get-VMNetworkAdapter -VMName PSDirect
 
-# 3. Creating a credential then get VM networking details
+# 3. Creating a credential then getting VM networking details
 $RKAn = 'localhost\Administrator'
 $PS = 'Pa$$w0rd'
 $RKP = ConvertTo-SecureString -String $PS -AsPlainText -Force

@@ -111,7 +111,7 @@ ModelId                             SubModelId Success ScanTime            ScanT
 Microsoft/Windows/DirectoryServices               True 12/04/2021 11:41:32 00:00:00          {DC1, DC1}
 
 
-PS C:\Foo> # 6. Getting BPA results frin DC1
+PS C:\Foo> # 6. Getting BPA results from DC1
 PS C:\Foo> $SB5 = {
              Get-BpaResult -ModelID Microsoft/Windows/DirectoryServices  |
                Where-Object Resolution -ne $null|

@@ -15,7 +15,7 @@ Get-CimInstance @GCIMHT1 |
     Select-Object -First 10 |
       Format-Table -Property DS_name, DS_distinguishedName
 
-# 3. Using -Filter
+# 3. Using a WMI filter
 $Filter = "ds_Name LIKE '%operator%' "
 Get-CimInstance @GCIMHT1  -Filter $Filter |
   Format-Table -Property DS_Name

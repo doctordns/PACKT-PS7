@@ -5,10 +5,10 @@
 
 # 1. Setting up the VM name and paths for this recipe
 $VMname      = 'PSDirect'
-$VMLocation  = 'C:\Vm\VMs'
-$VHDlocation = 'C:\Vm\Vhds'
+$VMLocation  = 'C:\VM\VMS'
+$VHDlocation = 'C:\VM\VHDS'
 $VhdPath     = "$VHDlocation\PSDirect.Vhdx"
-$ISOPath     = 'C:\builds\en_windows_server_2019_x64.iso'
+$ISOPath     = 'C:\Builds\en_windows_server_x64.iso'
 If ( -not (Test-Path -Path $ISOPath -PathType Leaf)) {
   Throw "Windows Server ISO DOES NOT EXIST" 
 }

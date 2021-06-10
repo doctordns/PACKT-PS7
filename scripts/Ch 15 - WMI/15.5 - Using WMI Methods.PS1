@@ -20,10 +20,10 @@ $NSHT = @{
 }    
 Invoke-CimMethod -ClassName Win32_Share -MethodName Create -Arguments $NSHT
 
-# 4. Viewing the new SMB Share
+# 4. Viewing the new SMB share
 Get-SMBShare -Name 'TestShare1'
 
-# 5. Viewing the new SMB Share using Get-CimInstance
+# 5. Viewing the new SMB share using Get-CimInstance
 Get-CimInstance -Class Win32_Share -Filter "Name = 'TestShare1'"
 
 # 6. Removing the share

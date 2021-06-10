@@ -8,7 +8,7 @@ $BPAS = New-PSSession -ComputerName DC1
 # 2. Discovering the BPA module on DC1
 $SB1 = {
   Get-Module -Name BestPractices -List |
-    Format-Table -Autosize     
+    Format-Table -AutoSize     
 }
 Invoke-Command -Session $BPAS -ScriptBlock $SB1
 

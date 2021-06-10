@@ -22,7 +22,7 @@ Invoke-Command @SBHT
 
 # 4. Invoking a command based on VMID
 $VMID = (Get-VM -VMName PSDirect).VMId.Guid
-Invoke-Command -VMid $VMID -Credential $RKCred  -ScriptBlock {ipconfig}
+Invoke-Command -VMid $VMID -Credential $Cred  -ScriptBlock {ipconfig}
 
 # 5. Entering a PS remoting session with the psdirect VM
 Enter-PSSession -VMName PSDirect -Credential $Cred
@@ -51,7 +51,7 @@ $RKP   = ConvertTo-SecureString -String $PS -AsPlainText -Force
 $Cred  = [System.Management.Automation.PSCredential]::New(
           $Admin, $RKP)
 
-# 10. Using PS Direct session to the VM
+# 10. Using PSDirect session to the VM
 Enter-PSSession -VMName PSDirect -Credential $Cred
 HOSTNAME.EXE
 

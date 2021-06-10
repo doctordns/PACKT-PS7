@@ -48,7 +48,7 @@ Get-ItemProperty -Path HKLM:\SOFTWARE\Packt
 # 8. Unregistering the event
 Unregister-Event -SourceIdentifier 'RegChange'
 
-# 9. Examining details
+# 9. Examining event details
 $RegEvent.SourceEventArgs.NewEvent
 
 # 10. Creating a WQL event query
@@ -71,7 +71,7 @@ $Event = @{
 }
 Register-CimIndicationEvent @Event
 
-# 12. Adding a user to the enterprise admin group
+# 12. Adding a user to the Enterprise Admins group
 Add-ADGroupMember -Identity 'Enterprise Admins' -Members Malcolm
 
 # 13. Viewing the newly added user

@@ -99,7 +99,7 @@ PSDirect Running 23          1024              00:00:50.8910000 Operating normal
 
 
 
-PS C:\Vm\VMs> # 9. Performing a hard power off on the PSDirct VM
+PS C:\Vm\VMs> # 9. Performing a hard power off on the PSDirect VM
 PS C:\Vm\VMs> Stop-VM -VMName PSDirect -TurnOff
 PS C:\Vm\VMs> Get-VM  -VMname PSDirect
 

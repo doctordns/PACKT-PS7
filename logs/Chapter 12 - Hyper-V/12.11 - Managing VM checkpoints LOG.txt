@@ -32,7 +32,7 @@ d-----       28/03/2021     12:53            Windows
 
 
 
-# 3. Creating a snapshot of PSDirect1 on HV
+# 3. Creating a snapshot of PSDirect on HV
 
 
 no output
@@ -209,7 +209,7 @@ no output
 
 
 
-PS C:\Foo> # 15. Checking snapshots and VM data files again
+PS C:\Foo> # 15. Checking checkpoints and VM data files again
 PS C:\Foo> Get-VMSnapshot -VMName PSDirect
 
 VMName   Name      SnapshotType CreationTime        ParentSnapshotName
@@ -219,7 +219,7 @@ PSDirect Snapshot2 Standard     02/04/2021 12:18:53 Snapshot1
 
 PS C:\Foo> Get-ChildItem -Path $Parent | Format-Table
 
-    Directory: C:\Vm\Vhds\PSDirect\Virtual Hard Disks
+    Directory: C:\VM\VHDS\PSDirect\Virtual Hard Disks
 
 Mode        LastWriteTime      Length Name
 ----        -------------      ------ ----
@@ -232,7 +232,7 @@ Mode        LastWriteTime      Length Name
 
 
 
-PS C:\Foo> # 16. Removing all the snapshots from HV1
+PS C:\Foo> # 16. Removing all the checkpoints from HV1
 PS C:\Foo> Get-VMSnapshot -VMName PSDirect |
              Remove-VMSnapshot
 
@@ -242,7 +242,7 @@ PS C:\Foo> Get-VMSnapshot -VMName PSDirect |
 PS C:\Foo> # 17. Checking VM data files again
 PS C:\Foo> Get-ChildItem -Path $Parent
 
-    Directory: C:\Vm\Vhds\PSDirect\Virtual Hard Disks
+    Directory: C:\VM\VHDS\PSDirect\Virtual Hard Disks
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----

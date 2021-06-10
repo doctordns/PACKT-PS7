@@ -15,7 +15,7 @@ no output
 no output
 
 
-# 3. Configuring Hyper-V replication on HV1 and HV1
+# 3. Configuring Hyper-V replication on HV1 and HV2
 
 
 no output 
@@ -42,7 +42,7 @@ True       Kerb     42000        443          True
 
 
 
-PS C:\Foo> # 6. Checking PSDirect on Hyper-V Hosts
+PS C:\Foo> # 6. Checking PSDirect on Hyper-V hosts
 PS C:\Foo> Get-VM -ComputerName HV1 -VMName PSDirect
 
 Name     State   CPUUsage(%) MemoryAssigned(M) Uptime           Status             Version
@@ -197,3 +197,8 @@ no output
 
 
 run from HV2-no output
+
+
+# 21. Moving the PSDirect VM back to HV1
+
+no output
