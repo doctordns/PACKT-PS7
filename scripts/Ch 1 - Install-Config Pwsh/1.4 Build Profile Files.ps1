@@ -33,7 +33,7 @@ New-Item $CUCHProfile -Force -WarningAction SilentlyContinue |
   Out-File -FilePath  $CUCHProfile
 
 # 5. Exiting from PowerShell 7 console 
-Exit-PSHostProcess
+Exit
 
 # 6. Restarting the PowerShell 7 console and viewing the profile output at startup
 Get-ChildItem -Path $PROFILE

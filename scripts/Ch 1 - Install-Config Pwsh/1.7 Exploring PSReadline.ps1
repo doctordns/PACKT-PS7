@@ -2,7 +2,7 @@
 #
 #  Run on SRV1
 
-# 1. Getting Commands in the PSReadline module
+# 1. Getting commands in the PSReadline module
 Get-Command -Module PSReadLine
 
 # 2. Getting the first 10 PSReadLine key handlers

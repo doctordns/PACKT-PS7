@@ -24,10 +24,10 @@ $URI = 'https://aka.ms/install-powershell.ps1'
 Invoke-RestMethod -Uri $URI |
   Out-File -FilePath C:\Foo\Install-PowerShell.ps1
 
-# 5. View Installation Script Help
+# 5. Viewing Installation Script Help
 Get-Help -Name C:\Foo\Install-PowerShell.ps1
 
-# 6. Install PowerShell 7
+# 6. Installing PowerShell 7
 $EXTHT = @{
   UseMSI                 = $true
   Quiet                  = $true

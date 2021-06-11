@@ -27,18 +27,15 @@ No OUTPUT
 No output
 
 
-PS C:\Foo]> # 5. View Installation Script Help
+PS C:\Foo]> # 5. Viewing the installation script help
 PS C:\Foo]> Get-Help -Name C:\Foo\Install-PowerShell.ps1
-The Update-Help cmdlet downloads the most current Help files for Windows PowerShell modules, and installs them on your
-computer. For more information about the Update-Help cmdlet, see https:/go.microsoft.com/fwlink/?LinkId=210614.
-[Y] Yes  [N] No  [S] Suspend  [?] Help (default is "Y"): n
 Install-PowerShell.ps1 [-Destination <string>] [-Daily] [-DoNotOverwrite] [-AddToPath] [-Preview] [<CommonParameters>]
 Install-PowerShell.ps1 [-UseMSI] [-Quiet] [-AddExplorerContextMenu] [-EnablePSRemoting] [-Preview] [<CommonParameters>]
 
 
 
 
-PS C:\Foo> # 6. Install PowerShell 7
+PS C:\Foo> # 6. Installing PowerShell 7
 PS C:\Foo> $EXTHT = @{
              UseMSI                 = $true
              Quiet                  = $true 
@@ -76,7 +73,7 @@ no output
 
 
 PS C:\Foo> # 9. Checking versions of PowerShell 7 loaded
-Get-ChildItem -Path C:\pwsh.exe -Recurse -ErrorAction SilentlyContinue
+PS C:\Foo> Get-ChildItem -Path C:\pwsh.exe -Recurse -ErrorAction SilentlyContinue
 
 
     Directory: C:\Program Files\PowerShell\7

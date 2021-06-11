@@ -14,7 +14,7 @@ no output
 
 
 
-PS C:\Foo> # 2. Running the installation script and add in some popular extensions
+PS C:\Foo> # 2. Running the installation script and adding in some popular extensions
 PS C:\Foo> $Extensions =  'Streetsidesoftware.code-spell-checker',
                           'yzhang.markdown-all-in-one',
                           'hediet.vscode-drawio'
@@ -58,7 +58,7 @@ No output
 
 
 
-PS C:\Foo> # 6. 6.	Creating a Current User\Current Host profile for VS Code
+PS C:\Foo> # 6. Creating a Current User\Current Host profile for VS Code
 PS C:\Foo> $SAMPLE =
              'https://raw.githubusercontent.com/doctordns/PACKT-PS7/master/' +
              'scripts/goodies/Microsoft.VSCode_profile.ps1'

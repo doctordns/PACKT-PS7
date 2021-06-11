@@ -4,7 +4,7 @@
 
 
 
-PS C:\Foo> # 1. Getting Commands in the PSReadLine module
+PS C:\Foo> # 1. Getting commands in the PSReadLine module
 PS C:\Foo> Get-Command -Module PSReadLine
 
 CommandType  Name                         Version  Source

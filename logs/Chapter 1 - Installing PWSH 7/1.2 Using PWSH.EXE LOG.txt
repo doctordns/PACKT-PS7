@@ -10,8 +10,8 @@ no output as such - see console
 
 
 
-PS C:\Users\Administrator> # 2. View the PowerShell Version
-PS C:\Users\Administrator> $PSVersionTable
+PS C:\Foo> # 2. Viewing the PowerShell version
+PS C:\Foo> $PSVersionTable
 
 Name                           Value
 ----                           -----
@@ -110,7 +110,7 @@ VirtualMemorySize          : 873517056
 
 
 
-PS C:\Users\Administrator> # 6. Update PowerShell Help
+PS C:\Users\Administrator> # 6. Update PowerShell help
 PS C:\Users\Administrator> $Before = Get-Help -Name about_*
 PS C:\Users\Administrator> Update-Help -Force | Out-Null
 Update-Help: Failed to update Help for the module(s) 'PSReadline' with UI culture(s) {en-US} : 

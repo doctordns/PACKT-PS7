@@ -7,7 +7,7 @@
 
 Start/PWSH/Return
 
-# 2. Viewing the PowerShell Version
+# 2. Viewing the PowerShell version
 $PSVersionTable
 
 # 3. Viewing the $Host variable
@@ -21,7 +21,7 @@ Get-Process -Id $PID |
 Get-Process -Id $PID |
   Format-List CPU,*Memory*
 
-# 6. Update PowerShell Help
+# 6. Updating the PowerShell help
 $Before = Get-Help -Name about_*
 Update-Help -Force | Out-Null
 $After = Get-Help -Name about_*

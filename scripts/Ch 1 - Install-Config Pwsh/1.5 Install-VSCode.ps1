@@ -8,7 +8,7 @@ $VSCPATH = 'C:\Foo'
 Save-Script -Name Install-VSCode -Path $VSCPATH
 Set-Location -Path $VSCPATH
 
-# 2. Running the installation script and add in some popular extensions
+# 2. Running the installation script and adding in some popular extensions
 $Extensions =  'Streetsidesoftware.code-spell-checker',
                'yzhang.markdown-all-in-one',
                'hediet.vscode-drawio'
