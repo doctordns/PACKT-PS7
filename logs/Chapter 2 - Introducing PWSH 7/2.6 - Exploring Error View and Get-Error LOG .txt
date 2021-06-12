@@ -12,7 +12,7 @@
 NO OUTPUT
 
 
-PS C:\Foo> # 2. Running the script and see the default error view
+PS C:\Foo> # 2. Running the script and seeing the default error view
 PS C:\Foo> & $SCRIPTFILENAME
 RuntimeException: C:\Foo\ZeroDivError.ps1:2:3
 Line |
@@ -34,7 +34,7 @@ PS C:\Foo> $ErrorView
 ConciseView
 
 
-PS C:\Foo> # 5. Viewing Potential values of Error View
+PS C:\Foo> # 5. Viewing potential values of $ErrorView
 PS C:\Foo> $Type = $ErrorView.GetType().FullName
 PS C:\Foo> [System.Enum]::GetNames($Type)
 NormalView
@@ -44,7 +44,7 @@ ConciseView
 
 
 
-PS C:\Foo> # 6. Setting Value to Normal View and re-create the error
+PS C:\Foo> # 6. Setting $ErrorView to 'NormalView' and recreating the error
 PS C:\Foo> $ErrorView = 'NormalView'
 PS C:\Foo> & $SCRIPTFILENAME
 Attempted to divide by zero.
@@ -57,7 +57,7 @@ At C:\Foo\ZeroDivError.ps1:2 char:3
 
 
 
-PS C:\Foo> # 7. Setting value to Category View and re-create the error
+PS C:\Foo> # 7. Setting $ErrorView to 'CategoryView' and recreating the error
 PS C:\Foo> $ErrorView = 'CategoryView'
 PS C:\Foo> & $SCRIPTFILENAME
 NotSpecified: (:) [], RuntimeException

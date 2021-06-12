@@ -66,7 +66,7 @@ Hop Hostname                  Ping Latency Status           Source       TargetA
   9 dns.Google                   1       6 Success          SRV1         8.8.8.8
 
 
-PS C:\Foo> # 5. Using infinite Ping and stopping with Ctrl-C
+PS C:\Foo> # 5. Using infinite ping and stopping with Ctrl-C
 PS C:\Foo> Test-Connection -TargetName www.reskit.net -Repeat
 
    Destination: www.reskit.net

@@ -70,7 +70,7 @@ $Commands71 = $CMDS71 |
   Select-Object -ExpandProperty Name |
     Sort-Object -Unique
 
-# 11. Discover new cmdlets in PowerShell 7.1
+# 11. Discovering new cmdlets in PowerShell 7.1
 Compare-Object $Commands51 $Commands71  | 
   Where-Object SideIndicator -match '^=>'  
 
@@ -81,9 +81,9 @@ $CMSB = {
   "$($M.count) modules found in $($PSVersionTable.PSVersion)"
 }
 
-# 13. View core modules in Windows PowerShell 5.1
+# 13. Viewing core modules in Windows PowerShell 5.1
 Invoke-Command -Session $SWP51 -ScriptBlock $CMSB 
 
-# 14. View core modules in PowerShell 7.1
+# 14. Viewing core modules in PowerShell 7.1
 Invoke-Command -Session $SP71 -ScriptBlock $CMSB 
 

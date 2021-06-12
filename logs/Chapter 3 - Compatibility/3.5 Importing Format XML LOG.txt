@@ -84,7 +84,7 @@ no output
 
 
 
-PS C:\Foo> # 8.	Viewing the Windows Simple-TCPIP Feature
+PS C:\Foo> # 8.	Viewing the Windows Simple-TCPIP feature
 PS C:\Foo> Get-WindowsFeature -Name Simple-TCPIP
 
 Display Name                 Name            Install State

@@ -28,7 +28,7 @@ Get-Module -Name ServerManager | Remove-Module
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
 
 # 8. Getting the new remoting session
-$S2 = Get-Pssession -Name 'WinPSCompatSession'
+$S2 = Get-PSSession -Name 'WinPSCompatSession'
 $S2
 
 # 9. Examining modules in WInPSCompatSessionb

@@ -35,7 +35,7 @@ $FF = Get-ChildItem -Path $FXML\*.format.ps1xml
 Foreach ($F in $FF) {
   Update-FormatData -PrependPath $F.FullName} 
 
-# 8. Viewing the Windows Simple-TCPIP Feature
+# 8. Viewing the Windows Simple-TCPIP feature
 Get-WindowsFeature -Name Simple-TCPIP
 
 # 9. Adding Simple-TCP Services

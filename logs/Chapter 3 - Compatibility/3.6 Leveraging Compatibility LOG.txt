@@ -80,7 +80,7 @@ NO output
 
 
 PS C:\Foo> # 8. Getting loaded modules in remote session
-PS C:\Foo> $S2 = Get-Pssession -Name 'WinPSCompatSession'
+PS C:\Foo> $S2 = Get-PSSession -Name 'WinPSCompatSession'
 PS C:\Foo> $S2
 
  Id Name            Transport ComputerName  ComputerType   State   ConfigurationName  Availability
@@ -91,9 +91,9 @@ PS C:\Foo> $S2
 PS C:\Foo> # 9. Examining modules in WInPSCompatSessionb
 PS C:\Foo> Invoke-Command -Session $S2 -ScriptBlock {Get-Module}
 
-ModuleType Version  PreRelease Name                             ExportedCommands                                            PSComputerName
----------- -------  ---------- ----                             ----------------                                            --------------
-Manifest   3.1.0.0             Microsoft.PowerShell.Utility     {Remove-Variable, Remove-Event, Add-Member, Debug-Runspace… localhost
-Script     2.0.0.0             ServerManager                    {Uninstall-WindowsFeature, Get-WindowsFeature, Disable-Ser… localhost
+ModuleType Version  PreRelease Name                          ExportedCommands                                     PSComputerName
+---------- -------  ---------- ----                          ----------------                                     --------------
+Manifest   3.1.0.0             Microsoft.PowerShell.Utility  {Remove-Variable, Remove-Event, Add-Member, Debug-R… localhost
+Script     2.0.0.0             ServerManager                 {Uninstall-WindowsFeature, Get-WindowsFeature, Disa… localhost
 
 

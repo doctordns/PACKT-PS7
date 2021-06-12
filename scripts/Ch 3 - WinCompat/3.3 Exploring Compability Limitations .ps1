@@ -10,7 +10,7 @@ Import-Module -Name ServerManager -SkipEditionCheck
 # 3. Disconvering a Windows PowerShell command
 Get-Command -Name Get-WindowsFeature
 
-# 4. Examining Remote Session
+# 4. Examining remote session
 $Session = Get-PSSession
 $Session | Format-Table -AutoSize
 

@@ -8,10 +8,10 @@
 Write-Output 'Something that succeeds'
 if ($?) {Write-Output 'It worked'}
 
-# 2. Checking results With Pipeline operator &&
+# 2. Checking results With pipeline operator &&
 Write-Output 'Something that succeeds' && Write-Output 'It worked'
 
-# 3. Using Pipeline chain operator  ||
+# 3. Using pipeline chain operator  ||
 Write-Output 'Something that succeeds' || 
   Write-Output 'You do not see this message'
 
@@ -50,13 +50,13 @@ if ($null -eq $Result2) {
     $Result2
 }
 
-# 8. Testing using Null Coalescing operator ??
+# 8. Testing using null coalescing operator ??
 $Result3 =  Test-NCO
 $Result3 ?? 'Function returned no value'
 $Result4 =  Test-NCO 42
 $Result4 ?? 'This is not output, but result is'
 
-# 9. Demonstrating the Null Conditional Assignment Operator
+# 9. Demonstrating the Null conditional assignment operator
 $Result5 = Test-NCO
 $Result5 ?? 'Result is is null'
 $Result5 ??= Test-NCO 42
@@ -68,7 +68,7 @@ $BitService.Stop()
 # 11. Using the Null conditional operator for a method
 ${BitService}?.Stop()
 
-# 12. Testing Null property name access
+# 12. Testing null property name access
 $x = $null
 ${x}?.Propname
 $x = @{Propname=42}
@@ -80,7 +80,7 @@ ${y}?[0]
 $y = 1,2,3
 ${y}?[0]
 
-# 14. Using the bckground processing operator &
+# 14. Using the background processing operator &
 Get-CimClass -ClassName Win32_Bios &
 
 # 15. Waiting for the job to complete

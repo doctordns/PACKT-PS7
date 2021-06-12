@@ -19,17 +19,6 @@ assembly 'System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c56
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 PS C:\Foo> # 3. Discovering a Windows PowerShell command
 PS C:\Foo> Get-Command -Name Get-WindowsFeature
 
@@ -40,7 +29,7 @@ Function      Get-WindowsFeature  1.0       ServerManager
 
 
 
-PS C:\Foo> # 4. Examining Remote Session
+PS C:\Foo> # 4. Examining remote session
 PS C:\Foo> $Session = Get-PSSession
 PS C:\Foo> $Session | Format-Table -AutoSize
 

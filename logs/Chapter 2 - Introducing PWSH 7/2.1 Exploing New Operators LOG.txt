@@ -1,6 +1,6 @@
 # 2.1 Exploring New Operators
 
-# Run on SRV1 after installing PowerShell 7 and VS COde
+# Run on SRV1 after installing PowerShell 7 and VS Code
 
 
 PS C:\Foo> # 1. Checking results traditionally
@@ -12,7 +12,7 @@ It worked
 
 
 
-PS C:\Foo> # 2. Checking results With Pipeline operator &&
+PS C:\Foo> # 2. Checking results with pipeline operator &&
 PS C:\Foo> Write-Output 'Something that succeeds' && Write-Output 'It worked'
 Something that succeeds
 It worked
@@ -20,7 +20,7 @@ It worked
 
 
 
-PS C:\Foo> # 3. Using Pipeline chain operator  ||
+PS C:\Foo> # 3. Using pipeline chain operator  ||
 PS C:\Foo> Write-Output 'Something that succeeds' || 
              Write-Output 'You do not see this message'
 Something that succeeds
@@ -84,7 +84,7 @@ Test-NCO returned a result
 
 
 
-PS C:\Foo> # 8. Tesing using Null Coalescing operator ??
+PS C:\Foo> # 8. Testing using null coalescing operator ??
 PS C:\Foo> $Result3 =  Test-NCO
 PS C:\Foo> $Result3 ?? 'Function returned no value'
 Function returned no value
@@ -97,7 +97,7 @@ Test-NCO returned a result
 
 
 
-PS C:\Foo> # 9. Demonstrating Null Conditional Assignment Operator
+PS C:\Foo> # 9. Demonstrating null conditional assignment operator
 PS C:\Foo> $Result5 = Test-NCO
 PS C:\Foo> $Result5 ?? 'Result is is null'
 Result is is null
@@ -131,7 +131,7 @@ No Output
 
 
 
-PS C:\Foo> # 12. Testing Null property name access
+PS C:\Foo> # 12. Testing null property name access
 PS C:\Foo> $x = $null
 PS C:\Foo> ${x}?.Propname
 PS C:\Foo> $x = @{Propname=42}

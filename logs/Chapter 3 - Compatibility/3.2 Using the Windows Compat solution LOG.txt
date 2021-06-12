@@ -54,23 +54,23 @@ ExportedAliases   : {Add-WindowsFeature, Remove-WindowsFeature}
 PS C:\Foo> # 5. Using a command in the ServerManager module
 PS C:\Foo> Get-WindowsFeature -Name DHCP
 
-Display Name      Name           Install State
-------------      ----          -------------
-                  TFTP-Client   Available
+Display Name   Name          Install State
+------------   ----          -------------
+               TFTP-Client   Available
 
 
 
 
-PS C:\Foo> # 6. Now run the command in a remoting session
+PS C:\Foo> # 6. Running the command in a remoting session
 PS C:\Foo> $Session = Get-PSSession -Name WInPSCompatSession
 PS C:\Foo> Invoke-Command -Session $Session -ScriptBlock {
              Get-WindowsFeature -Name DHCP |
                Format-Table
            }
 
-Display Name        Name         Install State
-------------        ----         -------------
-[ ] TFTP Client     TFTP-Client  Available
+Display Name     Name         Install State
+------------     ----         -------------
+[ ] TFTP Client  TFTP-Client  Available
 
 
 
@@ -78,12 +78,12 @@ Display Name        Name         Install State
 
 
 
-PS C:\Foo> # 8. Installing a Windows Feature using module autoload
+PS C:\Foo> # 8. Installing a Windows feature using module autoload
 PS C:\Foo> Install-WindowsFeature -Name TFTP-Client
 
-Success Restart Needed Exit Code      Feature Result
-------- -------------- ---------      --------------
-True    No             Success        {TFTP Client}}
+Success Restart Needed Exit Code  Feature Result
+------- -------------- ---------  --------------
+True    No             Success    {TFTP Client}}
 
 
 
@@ -92,15 +92,15 @@ True    No             Success        {TFTP Client}}
 PS C:\Foo> # 9. Discovering the feature
 PS C:\Foo> Get-WindowsFeature -Name TFTP-Client
 
-Display Name      Name          Install State
-------------      ----          -------------
-                  TFTP-Client       Installed
+Display Name   Name         Install State
+------------   ----         -------------
+               TFTP-Client      Installed
 
 
 
 
 
-PS C:\Foo> # 10. Viewing output inside Windows PowerShell Session
+PS C:\Foo> # 10. Viewing output inside Windows PowerShell session
 PS C:\Foo> Invoke-Command -Session $Session -ScriptBlock {
              Get-WindowsFeature -Name 'TFTP-Client' |
                Format-Table

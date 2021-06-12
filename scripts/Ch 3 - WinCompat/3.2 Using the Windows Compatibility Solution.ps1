@@ -29,13 +29,13 @@ Invoke-Command -Session $Session -ScriptBlock {
 Get-Module -Name ServerManager |
   Remove-Module
 
-# 8. Installing a Windows Feature using module autoload
+# 8. Installing a Windows feature using module autoload
 Install-WindowsFeature -Name TFTP-Client 
 
 # 9. Discovering the feature
 Get-WindowsFeature -Name TFTP-Client
 
-# 10. View output inside Windows PowerShell Session
+# 10. View output inside Windows PowerShell session
 Invoke-Command -Session $Session -ScriptBlock {
     Get-WindowsFeature -Name 'TFTP-Client' |
       Format-Table

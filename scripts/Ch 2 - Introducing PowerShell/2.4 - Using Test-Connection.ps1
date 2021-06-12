@@ -17,7 +17,7 @@ $IPs |
 Test-Connection -TargetName 8.8.8.8 -ResolveDestination -Traceroute |
   Where-Object Ping -eq 1
 
-# 5. Using infinite Ping and stopping with Ctrl-C
+# 5. Using infinite pPing and stopping with Ctrl-C
 Test-Connection -TargetName www.reskit.net -Repeat
 
 # 6. Checking speed of Test-Connection in PowerShell 7
