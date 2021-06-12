@@ -61,7 +61,7 @@ $RKReport += $RKUsers | Where-Object BadPwdCount -ge 5 |
 $RKReport += "`n*** Privileged  User Report`n"
 $PUsers = @()
 
-# 8. Querring the Enterprise Admins/Domain Admins/Scheme Admins
+# 8. Querying the Enterprise Admins/Domain Admins/Scheme Admins
 #    groups for members and adding them to the $Pusers array
 # Get Enterprise Admins group members
 $Members = Get-ADGroupMember -Identity 'Enterprise Admins' -Recursive |
@@ -70,7 +70,7 @@ $PUsers += foreach ($Member in $Members) {
     Get-ADUser -Identity $Member.SID -Properties * |
         Select-Object -Property Name,
                @{Name='Group';expression={'Enterprise Admins'}},
-               whenCreated,LastlogonDate
+               whenCreated,LastLogonDate
 }
 # Get Domain Admins group members
 $Members = 
@@ -89,8 +89,8 @@ $Members =
 $PUsers += Foreach ($Member in $Members) {
     Get-ADUser -Identity $member.SID -Properties * |
         Select-Object -Property Name,
-            @{Name='Group';expression={'Schema Admins'}}, `
-            WhenCreated, Lastlogondate,SamAccountName
+            @{Name='Group';expression={'Schema Admins'}}, 
+            WhenCreated, LastLogonDate,SamAccountName
 }
 
 # 9 Adding the special users to the report

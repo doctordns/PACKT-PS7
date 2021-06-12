@@ -16,7 +16,7 @@ True    No             Success    {Active Directory Domain Services, Group Polâ€
 
 
 
-PS C:\Foo> # 2. Importing the ADDeployment module
+PS C:\Foo> # 2. Importing the ADDSDeployment module
 PS C:\Foo> Import-Module -Name ADDSDeployment
 WARNING: Module ADDSDeployment is loaded in Windows PowerShell using WinPSCompatSession
 remoting session; please note that all input and output of commands from this module will 

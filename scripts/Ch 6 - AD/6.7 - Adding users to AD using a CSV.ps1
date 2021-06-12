@@ -4,7 +4,7 @@
 
 # 1. Creating a CSV file
 $CSVDATA = @'
-Firstname, Initials, Lastname, UserPrincipalName, Alias, Description, Password
+Firstname,Initials,Lastname,UserPrincipalName,Alias,Description,Password
 J, K, Smith, JKS, James, Data Team, Christmas42
 Clair, B, Smith, CBS, Claire, Receptionist, Christmas42
 Billy, Bob, JoeBob, BBJB, BillyBob, A Bob, Christmas42

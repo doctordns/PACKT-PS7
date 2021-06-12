@@ -1,6 +1,6 @@
-﻿# Recipe 6.8 - Creating a group policy object
+﻿# Recipe 6.8 - Creating group policy objects
 
-# Run on DC1, after creaating IT Orgizational Unit
+# Run on DC1, after creaating IT Organizational Unit
 
 # 1. Creating a Group Policy object
 $Pol = New-GPO -Name ITPolicy -Comment "IT GPO" -Domain Reskit.Org
