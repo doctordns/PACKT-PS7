@@ -1,4 +1,4 @@
-# 2.7 EXploring Experimental Feautures
+# 2.7 EXploring Experimental Features
 
 # Run on SRV1
 
