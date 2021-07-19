@@ -74,7 +74,8 @@ Set-DnsClient  @DNSCHT
 Register-DnsClient 
 
 # 12. Pre-staging SRV2 in AD
-New-ADComputer -Name SRV2
+$SB = {New-ADComputer -Name SRV2}
+Invoke-Command -ComputerName DC1 -ScriptBlock $SB
 
 # 13. Testing the DNS server on DC1.Reskit.Org correctly resolves SRV2
 Resolve-DnsName -Name SRV2.Reskit.Org -Type 'A' -Server DC1.Reskit.Org

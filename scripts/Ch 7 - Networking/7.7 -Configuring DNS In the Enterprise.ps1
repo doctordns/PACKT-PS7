@@ -1,7 +1,7 @@
-# 7.7 - Configuring the DNS Service
+# 7.7 - Configuring DNS in the Enterprise
 
 # Run this on DC2 after promoting to DC
-# Have DC1, DC2 online
+# Have DC1, DC2, SRV2 online
 
 # 1. Installing the DNS feature on DC2
 Import-Module -Name ServerManager -WarningAction SilentlyContinue
@@ -95,10 +95,7 @@ $DNSSSB = {
 Invoke-Command -ComputerName DC1 -ScriptBlock $DNSSSB
 Invoke-Command -ComputerName DC2 -ScriptBlock $DNSSSB
 
-# 14. Pre-staging SRV2 in AD
-New-ADComputer -Name SRV2
-
-# 15. Adding SRV2 to Domain
+# 14. Adding SRV2 to Domain
 # run on SRV2
 $User  = 'Reskit\Administrator'
 $Pass  = 'Pa$$w0rd'
@@ -113,6 +110,6 @@ Invoke-Command -Session $Sess -Scriptblock {
   }
   Add-Computer @ACHT
   Restart-Computer
-}
+} | Out-Null
 
 

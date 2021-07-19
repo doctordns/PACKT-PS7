@@ -8,7 +8,7 @@ Get-SmbShare -Name * |
     Format-Table -GroupBy Name
 
 # 2. Sharing a new folder 
-New-Item -Path C: -Name ITShare -ItemType Directory |
+New-Item -Path C:\ -Name ITShare -ItemType Directory |
   Out-Null
 New-SmbShare -Name ITShare -Path C:\ITShare
 

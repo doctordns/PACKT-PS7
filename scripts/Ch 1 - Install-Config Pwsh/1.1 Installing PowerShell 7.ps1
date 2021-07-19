@@ -58,6 +58,3 @@ $ConsoleProfile = Join-Path -Path $ProfilePath -ChildPath $ChildPath
 
 # 9. Checking versions of PowerShell 7 loaded
 Get-ChildItem -Path C:\pwsh.exe -Recurse -ErrorAction SilentlyContinue
-
-# 10. Updating Windows PowerShell help
-Update-Help -Force

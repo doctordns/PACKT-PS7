@@ -63,7 +63,7 @@ $ShortcutLocation    = "C:\foo\vscode.lnk"
 $WScriptShell        = New-Object -ComObject WScript.Shell
 $Shortcut            = $WScriptShell.CreateShortcut($ShortcutLocation)
 $Shortcut.TargetPath = $SourceFileLocation
-#Save the Shortcut to the TargetPath
+# Save the Shortcut to the TargetPath
 $Shortcut.Save()
 
 # 9. Creating a short cut to PowerShell 7
