@@ -96,4 +96,4 @@ $Finish2  = Get-Date
 
 # 15. Displaying the time taken to migrate back to HV1
 $OS = "Migration back to HV1 took: [{0:n2}] minutes"
-($OS -f ($($ffinish-$sStart).TotalMinutes))
+($OS -f ($($fINISH2 - $Start2).TotalMinutes))

@@ -58,8 +58,3 @@ Add-VMHardDiskDrive @VHDHT
 Get-VMScsiController -VMName PSDirect |
   Select-Object -ExpandProperty Drives
 
-
-
-
-
-PS C:\foo> 
