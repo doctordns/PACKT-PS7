@@ -1,5 +1,5 @@
 # 2.3 - Exploring Improvements in Foreach and ForEach-Object
-
+#
 # Run on SRV1 after installing pwsh 7
 # Run elevated
 

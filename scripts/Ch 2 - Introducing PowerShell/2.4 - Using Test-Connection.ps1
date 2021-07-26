@@ -1,5 +1,5 @@
 # 2.4 - Using Test-Connection
-
+#
 # run on SRV1 after installing PowerShell 7
 
 # 1. Using Test-Connection with the -TargetName parameter

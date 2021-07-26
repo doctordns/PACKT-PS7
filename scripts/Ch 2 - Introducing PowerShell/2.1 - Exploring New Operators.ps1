@@ -1,5 +1,5 @@
 # 2.1 Exploring New Operators
-
+#
 # Run on SRV1 after installing PowerShell 7 and VS C0de
 
 # Pipeline chain operators && and ||
