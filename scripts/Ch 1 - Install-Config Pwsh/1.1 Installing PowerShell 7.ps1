@@ -1,5 +1,5 @@
 # 1.1 Install PowerShell 7
-
+#
 # Run on SRV1
 # Run using an elevated Windows PowerShell 5.1 ISE
 
