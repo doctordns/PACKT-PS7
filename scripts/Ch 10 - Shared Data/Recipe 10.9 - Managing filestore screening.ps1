@@ -82,17 +82,17 @@ View from Outlook
 
 
 # for testing
-get-adgroupmember -identity 'Enterprise admins'
-Add-ADGroupMember -Identity 'Enterprise Admins' -members jerryg
-get-adgroupmember -identity 'Enterprise admins' | ft name
-$sb = {
+Get-ADGroupMember -Identity 'Enterprise admins'
+Add-ADGroupMember -Identity 'Enterprise Admins' -Members jerryg
+Get-ADGroupMember -identity 'Enterprise admins' | Format-table -Property name
+$SB = {
   $FSTHT = @{
     Path        = "$Env:windir\notepad.exe"
-    Destination = '\\srv1\screen\notepad.txt'
+    Destination = '\\SRV1\screen\notepad.txt'
   }
   Copy-Item  @FSTHT
 }
-Invoke-command -ComputerName srv1 -ScriptBlock $sb -Credential $cred
+Invoke-command -ComputerName SRV1 -ScriptBlock $SB -Credential $Cred
 
 
 
