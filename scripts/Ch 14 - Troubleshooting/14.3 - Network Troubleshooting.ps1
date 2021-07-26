@@ -33,16 +33,16 @@ $DCRRS
 
 # 6. Testing each DC for availability over LDAP
 ForEach ($DNSRR in $DCRRS){
-    $TestDC = Test-NetConnection -Port 389 -ComputerName $DNSRR.IPAddress
-    $Result  = $TestDC ? 'DC Available' : 'DC Not reachable'
-    "DC [$($DNSRR.Name)]  at [$($DNSRR.IPAddress)]   $Result for LDAP" 
+  $TestDC = Test-NetConnection -Port 389 -ComputerName $DNSRR.IPAddress
+  $Result  = $TestDC ? 'DC Available' : 'DC Not reachable'
+  "DC [$($DNSRR.Name)]  at [$($DNSRR.IPAddress)]   $Result for LDAP" 
 }
 
 # 7. Testing DC availability for SMB
 ForEach ($DNSRR in $DCRRS){
-    $TestDC = Test-NetConnection -Port 445 -ComputerName $DNSRR.IPAddress
-    $Result  = $TestDC ? 'DC Available' : 'DC Not reachable'
-    "DC [$($DNSRR.Name)]  at [$($DNSRR.IPAddress)]   $Result for SMB"
+  $TestDC = Test-NetConnection -Port 445 -ComputerName $DNSRR.IPAddress
+  $Result  = $TestDC ? 'DC Available' : 'DC Not reachable'
+  "DC [$($DNSRR.Name)]  at [$($DNSRR.IPAddress)]   $Result for SMB"
 }
 
 # 8. Testing default gateway

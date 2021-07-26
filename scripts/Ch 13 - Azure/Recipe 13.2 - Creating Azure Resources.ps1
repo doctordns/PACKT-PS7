@@ -1,4 +1,4 @@
-﻿# Recipe 13.2 - Creating Azure Assets
+﻿# Recipe 13.2 - Creating Azure Resources
 #
 # Run on SRV1
 

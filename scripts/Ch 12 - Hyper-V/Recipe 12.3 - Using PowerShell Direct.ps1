@@ -1,4 +1,4 @@
-# Recipe 12.3 - Using PS Direct
+# Recipe 12.3 - Using PowerShell Direct
 
 # Run on HV1 and DC1 - start on HV1
 

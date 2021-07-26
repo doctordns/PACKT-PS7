@@ -1,6 +1,6 @@
 ﻿# Recipe 11.2 - Publishing a printer
 #
-# Run on Psrv
+# Run on PSRV - domain joined host in reskit.org domain
 # Uses Printer added in 11.1
 
 # 1. Getting the printer to publish and store the returned object in $Printer

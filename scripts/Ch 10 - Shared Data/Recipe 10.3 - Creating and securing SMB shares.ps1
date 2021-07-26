@@ -1,4 +1,4 @@
-﻿# Recipe 5.2 - Creating and securing SMB shares
+﻿# Recipe 5.2 - Setting up and securing SMB file server
 #
 # Run from SRV2
 

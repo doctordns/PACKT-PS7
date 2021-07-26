@@ -1,6 +1,6 @@
-# Recipe 11.7 - create Printer Pool
-
-# Run on PSRV printer server
+# Recipe 11.7 - create a Printer Pool
+#
+# Run on PSRV  - domain joined host in reskit.org domain
 
 # 1. Adding a port for the printer 
 $P = 'SalesPP2' # new printer port name

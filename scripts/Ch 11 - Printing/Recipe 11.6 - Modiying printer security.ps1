@@ -1,6 +1,6 @@
 ﻿# Recipe 11.6 - Modifying printer security
-
-# Run on PSRV
+#
+# Run on PSRV - domain joined host in reskit.org domain
 
 # 1. Setting up AD for this recipe
 $SB = {
@@ -44,7 +44,8 @@ $SB = {
  $SalesGroupSid = 
    $SalesGroup.Translate([Security.Principal.Securityidentifier]).Value
  $SalesAdminGroupSid = 
-   $SalesAdminGroup.Translate([Security.Principal.Securityidentifier]).Value
+   $SalesAdminGroup.Translate(
+     [Security.Principal.Securityidentifier]).Value
  
  # 4. Defining the SDDL for this printer
  $SDDL = 'O:BAG:DUD:PAI(A;OICI;FA;;;DA)' +         

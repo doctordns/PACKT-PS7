@@ -16,11 +16,12 @@ $Classes = Get-CimClass -Namespace 'ROOT\CIMV2'
 "There are $($Classes.Count) classes in ROOT\CIMV2"
 
 # 4. Discovering all the namespaces on SRV1
+$EAHT = @{ErrorAction = 'SilentlyContinue'}
 Function Get-WMINamespaceEnum {
   [CmdletBinding()]
   Param($NS) 
   Write-Output $NS
-  Get-CimInstance "__Namespace" -Namespace $NS -ErrorAction SilentlyContinue | 
+  Get-CimInstance "__Namespace" -Namespace $NS @EAHT | 
   ForEach-Object { Get-WMINamespaceEnum "$ns\$($_.name)"   }
 }  # End of function
 $Namespaces = Get-WMINamespaceEnum 'ROOT' | 
