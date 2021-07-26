@@ -3,7 +3,6 @@
 # Run on SRV1 after installing pwsh 7
 # Run elevated
 
-
 # 1. Creating a remoting connection to the local host
 New-PSSession -UseWindowsPowerShell -Name 'WPS'
 

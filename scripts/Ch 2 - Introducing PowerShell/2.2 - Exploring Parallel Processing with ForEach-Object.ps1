@@ -2,7 +2,6 @@
 #
 # Run in PS 7 on SRV1
 
-
 # 1. Simulating a long running script block
 $SB1 = {
   1..3 | ForEach-Object {
