@@ -1,5 +1,5 @@
 # 13.7 - Remoting with PowerShell
-
+#
 # Run on SRV1
 
 # 1. Defining key variables

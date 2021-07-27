@@ -1,8 +1,8 @@
-﻿# Recipe 13.2 - Creating Azure Resources
+﻿# 13.2 - Creating Azure Resources
 #
 # Run on SRV1
 
-# 1. Setting key variables
+# 1. Defining key variables
 $Locname    = 'uksouth'     # Location name
 $RgName     = 'packt_rg'    # Resource group we are using
 $SAName     = 'packt42sa'   # A unique storage account name
