@@ -27,7 +27,7 @@ $Type = $ErrorView.GetType().FullName
 $ErrorView = 'NormalView'
 & $SCRIPTFILENAME
 
-7. Setting $ErrorView to 'CategoryView' and recreating the error
+# 7. Setting $ErrorView to 'CategoryView' and recreating the error
 $ErrorView = 'CategoryView'
 & $SCRIPTFILENAME
 

@@ -23,5 +23,5 @@ Get-CimClass -Namespace root\directory\LDAP |
 
 # 5. Viewing the instances of the ds_group class
 Get-CimInstance -Namespace root\directory\LDAP -Classname 'DS_Group' |
-  Select -First 10 |
+  Select-Object -First 10 |
     Format-Table -Property DS_name, DS_Member
