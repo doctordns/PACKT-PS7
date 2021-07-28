@@ -90,9 +90,11 @@ C:\Foo\Signed.ps1
 
 
 
-# UnDo 
+# Ror testing = to remove the cert and the file
 
-Gci cert:\ -recurse | where subject -match 'Reskit Code Signing' | RI -Force
-ri C:\foo\signed.ps1
+Get-ChildItem -Path Cert:\ -Recurse | 
+  Where-Object subject -match 'Reskit Code Signing' | 
+    Remove-item -Force
+Remove-Item C:\Foo\signed.ps1
 
 
