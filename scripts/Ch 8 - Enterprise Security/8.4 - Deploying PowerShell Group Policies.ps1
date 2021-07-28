@@ -1,6 +1,6 @@
 # 8.4 Deploying PowerSHell Group Policies
-
-# Run on DC1 - Login as Administrator
+#
+# Run on DC1 - Login as domain administrator
 
 
 # 1. Discovering the GPO-related files
