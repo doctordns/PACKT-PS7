@@ -1,7 +1,7 @@
-# Recipe 8.3 - Deploy iis in a container
+# Recipe 16.3 - Deploy IIS in a container
 #
-# Run from CH1
-# Run inside the console, NOT the ISE
+# Run from CH1 after 16.1
+# Also Run inside the console, NOT the ISE
 
 # 1.  Creating ReskitApp folder:
 $EA = @{ErrorAction='SilentlyContinue'}

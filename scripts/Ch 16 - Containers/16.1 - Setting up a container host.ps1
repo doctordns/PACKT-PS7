@@ -1,5 +1,5 @@
-# Recipe 16.1 - Setting up a container host
-
+# 16.1 - Setting up a container host
+#
 # Run on CH1 after adding PowerShell and VS Code
 
 # 1. Installling the Docker provider

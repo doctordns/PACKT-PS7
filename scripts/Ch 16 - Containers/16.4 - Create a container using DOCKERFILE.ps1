@@ -1,6 +1,6 @@
-﻿# Recipe 8.4- Creating a Image using a Dockerfile
+﻿# Recipe 16.4- Creating a Image using a Dockerfile
 # 
-# run on CH1
+# run on CH1 after 16.1
 
 # 1. Create folder and Set-location to the folder on CH1
 $SitePath = 'C:\RKWebContainer'

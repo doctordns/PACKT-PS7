@@ -1,6 +1,6 @@
-# Recipe 8.2 - Deploying sample containers
+# 16.2 - Deploying sample containers
 #
-#  Run on CH1
+#  Run on CH1 after running 16.1
 
 
 # 1. Find hello-world containers at the Docker Hub
