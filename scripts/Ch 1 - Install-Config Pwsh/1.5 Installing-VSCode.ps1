@@ -103,6 +103,7 @@ $XML | Out-File -FilePath C:\Foo\Layout.Xml
 Import-StartLayout -LayoutPath C:\Foo\Layout.Xml -MountPath C:\
 
 # 12. Creating a profile file for PWSH 7 Consoles
+$ProfileFolder = Join-Path ($Env:homeDrive+ $env:HOMEPATH) 'Documents\PowerShell'
 $ProfileFile2   = 'Microsoft.PowerShell_Profile.ps1'
 $ConsoleProfile = Join-Path -Path $ProfileFolder -ChildPath $ProfileFile2
 New-Item $ConsoleProfile -Force -WarningAction SilentlyContinue |
